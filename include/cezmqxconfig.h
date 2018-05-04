@@ -42,13 +42,74 @@ typedef enum
     Docker
 }CModeOption;
 
+/**
+ *  Create ezmqx configuration with given mode.
+ *
+ * @param mode - Config mode [StandAlone/Docker].
+ * @param handle - Handle will be filled as return value.
+ *
+ * @note Config instance will be allocated, so it should be deleted after use.
+ *              To destroy an instance, use ezmqxDestroyConfig().
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateConfig(CModeOption mode, ezmqxConfigHandle_t *handle);
+
+/**
+ *  Destroy an instance of config.
+ *
+ * @param handle - Config Handle that will be destroyed.
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxDestroyConfig(ezmqxConfigHandle_t handle);
+
+/**
+ *  Set host info [name and address].
+ *
+ * @param handle  -Config handle.
+ * @param hostName - Host name.
+ * @param hostAddr - Host address.
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxSetHostInfo(ezmqxConfigHandle_t handle, const char *hostName,
         const char *hostAddr);
+
+/**
+ *  Set TNS info [server address].
+ *
+ * @param handle  -Config handle.
+ * @param remoteAddr - TNS server address.
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxSetTnsInfo(ezmqxConfigHandle_t handle, const char * remoteAddr);
+
+/**
+ *  Add model information to configuration.
+ *
+ * @param handle -Config handle.
+ * @param amlFilePath - List of AML file paths.
+ * @param size - List Size.
+ * @param amlFilePath - List of AML ID will be filled..
+ * @param listSize - ID List Size.
+ *
+ * @note ID list and IDs will be allocated, so it should be deleted after use.
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxAddAmlModel(ezmqxConfigHandle_t handle, const char **amlFilePath,
         const size_t size, char*** idList, size_t* listSize);
+
+/**
+ *  Reset the ezmqx configuration.
+ *
+ * @param handle  -Config handle.
+ * @param mode - Config mode [StandAlone/Docker].
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxReset(ezmqxConfigHandle_t handle, CModeOption mode);
 
 #ifdef __cplusplus

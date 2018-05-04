@@ -15,12 +15,6 @@
  *
  *******************************************************************************/
 
-/**
- * @file   cezmqxerrorcodes.h
- *
- * @brief   This file contains error codes of CEZMQ service possibly return to application.
- */
-
 #ifndef __CEZMQ_X_ERRORCODES_H_INCLUDED__
 #define __CEZMQ_X_ERRORCODES_H_INCLUDED__
 

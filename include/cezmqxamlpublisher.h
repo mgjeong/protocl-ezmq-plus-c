@@ -44,9 +44,40 @@ typedef enum
  */
 typedef void * ezmqxAMLPubHandle_t;
 
+/**
+ *  Get/Create publisher with given details.
+ *
+ * @param topic - Topic on which publisher will be publishing.
+ * @param infoType - CAmlModelInfo.
+ * @param amlModeld - AML Model Id.
+ * @param optionalPort - Port to be bound to publisher .
+ * @param handle -Handle will be filled as return value.
+ *
+ * @note Publisher instance will be allocated, so it should be deleted after use.
+ *              To destroy an instance, use ezmqxDestroyPublisher().
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxGetPublisher(const char *topic, CAmlModelInfo infoType,
         const char *amlModeld,  int optionalPort, ezmqxAMLPubHandle_t *handle);
+
+/**
+ *  Destroy an instance of publisher.
+ *
+ * @param handle -Handle of Publisher that will be destroyed.
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxDestroyPublisher(ezmqxAMLPubHandle_t handle);
+
+/**
+ *  Publish event [AML object] on socket for subscribers.
+ *
+ * @param handle -Publisher handle.
+ * @param object - AML object to be published .
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxPublish(ezmqxAMLPubHandle_t handle, amlObjectHandle_t object);
 
 #ifdef __cplusplus
