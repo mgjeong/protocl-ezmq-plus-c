@@ -59,4 +59,4 @@ and serialization / deserialization middlewares along with some added functional
         - ezmq_plus.so </br>
         - aml.so</br>
         - caml.so </br>
-2. Reference cezmqX library APIs : [docs/doxygen/docs/html/index.html](docs/docs/html/index.html)
+2. Reference cezmqX library APIs : [Documentation](docs/doxygen/docs/html/index.html)
