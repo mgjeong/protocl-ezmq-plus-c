@@ -1,0 +1,74 @@
+###############################################################################
+# Copyright 2018 Samsung Electronics All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+###############################################################################
+
+################ CEZMQ+ Unit Test build script ##################
+
+import os
+Import('env')
+
+gtest_env = SConscript('#extlibs/gtest/SConscript')
+lib_env = gtest_env.Clone()
+cezmq_plus_unittest_env = lib_env.Clone()
+target_os = cezmq_plus_unittest_env.get('TARGET_OS')
+target_arch = cezmq_plus_unittest_env.get('TARGET_ARCH')
+
+######################################################################
+# Build flags
+######################################################################
+cezmq_plus_unittest_env.AppendUnique(CPPPATH=[
+    '../dependencies/protocol-ezmq-plus-cpp/include',
+    '../dependencies/datamodel-aml-c/include',
+    '../dependencies/datamodel-aml-c/dependencies/datamodel-aml-cpp/include',
+    '../extlibs/gtest/googletest-release-1.8.0/googletest/include/gtest',
+    '../extlibs/gtest/googletest-release-1.8.0/googlemock/include/gmock',
+    '../include'
+])
+
+cezmq_plus_unittest_env.AppendUnique(
+    CXXFLAGS=['-O2', '-g', '-Wall', '-fmessage-length=0', '-std=c++11', '-I/usr/local/include'])
+
+cezmq_plus_unittest_env.AppendUnique(LIBPATH=[lib_env.get('BUILD_DIR')])
+
+build_mode = 'release'
+if not cezmq_plus_unittest_env.get('RELEASE'):
+    build_mode = 'debug'
+
+cezmq_plus_unittest_env.PrependUnique(LIBS=['ezmq_plus'], LIBPATH=[os.path.join('./../dependencies/protocol-ezmq-plus-cpp/out/linux/', target_arch, build_mode)])
+cezmq_plus_unittest_env.PrependUnique(LIBS=['ezmq'], LIBPATH=[os.path.join('./../dependencies/protocol-ezmq-plus-cpp/dependencies/protocol-ezmq-cpp/out/linux/', target_arch, build_mode)])
+cezmq_plus_unittest_env.PrependUnique(LIBS=['aml'], LIBPATH=[os.path.join('./../dependencies/datamodel-aml-c/dependencies/datamodel-aml-cpp/out/linux/', target_arch, build_mode)])
+cezmq_plus_unittest_env.PrependUnique(LIBS=['caml'], LIBPATH=[os.path.join('./../dependencies/datamodel-aml-c/out/linux/', target_arch, build_mode)])
+
+
+cezmq_plus_unittest_env.AppendUnique(LIBS=['cezmq_plus', 'gmock'])
+
+####################################################################
+# Source files and Targets
+######################################################################
+cezmqx_config_test = cezmq_plus_unittest_env.Program('cezmqx_config_test', 'cezmqx_config_test.cpp')
+cezmqx_endpoint_test = cezmq_plus_unittest_env.Program('cezmqx_endpoint_test', 'cezmqx_endpoint_test.cpp')
+cezmqx_topic_test = cezmq_plus_unittest_env.Program('cezmqx_topic_test', 'cezmqx_topic_test.cpp')
+cezmqx_topicdiscovery_test = cezmq_plus_unittest_env.Program('cezmqx_topicdiscovery_test', 'cezmqx_topicdiscovery_test.cpp')
+cezmqx_publisher_test = cezmq_plus_unittest_env.Program('cezmqx_publisher_test', 'cezmqx_publisher_test.cpp')
+cezmqx_aml_subscriber_test = cezmq_plus_unittest_env.Program('cezmqx_aml_subscriber_test', 'cezmqx_aml_subscriber_test.cpp')
+cezmqx_xml_subscriber_test = cezmq_plus_unittest_env.Program('cezmqx_xml_subscriber_test', 'cezmqx_xml_subscriber_test.cpp')
+
+# copy .aml file to executable folder
+src_dir = cezmq_plus_unittest_env.get('SRC_DIR')
+cezmq_ut_src_dir = src_dir + '/unittests/'
+cezmq_ut_build_dir = cezmq_plus_unittest_env.get('BUILD_DIR') + '/unittests'
+cezmq_plus_unittest_env.Alias("install", cezmq_plus_unittest_env.Install(cezmq_ut_build_dir, cezmq_ut_src_dir + 'sample_data_model.aml'))
+

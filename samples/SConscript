@@ -1,0 +1,65 @@
+###############################################################################
+# Copyright 2018 Samsung Electronics All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+###############################################################################
+
+################ CEZMQ+ sample build script ##################
+
+Import('env')
+
+import os
+
+target_os = env.get('TARGET_OS')
+cezmq_plus_sample_env = env.Clone()
+target_arch = cezmq_plus_sample_env.get('TARGET_ARCH')
+
+######################################################################
+# Build flags
+######################################################################
+cezmq_plus_sample_env.AppendUnique(CPPPATH=[
+    '../dependencies/protocol-ezmq-plus-cpp/include',
+    '../dependencies/datamodel-aml-c/include',
+    '../dependencies/datamodel-aml-c/dependencies/datamodel-aml-cpp/include',
+    '../include'
+])
+
+cezmq_plus_sample_env.AppendUnique(
+    CXXFLAGS=['-O2', '-g', '-Wall', '-fmessage-length=0', '-std=c++11', '-I/usr/local/include'])
+
+build_mode = 'release'
+if not cezmq_plus_sample_env.get('RELEASE'):
+    build_mode = 'debug'
+
+cezmq_plus_sample_env.PrependUnique(LIBS=['ezmq_plus'], LIBPATH=[os.path.join('./../dependencies/protocol-ezmq-plus-cpp/out/linux/', target_arch, build_mode)])
+cezmq_plus_sample_env.PrependUnique(LIBS=['ezmq'], LIBPATH=[os.path.join('./../dependencies/protocol-ezmq-plus-cpp/dependencies/protocol-ezmq-cpp/out/linux/', target_arch, build_mode)])
+cezmq_plus_sample_env.PrependUnique(LIBS=['aml'], LIBPATH=[os.path.join('./../dependencies/datamodel-aml-c/dependencies/datamodel-aml-cpp/out/linux/', target_arch, build_mode)])
+cezmq_plus_sample_env.PrependUnique(LIBS=['caml'], LIBPATH=[os.path.join('./../dependencies/datamodel-aml-c/out/linux/', target_arch, build_mode)])
+
+cezmq_plus_sample_env.AppendUnique(LIBS=['cezmq_plus'])
+
+####################################################################
+# Source files and Targets
+######################################################################
+cezmqxPublisher = cezmq_plus_sample_env.Program('publisher', 'publisher.c')
+cezmqxXMLSubscriber = cezmq_plus_sample_env.Program('xmlsubscriber', 'xmlsubscriber.c')
+cezmqxAMLSubscriber = cezmq_plus_sample_env.Program('amlsubscriber', 'amlsubscriber.c')
+cezmqxTopicDiscovery = cezmq_plus_sample_env.Program('topicdiscovery', 'topicdiscovery.c')
+
+# copy .aml file to executable folder
+src_dir = cezmq_plus_sample_env.get('SRC_DIR')
+cezmq_samples_src_dir = src_dir + '/samples/'
+cezmq_samples_build_dir = cezmq_plus_sample_env.get('BUILD_DIR') + '/samples'
+cezmq_plus_sample_env.Alias("install", cezmq_plus_sample_env.Install(cezmq_samples_build_dir, cezmq_samples_src_dir + 'sample_data_model.aml'))
+
