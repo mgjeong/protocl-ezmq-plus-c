@@ -18,20 +18,25 @@
 #include <gtest.h>
 #include <gmock.h>
 
+#include "cezmqxconfig.h"
 #include "cezmqxtopicdiscovery.h"
 
 class CEZMQXTDiscoveryTest : public testing::Test
 {
     protected:
+        ezmqxConfigHandle_t configHandle;
         ezmqxTDiscoveryHandle_t discoveryHandle;
         virtual void SetUp()
         {
+            ASSERT_EQ(CEZMQX_OK, ezmqxCreateConfig(&configHandle));
+            ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
             ASSERT_EQ(CEZMQX_OK, ezmqxCreateTopicDiscovery(&discoveryHandle));
         }
 
         virtual void TearDown()
         {
             ASSERT_EQ(CEZMQX_OK, ezmqxDestroyTopicDiscovery(discoveryHandle));
+            ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
         }
 };
 
@@ -47,8 +52,16 @@ TEST_F(CEZMQXTDiscoveryTest, destroyTopicDiscovery)
 
 TEST_F(CEZMQXTDiscoveryTest, query)
 {
+    ezmqxTopicHandle_t topic;
+    ASSERT_EQ(CEZMQX_OK, ezmqxCreateTopicDiscovery(&discoveryHandle));
+    ASSERT_EQ(CEZMQX_TNS_NOT_AVAILABLE, ezmqxQuery(discoveryHandle, "/topic", &topic));
+}
+
+TEST_F(CEZMQXTDiscoveryTest, hierarchicalQuery)
+{
     ezmqxTopicHandle_t *topics;
     size_t listSize;
-    ASSERT_EQ(CEZMQX_TNS_NOT_AVAILABLE, ezmqxQuery(discoveryHandle, "/topic", &topics, &listSize));
+    ASSERT_EQ(CEZMQX_OK, ezmqxCreateTopicDiscovery(&discoveryHandle));
+    ASSERT_EQ(CEZMQX_TNS_NOT_AVAILABLE, ezmqxHierarchicalQuery(discoveryHandle, "/topic", &topics, &listSize));
 }
 

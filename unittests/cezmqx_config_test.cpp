@@ -26,48 +26,47 @@ class CEZMQXConfigTest : public testing::Test
         ezmqxConfigHandle_t configHandle;
         virtual void SetUp()
         {
-            ASSERT_EQ(CEZMQX_OK, ezmqxCreateConfig(StandAlone, &configHandle));
+            ASSERT_EQ(CEZMQX_OK, ezmqxCreateConfig(&configHandle));
         }
 
         virtual void TearDown()
         {
-            ASSERT_EQ(CEZMQX_OK, ezmqxDestroyConfig(configHandle));
         }
 };
 
 TEST_F(CEZMQXConfigTest, createConfig)
 {
-    ASSERT_EQ(CEZMQX_INVALID_PARAM, ezmqxCreateConfig(StandAlone, NULL));
+    ASSERT_EQ(CEZMQX_INVALID_PARAM, ezmqxCreateConfig(NULL));
 }
 
-TEST_F(CEZMQXConfigTest, reset)
+TEST_F(CEZMQXConfigTest, startStandAloneMode)
 {
-    ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle, StandAlone));
-    ASSERT_EQ(CEZMQX_INVALID_PARAM, ezmqxReset(NULL, StandAlone));
+    ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
+    ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
 }
 
-TEST_F(CEZMQXConfigTest, destroyConfig)
+TEST_F(CEZMQXConfigTest, startDockerMode)
 {
-    ASSERT_EQ(CEZMQX_INVALID_PARAM, ezmqxDestroyConfig(NULL));
+    ASSERT_EQ(CEZMQX_SERVICE_UNAVAILABLE, ezmqxStartDockerMode(configHandle));
+    ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
 }
 
-TEST_F(CEZMQXConfigTest, setHostInfo)
-{
-    ASSERT_EQ(CEZMQX_OK, ezmqxSetHostInfo(configHandle, "host", "address"));
-    ASSERT_EQ(CEZMQX_INVALID_PARAM, ezmqxSetHostInfo(NULL, "host", "address"));
-}
-
-TEST_F(CEZMQXConfigTest, setTnsInfo)
-{
-   ASSERT_EQ(CEZMQX_INVALID_PARAM, ezmqxSetTnsInfo(NULL, "address"));
-}
 
 TEST_F(CEZMQXConfigTest, addAmlModel)
 {
     const char* amlPath[1] = {"sample_data_model.aml"};
     char** idArr;
     size_t arrsize;
+    ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
     ASSERT_EQ(CEZMQX_OK, ezmqxAddAmlModel(configHandle, amlPath, 1, &idArr, &arrsize));
     ASSERT_EQ(CEZMQX_INVALID_PARAM, ezmqxAddAmlModel(configHandle, NULL, 1, &idArr, &arrsize));
+    ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
+}
+
+TEST_F(CEZMQXConfigTest, reset)
+{
+    ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
+    ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
+    ASSERT_EQ(CEZMQX_INVALID_PARAM, ezmqxReset(NULL));
 }
 

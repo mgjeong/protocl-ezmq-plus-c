@@ -27,27 +27,67 @@
 class CEZMQXAMLPubTest : public testing::Test
 {
     protected:
-    ezmqxAMLPubHandle_t publisherHandle;
-    virtual void SetUp()
-    {
-        ezmqxConfigHandle_t config;
-        ezmqxCreateConfig(StandAlone, &config);
-        const char* amlPath[1] = {"sample_data_model.aml"};
-        char** idArr;
-        size_t arrsize;
-        ASSERT_EQ(CEZMQX_OK,ezmqxAddAmlModel(config, amlPath, 1, &idArr, &arrsize));
-        ASSERT_EQ(CEZMQX_OK, ezmqxGetPublisher("/topic", AmlModelId, idArr[0], 4000, &publisherHandle));
-    }
+        ezmqxConfigHandle_t configHandle;
+        ezmqxAMLPubHandle_t publisherHandle;
+        virtual void SetUp()
+        {
+            ASSERT_EQ(CEZMQX_OK, ezmqxCreateConfig(&configHandle));
+            ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
+        }
 
-    virtual void TearDown()
-    {
-        ASSERT_EQ(CEZMQX_OK, ezmqxDestroyPublisher(publisherHandle));
-    }
+        virtual void TearDown()
+        {
+            ASSERT_EQ(CEZMQX_OK, ezmqxDestroyAMLPublisher(publisherHandle));
+            ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
+        }
 };
+
+TEST_F(CEZMQXAMLPubTest, getAMLPublisher)
+{
+    const char* amlPath[1] = {"sample_data_model.aml"};
+    char** idArr;
+    size_t arrsize;
+    ASSERT_EQ(CEZMQX_OK,ezmqxAddAmlModel(configHandle, amlPath, 1, &idArr, &arrsize));
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetAMLPublisher("/topic", AmlModelId, idArr[0], 4000, &publisherHandle));
+}
 
 TEST_F(CEZMQXAMLPubTest, publish)
 {
+    const char* amlPath[1] = {"sample_data_model.aml"};
+    char** idArr;
+    size_t arrsize;
+    ASSERT_EQ(CEZMQX_OK,ezmqxAddAmlModel(configHandle, amlPath, 1, &idArr, &arrsize));
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetAMLPublisher("/topic", AmlModelId, idArr[0], 4000, &publisherHandle));
     amlObjectHandle_t amlObject = getAMLObject();
-    ASSERT_EQ(CEZMQX_OK, ezmqxPublish(publisherHandle, amlObject));
+    ASSERT_EQ(CEZMQX_OK, ezmqxAMLPublish(publisherHandle, amlObject));
+}
+
+TEST_F(CEZMQXAMLPubTest, getTopic)
+{
+    const char* amlPath[1] = {"sample_data_model.aml"};
+    char** idArr;
+    size_t arrsize;
+    ASSERT_EQ(CEZMQX_OK,ezmqxAddAmlModel(configHandle, amlPath, 1, &idArr, &arrsize));
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetAMLPublisher("/topic", AmlModelId, idArr[0], 4000, &publisherHandle));
+    ezmqxTopicHandle_t topicHandle;
+    ASSERT_EQ(CEZMQX_OK, ezmqxAMLPubGetTopic(publisherHandle, &topicHandle));
+    char *topic;
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetName(topicHandle, &topic));
+    if(0 != strcmp("/topic", topic))
+    {
+        EXPECT_EQ(CEZMQX_OK, CEZMQX_INVALID_PARAM);
+    }
+}
+
+TEST_F(CEZMQXAMLPubTest, terminate)
+{
+    const char* amlPath[1] = {"sample_data_model.aml"};
+    char** idArr;
+    size_t arrsize;
+    ASSERT_EQ(CEZMQX_OK,ezmqxAddAmlModel(configHandle, amlPath, 1, &idArr, &arrsize));
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetAMLPublisher("/topic", AmlModelId, idArr[0], 4000, &publisherHandle));
+    ASSERT_EQ(0, ezmqxAMLPubIsTerminated(publisherHandle));
+    ASSERT_EQ(CEZMQX_OK, ezmqxAMLPubTerminate(publisherHandle));
+    ASSERT_EQ(1, ezmqxAMLPubIsTerminated(publisherHandle));
 }
 

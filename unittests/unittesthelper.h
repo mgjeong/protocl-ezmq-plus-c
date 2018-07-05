@@ -24,15 +24,18 @@
 char* getCurrentTime()
 {
     char* timeStr = (char*)malloc(sizeof(char) * 10);
+    if (NULL == timeStr) return NULL;
+
     struct timeb tp;
     ftime(&tp);
-    strftime(timeStr, sizeof(timeStr), "%H%M%S", localtime(&tp.time));
+    strftime(timeStr, 7, "%H%M%S", localtime(&tp.time));
 
     char milliSec[4];
-    sprintf(milliSec, "%d", tp.millitm);
+    snprintf(milliSec, 4, "%d", tp.millitm);
 
     strncpy(timeStr + 6, milliSec, 3);
     timeStr[9] = '\0';
+
     return timeStr;
 }
 

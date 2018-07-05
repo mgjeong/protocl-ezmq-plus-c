@@ -40,7 +40,8 @@ class CEZMQXXMLSubTest : public testing::Test
         ezmqxXMLSubHandle_t subHandle;
         virtual void SetUp()
         {
-            ezmqxCreateConfig(StandAlone, &configHandle);
+            ASSERT_EQ(CEZMQX_OK, ezmqxCreateConfig(&configHandle));
+            ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
             const char* amlPath[1] = {"sample_data_model.aml"};
             char** idArr;
             size_t arrsize;
@@ -55,12 +56,13 @@ class CEZMQXXMLSubTest : public testing::Test
             {
                 ASSERT_EQ(CEZMQX_OK, ezmqxDestroyXMLSubscriber(subHandle));
             }
+            ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
         }
 };
 
 TEST_F(CEZMQXXMLSubTest, getXMLSubscriber)
 {
-    ASSERT_EQ(CEZMQX_TNS_NOT_AVAILABLE, ezmqxGetXMLSubscriber("/topic", xmlSubCB, xmlSubErrCB, &subHandle));
+    ASSERT_EQ(CEZMQX_TNS_NOT_AVAILABLE, ezmqxGetXMLSubscriber("/topic", 1, xmlSubCB, xmlSubErrCB, &subHandle));
     subHandle = NULL;
 }
 
@@ -86,15 +88,15 @@ TEST_F(CEZMQXXMLSubTest, destroyXMLSubscriber)
 TEST_F(CEZMQXXMLSubTest, xMLTerminate)
 {
     ASSERT_EQ(CEZMQX_OK, ezmqxGetXMLSubscriber1(topicHandle, xmlSubCB, xmlSubErrCB, &subHandle));
-    ASSERT_EQ(CEZMQX_OK, ezmqxXMLTerminate(subHandle));
+    ASSERT_EQ(CEZMQX_OK, ezmqxXMLSubTerminate(subHandle));
 }
 
 TEST_F(CEZMQXXMLSubTest, xMLIsTerminated)
 {
     ASSERT_EQ(CEZMQX_OK, ezmqxGetXMLSubscriber1(topicHandle, xmlSubCB, xmlSubErrCB, &subHandle));
-    ASSERT_EQ(0, ezmqxXMLIsTerminated(subHandle));
-    ASSERT_EQ(CEZMQX_OK, ezmqxXMLTerminate(subHandle));
-    ASSERT_EQ(1, ezmqxXMLIsTerminated(subHandle));
+    ASSERT_EQ(0, ezmqxXMLSubIsTerminated(subHandle));
+    ASSERT_EQ(CEZMQX_OK, ezmqxXMLSubTerminate(subHandle));
+    ASSERT_EQ(1, ezmqxXMLSubIsTerminated(subHandle));
 }
 
 TEST_F(CEZMQXXMLSubTest, xMLGetTopics)
@@ -102,11 +104,11 @@ TEST_F(CEZMQXXMLSubTest, xMLGetTopics)
     ASSERT_EQ(CEZMQX_OK, ezmqxGetXMLSubscriber1(topicHandle, xmlSubCB, xmlSubErrCB, &subHandle));
     ezmqxTopicHandle_t *topics;
     size_t listSize;
-    ASSERT_EQ(CEZMQX_OK, ezmqxXMLGetTopics(subHandle , &topics, &listSize));
+    ASSERT_EQ(CEZMQX_OK, ezmqxXMLSubGetTopics(subHandle , &topics, &listSize));
     ASSERT_EQ(1, (int)listSize);
     ezmqxTopicHandle_t tHandle = topics[0];
     char *topic;
-    ASSERT_EQ(CEZMQX_OK, ezmqxGetTopic(tHandle, &topic));
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetName(tHandle, &topic));
     if(0 != strcmp("/topic", topic))
     {
         EXPECT_EQ(CEZMQX_OK, CEZMQX_INVALID_PARAM);

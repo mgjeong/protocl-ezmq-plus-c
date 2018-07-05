@@ -37,26 +37,20 @@ EZMQX_TARGET_ARCH="$(uname -m)"
 USE_TIMESTAMP="yes"
 UNITTEST_XML_REPORT="yes"
 
-case $EZMQX_TARGET_ARCH in
-i*86)
-EZMQX_TARGET_ARCH=x86
-;;
-esac
-
 usage() {
 
     echo "Pre-requisite: Built protocol-ezmq-plus-c library in debug mode"
     echo "Usage: generate_report.sh <options>"
     echo "Options:"
-    echo "      -h / --help                               : Display help and exit"
-    echo "      -c                                        : Clean C EZMQX Repository; Should be used to clean existing repository"
-    echo "      -f [html|gcov|xml] (default: html)        : Report Format."
-    echo "      --format=[html|gcov|xml] (default: html)  : Report Format."
-    echo "      --timestamp=[yes|no] (default: yes)       : Remove Time Stamp from report output.If directory exits, overwrites the report to the same directory"
-    echo "      --ut_report=[yes|no] (default: yes)       : The unit test report will be generated in xml format (as gtest only supports xml)."
-    echo "      --target_arch=[x86|x86_64] (default: x86) : Choose Target Architecture for running test executables."
+    echo "      -h / --help                                    : Display help and exit"
+    echo "      -c                                             : Clean C EZMQX Repository; Should be used to clean existing repository"
+    echo "      -f [html|gcov|xml] (default: html)             : Report Format."
+    echo "      --format=[html|gcov|xml] (default: html)       : Report Format."
+    echo "      --timestamp=[yes|no] (default: yes)            : Remove Time Stamp from report output.If directory exits, overwrites the report to the same directory"
+    echo "      --ut_report=[yes|no] (default: yes)            : The unit test report will be generated in xml format (as gtest only supports xml)."
+    echo "      --target_arch=[x86_64|armhf] (default: x86_64) : Choose Target Architecture for running test executables."
     echo "Pre-requisite:"
-    echo "  Built ./dependencies/protocol-ezmq-plus-c in debug mode"
+    echo "  Built protocol-ezmq-plus-c in debug mode"
     echo "Example:"
     echo "  $ ./generate_report.sh --format=html --timestamp=yes --ut_report=yes"
 }
@@ -150,7 +144,7 @@ process_cmd_args() {
 
             --target_arch=*)
                 EZMQX_TARGET_ARCH="${1#*=}";
-                if [ "x86" != ${EZMQX_TARGET_ARCH} -a "x86_64" != ${EZMQX_TARGET_ARCH} ]; then
+                if [ "armhf" != ${EZMQX_TARGET_ARCH} -a "x86_64" != ${EZMQX_TARGET_ARCH} ]; then
                     usage; exit 1;
                 fi
                 shift 1

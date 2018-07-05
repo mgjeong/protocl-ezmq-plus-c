@@ -16,7 +16,10 @@
 ###############################################################################
 
 # build ezmq-plus-c sdk
-./build.sh
+./build_common.sh "$@" --target_arch=x86_64
+if [ $? -ne 0 ]; then
+    exit 1
+fi
 
 # run the unit test cases
 cd out/linux/x86_64/release/unittests

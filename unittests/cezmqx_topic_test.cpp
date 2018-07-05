@@ -69,20 +69,20 @@ TEST_F(CEZMQXTopicTest, getTopic)
     ASSERT_EQ(CEZMQX_OK, ezmqxCreateEndPoint2("address", 5562, &endPointHandle));
     ASSERT_EQ(CEZMQX_OK, ezmqxCreateTopic1("topic", "schema", endPointHandle, &topicHandle));
     char *topic;
-    ASSERT_EQ(CEZMQX_OK, ezmqxGetTopic(topicHandle, &topic));
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetName(topicHandle, &topic));
     if(0 != strcmp("topic", topic))
     {
         EXPECT_EQ(CEZMQX_OK, CEZMQX_INVALID_PARAM);
     }
 }
 
-TEST_F(CEZMQXTopicTest, getSchema)
+TEST_F(CEZMQXTopicTest, getDataModel)
 {
     ASSERT_EQ(CEZMQX_OK, ezmqxCreateEndPoint2("address", 5562, &endPointHandle));
-    ASSERT_EQ(CEZMQX_OK, ezmqxCreateTopic1("topic", "schema", endPointHandle, &topicHandle));
-    char *schema;
-    ASSERT_EQ(CEZMQX_OK, ezmqxGetSchema(topicHandle, &schema));
-    if(0 != strcmp("schema", schema))
+    ASSERT_EQ(CEZMQX_OK, ezmqxCreateTopic1("topic", "dataModel", endPointHandle, &topicHandle));
+    char *dataModel;
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetDatamodel(topicHandle, &dataModel));
+    if(0 != strcmp("dataModel", dataModel))
     {
         EXPECT_EQ(CEZMQX_OK, CEZMQX_INVALID_PARAM);
     }

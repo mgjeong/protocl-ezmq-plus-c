@@ -16,7 +16,10 @@
 ###############################################################################
 
 # build ezmq-plus-c sdk
-./build_arm.sh
+./build_common.sh "$@" --target_arch=armhf
+if [ $? -ne 0 ]; then
+    exit 1
+fi
 
 # run the unit test cases
 cd out/linux/armhf/release/unittests
