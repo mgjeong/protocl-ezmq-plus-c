@@ -6,7 +6,10 @@ var cezmqxamlpublisher_8h =
       [ "AmlModelId", "cezmqxamlpublisher_8h.html#a7450bbc2031ed539afe26e49528135f3a78ad26b2fb36ffe40095377c57743c30", null ],
       [ "AmlFilePath", "cezmqxamlpublisher_8h.html#a7450bbc2031ed539afe26e49528135f3ae03d02cee1a338869074cda68d4ca7ae", null ]
     ] ],
-    [ "ezmqxDestroyPublisher", "cezmqxamlpublisher_8h.html#a7b56fbf44375fd22eb56b2fe29fddfc4", null ],
-    [ "ezmqxGetPublisher", "cezmqxamlpublisher_8h.html#a82673a1f240527573e8f00bd40bc39aa", null ],
-    [ "ezmqxPublish", "cezmqxamlpublisher_8h.html#aa43cffaad31660cea7b23c467e04644d", null ]
+    [ "ezmqxAMLPubGetTopic", "cezmqxamlpublisher_8h.html#a701687df0c81c3270c3099a01e790b11", null ],
+    [ "ezmqxAMLPubIsTerminated", "cezmqxamlpublisher_8h.html#a15acf3644b8be62160195789c9526128", null ],
+    [ "ezmqxAMLPublish", "cezmqxamlpublisher_8h.html#a414f82e993a8876269dc5eb0da6ad09a", null ],
+    [ "ezmqxAMLPubTerminate", "cezmqxamlpublisher_8h.html#aa4e115ca8497b5c3e89b58bc16fa719c", null ],
+    [ "ezmqxDestroyAMLPublisher", "cezmqxamlpublisher_8h.html#aa5841e2089ae2ab4955e553079e70672", null ],
+    [ "ezmqxGetAMLPublisher", "cezmqxamlpublisher_8h.html#a2d92cc184969442d224810b048e22877", null ]
 ];

@@ -102,7 +102,6 @@ $(document).ready(function(){initNavTree('cezmqxconfig_8h.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">cezmqxconfig.h File Reference</div>  </div>
@@ -122,34 +121,23 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:abc3a4f46171ecc1bc3e7a3cc49957322"><td class="mdescLeft">&#160;</td><td class="mdescRight">Config handle.  <a href="#abc3a4f46171ecc1bc3e7a3cc49957322">More...</a><br /></td></tr>
 <tr class="separator:abc3a4f46171ecc1bc3e7a3cc49957322"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:ac3cb1c3f34fbcc388454b0ad89ddf98a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#ac3cb1c3f34fbcc388454b0ad89ddf98a">CModeOption</a> { <a class="el" href="cezmqxconfig_8h.html#ac3cb1c3f34fbcc388454b0ad89ddf98aa16e8570d5a2e849cf81d26677c5572cf">StandAlone</a> = 0, 
-<a class="el" href="cezmqxconfig_8h.html#ac3cb1c3f34fbcc388454b0ad89ddf98aaf91e549d3385ea872493c8bed4d7809f">Docker</a>
- }</td></tr>
-<tr class="memdesc:ac3cb1c3f34fbcc388454b0ad89ddf98a"><td class="mdescLeft">&#160;</td><td class="mdescRight">CEZMQX mode types.  <a href="cezmqxconfig_8h.html#ac3cb1c3f34fbcc388454b0ad89ddf98a">More...</a><br /></td></tr>
-<tr class="separator:ac3cb1c3f34fbcc388454b0ad89ddf98a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a38de596448b36b204580ea2ceb944d09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#a38de596448b36b204580ea2ceb944d09">ezmqxCreateConfig</a> (<a class="el" href="cezmqxconfig_8h.html#ac3cb1c3f34fbcc388454b0ad89ddf98a">CModeOption</a> mode, <a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> *handle)</td></tr>
-<tr class="memdesc:a38de596448b36b204580ea2ceb944d09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create ezmqx configuration with given mode.  <a href="#a38de596448b36b204580ea2ceb944d09">More...</a><br /></td></tr>
-<tr class="separator:a38de596448b36b204580ea2ceb944d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a264dbe5639fa297c9fbc43854f600499"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#a264dbe5639fa297c9fbc43854f600499">ezmqxDestroyConfig</a> (<a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> handle)</td></tr>
-<tr class="memdesc:a264dbe5639fa297c9fbc43854f600499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy an instance of config.  <a href="#a264dbe5639fa297c9fbc43854f600499">More...</a><br /></td></tr>
-<tr class="separator:a264dbe5639fa297c9fbc43854f600499"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2a70d4043598c4a9d9995442c1f0a92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#aa2a70d4043598c4a9d9995442c1f0a92">ezmqxSetHostInfo</a> (<a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> handle, const char *hostName, const char *hostAddr)</td></tr>
-<tr class="memdesc:aa2a70d4043598c4a9d9995442c1f0a92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set host info [name and address].  <a href="#aa2a70d4043598c4a9d9995442c1f0a92">More...</a><br /></td></tr>
-<tr class="separator:aa2a70d4043598c4a9d9995442c1f0a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2bb9ef1b169191bd40a8eab5f76a988"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#ae2bb9ef1b169191bd40a8eab5f76a988">ezmqxSetTnsInfo</a> (<a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> handle, const char *remoteAddr)</td></tr>
-<tr class="memdesc:ae2bb9ef1b169191bd40a8eab5f76a988"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set TNS info [server address].  <a href="#ae2bb9ef1b169191bd40a8eab5f76a988">More...</a><br /></td></tr>
-<tr class="separator:ae2bb9ef1b169191bd40a8eab5f76a988"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05a52589b773322e21dbe263c36d3c2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#a05a52589b773322e21dbe263c36d3c2b">ezmqxCreateConfig</a> (<a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> *handle)</td></tr>
+<tr class="memdesc:a05a52589b773322e21dbe263c36d3c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create ezmqx configuration instance.  <a href="#a05a52589b773322e21dbe263c36d3c2b">More...</a><br /></td></tr>
+<tr class="separator:a05a52589b773322e21dbe263c36d3c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe2aa6c6902279af96e0d90609560b43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#abe2aa6c6902279af96e0d90609560b43">ezmqxStartDockerMode</a> (<a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> handle)</td></tr>
+<tr class="memdesc:abe2aa6c6902279af96e0d90609560b43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start as DockerMode that working with Pharos system.  <a href="#abe2aa6c6902279af96e0d90609560b43">More...</a><br /></td></tr>
+<tr class="separator:abe2aa6c6902279af96e0d90609560b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0807760ce180e44c34f769ac82ca1533"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#a0807760ce180e44c34f769ac82ca1533">ezmqxStartStandAloneMode</a> (<a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> handle, int useTns, const char *tnsAddr)</td></tr>
+<tr class="memdesc:a0807760ce180e44c34f769ac82ca1533"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start as StandAloneMode that working without pharos system.  <a href="#a0807760ce180e44c34f769ac82ca1533">More...</a><br /></td></tr>
+<tr class="separator:a0807760ce180e44c34f769ac82ca1533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4d9e460cd6ba94bef0a936ee210617e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#af4d9e460cd6ba94bef0a936ee210617e">ezmqxAddAmlModel</a> (<a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> handle, const char **amlFilePath, const size_t size, char ***idList, size_t *listSize)</td></tr>
-<tr class="memdesc:af4d9e460cd6ba94bef0a936ee210617e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add model information to configuration.  <a href="#af4d9e460cd6ba94bef0a936ee210617e">More...</a><br /></td></tr>
+<tr class="memdesc:af4d9e460cd6ba94bef0a936ee210617e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add aml model file for publish or subscribe AML data.  <a href="#af4d9e460cd6ba94bef0a936ee210617e">More...</a><br /></td></tr>
 <tr class="separator:af4d9e460cd6ba94bef0a936ee210617e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65df05c52c4de9f12de40c301435cbf7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#a65df05c52c4de9f12de40c301435cbf7">ezmqxReset</a> (<a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> handle, <a class="el" href="cezmqxconfig_8h.html#ac3cb1c3f34fbcc388454b0ad89ddf98a">CModeOption</a> mode)</td></tr>
-<tr class="memdesc:a65df05c52c4de9f12de40c301435cbf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the ezmqx configuration.  <a href="#a65df05c52c4de9f12de40c301435cbf7">More...</a><br /></td></tr>
-<tr class="separator:a65df05c52c4de9f12de40c301435cbf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9184dc135027a5ba9aa252c11e1b2824"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxconfig_8h.html#a9184dc135027a5ba9aa252c11e1b2824">ezmqxReset</a> (<a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> handle)</td></tr>
+<tr class="memdesc:a9184dc135027a5ba9aa252c11e1b2824"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset whole EZMQX stack.  <a href="#a9184dc135027a5ba9aa252c11e1b2824">More...</a><br /></td></tr>
+<tr class="separator:a9184dc135027a5ba9aa252c11e1b2824"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="aa3b7fe3f59c274080e25e780e582358d"></a>
@@ -176,27 +164,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Config handle. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a class="anchor" id="ac3cb1c3f34fbcc388454b0ad89ddf98a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="cezmqxconfig_8h.html#ac3cb1c3f34fbcc388454b0ad89ddf98a">CModeOption</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>CEZMQX mode types. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="ac3cb1c3f34fbcc388454b0ad89ddf98aa16e8570d5a2e849cf81d26677c5572cf"></a>StandAlone&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ac3cb1c3f34fbcc388454b0ad89ddf98aaf91e549d3385ea872493c8bed4d7809f"></a>Docker&#160;</td><td class="fielddoc">
-</td></tr>
-</table>
 
 </div>
 </div>
@@ -243,14 +210,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Add model information to configuration. </p>
+<p>Add aml model file for publish or subscribe AML data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>-Config handle. </td></tr>
-    <tr><td class="paramname">amlFilePath</td><td>- List of AML file paths. </td></tr>
-    <tr><td class="paramname">size</td><td>- List Size. </td></tr>
-    <tr><td class="paramname">amlFilePath</td><td>- List of AML ID will be filled.. </td></tr>
-    <tr><td class="paramname">listSize</td><td>- ID List Size.</td></tr>
+    <tr><td class="paramname">handle</td><td>- [in] Config handle. </td></tr>
+    <tr><td class="paramname">amlFilePath</td><td>- [in] List of AML file paths. </td></tr>
+    <tr><td class="paramname">size</td><td>- [in] List Size. </td></tr>
+    <tr><td class="paramname">amlFilePath</td><td>- [out] List of AML ID will be filled.. </td></tr>
+    <tr><td class="paramname">listSize</td><td>- [out] ID List Size.</td></tr>
   </table>
   </dd>
 </dl>
@@ -259,49 +226,37 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a38de596448b36b204580ea2ceb944d09"></a>
+<a class="anchor" id="a05a52589b773322e21dbe263c36d3c2b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a> ezmqxCreateConfig </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="cezmqxconfig_8h.html#ac3cb1c3f34fbcc388454b0ad89ddf98a">CModeOption</a>&#160;</td>
-          <td class="paramname"><em>mode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype"><a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a> *&#160;</td>
-          <td class="paramname"><em>handle</em>&#160;</td>
-        </tr>
-        <tr>
+          <td class="paramname"><em>handle</em></td><td>)</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Create ezmqx configuration with given mode. </p>
+<p>Create ezmqx configuration instance. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>- Config mode [StandAlone/Docker]. </td></tr>
-    <tr><td class="paramname">handle</td><td>- Handle will be filled as return value.</td></tr>
+    <tr><td class="paramname">handle</td><td>- [out] Handle will be filled as return value.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Config instance will be allocated, so it should be deleted after use. To destroy an instance, use <a class="el" href="cezmqxconfig_8h.html#a264dbe5639fa297c9fbc43854f600499" title="Destroy an instance of config. ">ezmqxDestroyConfig()</a>.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code. </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a264dbe5639fa297c9fbc43854f600499"></a>
+<a class="anchor" id="a9184dc135027a5ba9aa252c11e1b2824"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a> ezmqxDestroyConfig </td>
+          <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a> ezmqxReset </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a>&#160;</td>
           <td class="paramname"><em>handle</em></td><td>)</td>
@@ -310,10 +265,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Destroy an instance of config. </p>
+<p>Reset whole EZMQX stack. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>- Config Handle that will be destroyed.</td></tr>
+    <tr><td class="paramname">handle</td><td>- [in] Config handle.</td></tr>
   </table>
   </dd>
 </dl>
@@ -321,12 +276,38 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a65df05c52c4de9f12de40c301435cbf7"></a>
+<a class="anchor" id="abe2aa6c6902279af96e0d90609560b43"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a> ezmqxReset </td>
+          <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a> ezmqxStartDockerMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a>&#160;</td>
+          <td class="paramname"><em>handle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Start as DockerMode that working with Pharos system. </p>
+<p>In DockerMode, stack automatically using Tns service.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>- [in] Config Handle.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0807760ce180e44c34f769ac82ca1533"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a> ezmqxStartStandAloneMode </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a>&#160;</td>
           <td class="paramname"><em>handle</em>, </td>
@@ -334,8 +315,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="cezmqxconfig_8h.html#ac3cb1c3f34fbcc388454b0ad89ddf98a">CModeOption</a>&#160;</td>
-          <td class="paramname"><em>mode</em>&#160;</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>useTns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>tnsAddr</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -345,90 +332,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reset the ezmqx configuration. </p>
+<p>Start as StandAloneMode that working without pharos system. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>-Config handle. </td></tr>
-    <tr><td class="paramname">mode</td><td>- Config mode [StandAlone/Docker].</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="aa2a70d4043598c4a9d9995442c1f0a92"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a> ezmqxSetHostInfo </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a>&#160;</td>
-          <td class="paramname"><em>handle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>hostName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>hostAddr</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set host info [name and address]. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">handle</td><td>-Config handle. </td></tr>
-    <tr><td class="paramname">hostName</td><td>- Host name. </td></tr>
-    <tr><td class="paramname">hostAddr</td><td>- Host address.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ae2bb9ef1b169191bd40a8eab5f76a988"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a> ezmqxSetTnsInfo </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="cezmqxconfig_8h.html#abc3a4f46171ecc1bc3e7a3cc49957322">ezmqxConfigHandle_t</a>&#160;</td>
-          <td class="paramname"><em>handle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>remoteAddr</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set TNS info [server address]. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">handle</td><td>-Config handle. </td></tr>
-    <tr><td class="paramname">remoteAddr</td><td>- TNS server address.</td></tr>
+    <tr><td class="paramname">handle</td><td>- [in] Config Handle. </td></tr>
+    <tr><td class="paramname">useTns</td><td>- [in] Whether to use tns. [1: Use TNS, otherwise 0] </td></tr>
+    <tr><td class="paramname">tnsAddr</td><td>- [in] TNS address, if useTns is false this value will be ignored.</td></tr>
   </table>
   </dd>
 </dl>
@@ -440,7 +349,7 @@ Functions</h2></td></tr>
 </div><!-- doc-content -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
     <ul>
-        <li class="footer">Generated on Fri May 4 2018 14:44:38</li>
+        <li class="footer">Generated on Tue Jul 3 2018 11:07:01</li>
     </ul>
 </div>
 </body>
