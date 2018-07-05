@@ -30,7 +30,7 @@ EZMQX_WITH_DEP=false
 EZMQX_BUILD_MODE="release"
 EZMQX_LOGGING="off"
 EZMQX_DISABLE_PROTOBUF=false
-TARGET_ARCH="x86"
+TARGET_ARCH="x86_64"
 
 RELEASE="1"
 LOGGING="0"
@@ -42,33 +42,44 @@ install_dependencies() {
         mkdir dependencies
     fi
 
-    #clone and build protocol-ezmq-plus-cpp
     cd $DEP_ROOT
-    git clone git@github.sec.samsung.net:RS7-EdgeComputing/protocol-ezmq-plus-cpp.git
-    cd ./protocol-ezmq-plus-cpp
+    # Check/clone protocol-ezmq-plus-cpp
+    if [ -d "protocol-ezmq-plus-cpp" ] ; then
+        echo "protocol-ezmq-plus-cpp folder exist"
+    else
+        git clone git@github.sec.samsung.net:RS7-EdgeComputing/protocol-ezmq-plus-cpp.git
+    fi
+
+    # build protocol-ezmq-plus-cpp
+    cd $DEP_ROOT/protocol-ezmq-plus-cpp
     echo -e "${GREEN}Building ezmq-plus library and its dependencies${NO_COLOUR}"
     if [ "x86_64" = ${EZMQX_TARGET_ARCH} ]; then
-         ./build.sh;
-    elif [ "armhf-native" = ${EZMQX_TARGET_ARCH} ]; then
-         ./build_arm.sh;
+         ./build.sh --with_dependencies=${EZMQX_WITH_DEP} --build_mode=${EZMQX_BUILD_MODE}
+    elif [ "armhf" = ${EZMQX_TARGET_ARCH} ]; then
+         ./build_arm.sh --with_dependencies=${EZMQX_WITH_DEP} --build_mode=${EZMQX_BUILD_MODE}
     else
          echo -e "${RED}ezmq-plus-cpp: Not a supported architecture${NO_COLOUR}"
          usage; exit 1;
     fi
     echo -e "${GREEN}Installation of ezmq-plus library and its dependencies done${NO_COLOUR}"
 
-    #clone and build datamodel-aml-c
     cd $DEP_ROOT
-    git clone git@github.sec.samsung.net:RS7-EdgeComputing/datamodel-aml-c.git
-    cd ./datamodel-aml-c
-    echo -e "${GREEN}Building datamodel-aml-c library and its dependencies${NO_COLOUR}"
-    ./build_common.sh --target_arch=${EZMQX_TARGET_ARCH} --build_mode=${EZMQX_BUILD_MODE} --logging=${EZMQX_LOGGING} --disable_protobuf=${EZMQX_DISABLE_PROTOBUF}
-    echo -e "${GREEN}Installation of datamodel-aml-c library and its dependencies done${NO_COLOUR}"
-}
+    # Check/clone datamodel-aml-c
+    if [ -d "datamodel-aml-c" ] ; then
+        echo "datamodel-aml-c folder exist"
+    else
+        git clone git@github.sec.samsung.net:RS7-EdgeComputing/datamodel-aml-c.git
+    fi
 
-build_x86() {
-    echo -e "Building for x86"
-    scons TARGET_OS=linux TARGET_ARCH=x86 RELEASE=${RELEASE} LOGGING=${LOGGING}
+    TARGET_ARCH=${EZMQX_TARGET_ARCH}
+    if [ "armhf" = ${TARGET_ARCH} ]; then
+        TARGET_ARCH="armhf-native";
+    fi  
+    # build datamodel-aml-c
+    cd $DEP_ROOT/datamodel-aml-c
+    echo -e "${GREEN}Building datamodel-aml-c library and its dependencies${NO_COLOUR}"
+    ./build_common.sh --target_arch=${TARGET_ARCH} --build_mode=${EZMQX_BUILD_MODE} --logging=${EZMQX_LOGGING} --disable_protobuf=${EZMQX_DISABLE_PROTOBUF}
+    echo -e "${GREEN}Installation of datamodel-aml-c library and its dependencies done${NO_COLOUR}"
 }
 
 build_x86_64() {
@@ -76,37 +87,9 @@ build_x86_64() {
     scons TARGET_OS=linux TARGET_ARCH=x86_64 RELEASE=${RELEASE} LOGGING=${LOGGING}
 }
 
-build_arm() {
-    echo -e "Building for arm"
-    scons TARGET_ARCH=arm TC_PREFIX=/usr/bin/arm-linux-gnueabi- TC_PATH=/usr/bin/ RELEASE=${RELEASE} LOGGING=${LOGGING}
-}
-
-build_arm64() {
-    echo -e "Building for arm64"
-    scons TARGET_ARCH=arm64 TC_PREFIX=/usr/bin/aarch64-linux-gnu- TC_PATH=/usr/bin/ RELEASE=${RELEASE} LOGGING=${LOGGING}
-}
-
 build_armhf() {
     echo -e "Building for armhf"
-    scons TARGET_ARCH=armhf TC_PREFIX=/usr/bin/arm-linux-gnueabihf- TC_PATH=/usr/bin/ RELEASE=${RELEASE} LOGGING=${LOGGING}
-}
-
-build_armhf_native() {
-    echo -e "Building for armhf_native"
     scons TARGET_ARCH=armhf RELEASE=${RELEASE} LOGGING=${LOGGING}
-}
-
-build_armhf_qemu() {
-    echo -e "Building for armhf-qemu"
-    scons TARGET_ARCH=armhf RELEASE=${RELEASE} LOGGING=${LOGGING}
-
-    if [ -x "/usr/bin/qemu-arm-static" ]; then
-        echo -e "${BLUE}qemu-arm-static found, copying it to current directory${NO_COLOUR}"
-        cp /usr/bin/qemu-arm-static .
-    else
-        echo -e "${RED}No qemu-arm-static found${NO_COLOUR}"
-        echo -e "${BLUE} - Install qemu-arm-static and build again${NO_COLOUR}"
-    fi
 }
 
 clean_ezmqx() {
@@ -116,28 +99,18 @@ clean_ezmqx() {
     rm -r "${PROJECT_ROOT}/out/" "${PROJECT_ROOT}/.sconsign.dblite"
     find "${PROJECT_ROOT}" -name "*.memcheck" -delete -o -name "*.gcno" -delete -o -name "*.gcda" -delete -o -name "*.os" -delete -o -name "*.o" -delete
     echo -e "Deleting  ${RED}${PROJECT_ROOT}/dependencies/${NO_COLOUR}"
-    rm -rf ./dependencies/protocol-ezmq-plus-cpp
+    rm -rf ./dependencies
     echo -e "Finished Cleaning ${BLUE}${EZMQ}${NO_COLOUR}"
 }
 
 usage() {
     echo -e "${BLUE}Usage:${NO_COLOUR} ./build_common.sh <option>"
     echo -e "${GREEN}Options:${NO_COLOUR}"
-    echo "  --target_arch=[x86_64|armhf-native]                                :  Choose Target Architecture"
-    echo "  --with_dependencies=(default: false)                               :  Build cezmq-plus with its dependency ezmq-plus and datamodel-aml-c"
-    echo "  --build_mode=[release|debug](default: release)                     :  Build in release or debug mode"
-    echo "  -c                                                                 :  Clean ezmq-plus Repository and its dependencies"
-    echo "  -h / --help                                                        :  Display help and exit"
-    echo -e "${GREEN}Examples: ${NO_COLOUR}"
-    echo -e "${BLUE}  build:-${NO_COLOUR}"
-    echo "  $ ./build_common.sh --target_arch=x86_64"
-    echo "  $ ./build_common.sh --with_dependencies=true --target_arch=x86_64 "
-    echo -e "${BLUE}  debug mode build:-${NO_COLOUR}"
-    echo "  $ ./build_common.sh --target_arch=x86_64 --build_mode=debug"
-    echo -e "${BLUE}  clean:-${NO_COLOUR}"
-    echo "  $ ./build_common.sh -c"
-    echo -e "${BLUE}  help:-${NO_COLOUR}"
-    echo "  $ ./build_common.sh -h"
+    echo "  --target_arch=[x86_64|armhf]                      :  Choose Target Architecture"
+    echo "  --with_dependencies=[true|false](default: false)  :  Build cezmq-plus with its dependency ezmq-plus and datamodel-aml-c"
+    echo "  --build_mode=[release|debug](default: release)    :  Build in release or debug mode"
+    echo "  -c                                                :  Clean ezmq-plus Repository and its dependencies"
+    echo "  -h / --help                                       :  Display help and exit"
     echo -e "${GREEN}Notes: ${NO_COLOUR}"
     echo "  - While building newly for any architecture use --with_dependencies=true option."
 }
@@ -154,20 +127,10 @@ build() {
     fi
 
     cd $PROJECT_ROOT
-    if [ "x86" = ${EZMQX_TARGET_ARCH} ]; then
-         build_x86;
-    elif [ "x86_64" = ${EZMQX_TARGET_ARCH} ]; then
+    if [ "x86_64" = ${EZMQX_TARGET_ARCH} ]; then
          build_x86_64;
-    elif [ "arm" = ${EZMQX_TARGET_ARCH} ]; then
-         build_arm;
-    elif [ "arm64" = ${EZMQX_TARGET_ARCH} ]; then
-         build_arm64;
     elif [ "armhf" = ${EZMQX_TARGET_ARCH} ]; then
          build_armhf;
-    elif [ "armhf-qemu" = ${EZMQX_TARGET_ARCH} ]; then
-         build_armhf_qemu;
-    elif [ "armhf-native" = ${EZMQX_TARGET_ARCH} ]; then
-         build_armhf_native;
     else
          echo -e "${RED}Not a supported architecture${NO_COLOUR}"
          usage; exit 1;
@@ -175,28 +138,30 @@ build() {
 }
 
 copy_required_libs() {
-   echo -e "${BLUE}Copy required libraries to extlibs folder${NO_COLOUR}"
-
-   if  [ "armhf-native" = ${EZMQX_TARGET_ARCH} ]; then
-         TARGET_ARCH="armhf"
-   else
-         TARGET_ARCH=${EZMQX_TARGET_ARCH}
-   fi
-
-   cd $PROJECT_ROOT/out/linux/${TARGET_ARCH}/${EZMQX_BUILD_MODE}
-   if [ -d "./extlibs" ] ; then
-        echo "extlibs folder exist"
-   else
-        mkdir extlibs
-   fi
-
+    echo -e "${BLUE}Copy required libraries to extlibs folder${NO_COLOUR}"
+    cd $PROJECT_ROOT/out/linux/${EZMQX_TARGET_ARCH}/${EZMQX_BUILD_MODE}
+    if [ -d "./extlibs" ] ; then
+         echo "extlibs folder exist"
+    else
+         mkdir extlibs
+    fi
     cd extlibs
     # copy ezmq_plus.so, ezmq.so, caml.so and aml.so to extlibs folder
-    PREFIX=../../../../..
-    cp $PREFIX/dependencies/datamodel-aml-c/out/linux/${TARGET_ARCH}/${EZMQX_BUILD_MODE}/libcaml.so .
-    cp $PREFIX/dependencies/datamodel-aml-c/dependencies/datamodel-aml-cpp/out/linux/${TARGET_ARCH}/${EZMQX_BUILD_MODE}/libaml.so .
-    cp $PREFIX/dependencies/protocol-ezmq-plus-cpp/out/linux/${TARGET_ARCH}/${EZMQX_BUILD_MODE}/libezmq_plus.so .
-    cp $PREFIX/dependencies/protocol-ezmq-plus-cpp/dependencies/protocol-ezmq-cpp/out/linux/${TARGET_ARCH}/${EZMQX_BUILD_MODE}/libezmq.so .
+    cp $PROJECT_ROOT/dependencies/datamodel-aml-c/out/linux/${EZMQX_TARGET_ARCH}/${EZMQX_BUILD_MODE}/libcaml.so .
+    cp $PROJECT_ROOT/dependencies/datamodel-aml-c/dependencies/datamodel-aml-cpp/out/linux/${EZMQX_TARGET_ARCH}/${EZMQX_BUILD_MODE}/libaml.so .
+    cp $PROJECT_ROOT/dependencies/protocol-ezmq-plus-cpp/out/linux/${EZMQX_TARGET_ARCH}/${EZMQX_BUILD_MODE}/libezmq_plus.so .
+    cp $PROJECT_ROOT/dependencies/protocol-ezmq-plus-cpp/dependencies/protocol-ezmq-cpp/out/linux/${EZMQX_TARGET_ARCH}/${EZMQX_BUILD_MODE}/libezmq.so .
+    echo -e "${BLUE}done${NO_COLOUR}"
+}
+
+copy_docker_script() {
+    echo -e "${BLUE}Copy docker sample files to out${NO_COLOUR}"
+    cd $PROJECT_ROOT/out/linux/${EZMQX_TARGET_ARCH}/${EZMQX_BUILD_MODE}/samples
+    if [ -d "./docker" ] ; then
+         echo "docker folder exist"
+    else
+         cp -r $PROJECT_ROOT/samples/docker .
+    fi
     echo -e "${BLUE}done${NO_COLOUR}"
 }
 
@@ -259,5 +224,6 @@ process_cmd_args() {
 process_cmd_args "$@"
 build
 copy_required_libs
+copy_docker_script
 echo -e "${GREEN}protocol-ezmq-plus-c build done${NO_COLOUR}"
 
