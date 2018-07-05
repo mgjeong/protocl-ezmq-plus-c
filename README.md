@@ -24,7 +24,7 @@ protocol-ezmq-plus-c is wrapper library which is written on the top of [protocol
    ```
    ./build.sh <options>        : Native build for x86_64 with default flags
    ./build_arm.sh <options>    : Native build for armhf [Raspberry pi board]) with default flags
-   ./unittest.sh <options>    : Native unit tests build for x86_64
+   ./unittest.sh <options>     : Native unit tests build for x86_64
    ./unittest_arm.sh <options> : Native unit tests build for armhf
    ```
 
