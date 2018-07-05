@@ -32,15 +32,15 @@ CEZMQXErrorCode ezmqxCreateTopic(ezmqxTopicHandle_t *handle)
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxCreateTopic1(const char *topic, const char *schema, ezmqxEPHandle_t epHandle,
+CEZMQXErrorCode ezmqxCreateTopic1(const char *topicName, const char *dataModel, ezmqxEPHandle_t epHandle,
         ezmqxTopicHandle_t *handle)
 {
-    VERIFY_NON_NULL(topic)
-    VERIFY_NON_NULL(schema)
+    VERIFY_NON_NULL(topicName)
+    VERIFY_NON_NULL(dataModel)
     VERIFY_NON_NULL(epHandle)
     VERIFY_NON_NULL(handle)
     Endpoint *endPoint = static_cast<Endpoint *>(epHandle);
-    *handle = new(std::nothrow) Topic(topic, schema, *endPoint);
+    *handle = new(std::nothrow) Topic(topicName, dataModel, *endPoint);
     return CEZMQX_OK;
 }
 
@@ -64,21 +64,21 @@ CEZMQXErrorCode ezmqxGetEndpoint(ezmqxTopicHandle_t handle, ezmqxEPHandle_t *epH
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxGetSchema(ezmqxTopicHandle_t handle, char **schema)
+CEZMQXErrorCode ezmqxGetDatamodel(ezmqxTopicHandle_t handle, char **modeld)
 {
     VERIFY_NON_NULL(handle)
-    VERIFY_NON_NULL(schema)
+    VERIFY_NON_NULL(modeld)
     Topic *topic = static_cast<Topic *>(handle);
-    *schema = ConvertStringToCharStr(topic->getSchema());
+    *modeld = ConvertStringToCharStr(topic->getDatamodel());
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxGetTopic(ezmqxTopicHandle_t handle, char **topic)
+CEZMQXErrorCode ezmqxGetName(ezmqxTopicHandle_t handle, char **topicName)
 {
     VERIFY_NON_NULL(handle)
-    VERIFY_NON_NULL(topic)
+    VERIFY_NON_NULL(topicName)
     Topic *topicObj = static_cast<Topic *>(handle);
-    *topic = ConvertStringToCharStr(topicObj->getTopic());
+    *topicName = ConvertStringToCharStr(topicObj->getName());
     return CEZMQX_OK;
 }
 

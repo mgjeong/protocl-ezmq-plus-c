@@ -41,7 +41,29 @@ CEZMQXErrorCode ezmqxDestroyTopicDiscovery(ezmqxTDiscoveryHandle_t handle)
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxQuery(ezmqxTDiscoveryHandle_t handle, const char *topic, ezmqxTopicHandle_t **topics,
+CEZMQXErrorCode ezmqxQuery(ezmqxTDiscoveryHandle_t handle, const char *topic, ezmqxTopicHandle_t *topicHandle)
+{
+    VERIFY_NON_NULL(handle)
+    VERIFY_NON_NULL(topic)
+    VERIFY_NON_NULL(topicHandle)
+    TopicDiscovery *tDiscovery = static_cast<TopicDiscovery *>(handle);
+    EZMQX::Topic nativeTopic;
+    try
+    {
+        nativeTopic = tDiscovery->query(topic);
+    }
+    catch(EZMQX::Exception& e)
+    {
+        return CEZMQXErrorCode(e.getErrCode());
+    }
+    EZMQX::Endpoint nativeEndPoint = nativeTopic.getEndpoint();
+    Endpoint *endPoint = new Endpoint(nativeEndPoint.getAddr(), nativeEndPoint.getPort());
+    *topicHandle = new(std::nothrow) Topic(nativeTopic.getName(), nativeTopic.getDatamodel(), *endPoint);
+    return CEZMQX_OK;
+}
+
+
+CEZMQXErrorCode ezmqxHierarchicalQuery(ezmqxTDiscoveryHandle_t handle, const char *topic, ezmqxTopicHandle_t **topics,
         size_t* listSize)
 {
     VERIFY_NON_NULL(handle)
@@ -52,21 +74,24 @@ CEZMQXErrorCode ezmqxQuery(ezmqxTDiscoveryHandle_t handle, const char *topic, ez
     std::list<EZMQX::Topic> nativeList;
     try
     {
-        nativeList = tDiscovery->query(topic);
+        nativeList = tDiscovery->hierarchicalQuery(topic);
     }
     catch(EZMQX::Exception& e)
     {
         return CEZMQXErrorCode(e.getErrCode());
     }
-
     *listSize = nativeList.size();
     *topics = (void **)malloc(sizeof(void *) * (*listSize));
     ALLOC_ASSERT(*topics)
-    for (size_t i = 0; i < (*listSize); i++)
+    int i = 0;
+    for (auto iterator = nativeList.begin(); iterator != nativeList.end(); iterator++)
     {
-        auto iterator = std::next(nativeList.begin(), i);
-        void  *topicHandle = (&(*iterator));
-        (*topics)[i] = topicHandle;
+        EZMQX::Topic nativeTopic = *iterator;
+        EZMQX::Endpoint nativeEndPoint = nativeTopic.getEndpoint();
+        Endpoint *endPoint = new Endpoint(nativeEndPoint.getAddr(), nativeEndPoint.getPort());
+        ezmqxTopicHandle_t topicHandle = new(std::nothrow) Topic(nativeTopic.getName(), nativeTopic.getDatamodel(),
+                                                                                                                       *endPoint);
+        (*topics)[i++] = topicHandle;
     }
     return CEZMQX_OK;
 }

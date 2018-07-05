@@ -25,8 +25,8 @@
 using namespace std;
 using namespace EZMQX;
 
-CEZMQXErrorCode ezmqxGetXMLSubscriber(const char *topic, cXmlSubCB xmlSubCb, cXmlSubErrCB subErrCb,
-        ezmqxXMLSubHandle_t *handle)
+CEZMQXErrorCode ezmqxGetXMLSubscriber(const char *topic, int isHierarchical, cXmlSubCB xmlSubCb,
+        cXmlSubErrCB subErrCb, ezmqxXMLSubHandle_t *handle)
 {
     VERIFY_NON_NULL(topic)
     VERIFY_NON_NULL(handle)
@@ -40,7 +40,7 @@ CEZMQXErrorCode ezmqxGetXMLSubscriber(const char *topic, cXmlSubCB xmlSubCb, cXm
     };
     try
     {
-        *handle = XmlSubscriber::getSubscriber(topic, subCb, errCb);
+        *handle = XmlSubscriber::getSubscriber(topic, isHierarchical, subCb, errCb);
     }
     catch(EZMQX::Exception& e)
     {
@@ -118,7 +118,7 @@ CEZMQXErrorCode ezmqxDestroyXMLSubscriber(ezmqxXMLSubHandle_t handle)
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxXMLTerminate(ezmqxXMLSubHandle_t handle)
+CEZMQXErrorCode ezmqxXMLSubTerminate(ezmqxXMLSubHandle_t handle)
 {
     VERIFY_NON_NULL(handle)
     XmlSubscriber *subscriber = static_cast<XmlSubscriber *>(handle);
@@ -126,14 +126,14 @@ CEZMQXErrorCode ezmqxXMLTerminate(ezmqxXMLSubHandle_t handle)
     return CEZMQX_OK;
 }
 
-int ezmqxXMLIsTerminated(ezmqxXMLSubHandle_t handle)
+int ezmqxXMLSubIsTerminated(ezmqxXMLSubHandle_t handle)
 {
     VERIFY_NON_NULL(handle)
     XmlSubscriber *subscriber = static_cast<XmlSubscriber *>(handle);
     return ((subscriber->isTerminated()) ? 1:0);
 }
 
-CEZMQXErrorCode ezmqxXMLGetTopics(ezmqxXMLSubHandle_t handle, ezmqxTopicHandle_t **topics,
+CEZMQXErrorCode ezmqxXMLSubGetTopics(ezmqxXMLSubHandle_t handle, ezmqxTopicHandle_t **topics,
         size_t* listSize)
 {
     VERIFY_NON_NULL(handle)

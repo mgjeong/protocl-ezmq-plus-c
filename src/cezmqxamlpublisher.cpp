@@ -27,7 +27,7 @@
 using namespace std;
 using namespace EZMQX;
 
-CEZMQXErrorCode ezmqxGetPublisher(const char *topic, CAmlModelInfo infoType, const char *amlModeld,
+CEZMQXErrorCode ezmqxGetAMLPublisher(const char *topic, CAmlModelInfo infoType, const char *amlModeld,
         int optionalPort, ezmqxAMLPubHandle_t *handle)
 {
     VERIFY_NON_NULL(topic)
@@ -44,7 +44,7 @@ CEZMQXErrorCode ezmqxGetPublisher(const char *topic, CAmlModelInfo infoType, con
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxDestroyPublisher(ezmqxAMLPubHandle_t handle)
+CEZMQXErrorCode ezmqxDestroyAMLPublisher(ezmqxAMLPubHandle_t handle)
 {
     VERIFY_NON_NULL(handle);
     AmlPublisher *publisher = static_cast<AmlPublisher *>(handle);
@@ -53,7 +53,7 @@ CEZMQXErrorCode ezmqxDestroyPublisher(ezmqxAMLPubHandle_t handle)
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxPublish(ezmqxAMLPubHandle_t handle, amlObjectHandle_t amlObjHandle)
+CEZMQXErrorCode ezmqxAMLPublish(ezmqxAMLPubHandle_t handle, amlObjectHandle_t amlObjHandle)
 {
     VERIFY_NON_NULL(handle)
     VERIFY_NON_NULL(amlObjHandle)
@@ -69,4 +69,47 @@ CEZMQXErrorCode ezmqxPublish(ezmqxAMLPubHandle_t handle, amlObjectHandle_t amlOb
     }
     return CEZMQX_OK;
 }
+
+CEZMQXErrorCode ezmqxAMLPubGetTopic(ezmqxAMLPubHandle_t handle, ezmqxTopicHandle_t *topicHandle)
+{
+    VERIFY_NON_NULL(handle)
+    VERIFY_NON_NULL(topicHandle)
+    AmlPublisher *publisher = static_cast<AmlPublisher *>(handle);
+    EZMQX::Topic nativeTopic;
+    try
+    {
+        nativeTopic = publisher->getTopic();
+    }
+    catch(EZMQX::Exception& e)
+    {
+        return CEZMQXErrorCode(e.getErrCode());
+    }
+    EZMQX::Endpoint nativeEndPoint = nativeTopic.getEndpoint();
+    Endpoint *endPoint = new Endpoint(nativeEndPoint.getAddr(), nativeEndPoint.getPort());
+    *topicHandle = new(std::nothrow) Topic(nativeTopic.getName(), nativeTopic.getDatamodel(), *endPoint);
+    return CEZMQX_OK;
+}
+
+CEZMQXErrorCode ezmqxAMLPubTerminate(ezmqxAMLPubHandle_t handle)
+{
+    VERIFY_NON_NULL(handle)
+    AmlPublisher *publisher = static_cast<AmlPublisher *>(handle);
+    try
+    {
+        publisher->terminate();
+    }
+    catch(EZMQX::Exception& e)
+    {
+        return CEZMQXErrorCode(e.getErrCode());
+    }
+    return CEZMQX_OK;
+}
+
+int ezmqxAMLPubIsTerminated(ezmqxAMLPubHandle_t handle)
+{
+    VERIFY_NON_NULL(handle)
+    AmlPublisher *publisher = static_cast<AmlPublisher *>(handle);
+    return ((publisher->isTerminated()) ? 1:0);
+}
+
 

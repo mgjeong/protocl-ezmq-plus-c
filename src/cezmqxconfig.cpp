@@ -24,12 +24,12 @@
 #include "cezmqxconfig.h"
 #include "cezmqxutils.h"
 
-CEZMQXErrorCode ezmqxCreateConfig(CModeOption mode, ezmqxConfigHandle_t *handle)
+CEZMQXErrorCode ezmqxCreateConfig(ezmqxConfigHandle_t *handle)
 {
     VERIFY_NON_NULL(handle);
     try
     {
-        *handle = new EZMQX::Config(EZMQX::ModeOption(mode));
+        *handle = EZMQX::Config::getInstance();
     }
     catch(EZMQX::Exception& e)
     {
@@ -38,24 +38,13 @@ CEZMQXErrorCode ezmqxCreateConfig(CModeOption mode, ezmqxConfigHandle_t *handle)
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxDestroyConfig(ezmqxConfigHandle_t handle)
+CEZMQXErrorCode ezmqxStartDockerMode(ezmqxConfigHandle_t handle)
 {
     VERIFY_NON_NULL(handle)
-    EZMQX::Config* configObj = static_cast<EZMQX::Config *>(handle);
-    delete configObj;
-    handle = NULL;
-    return CEZMQX_OK;
-}
-
-CEZMQXErrorCode ezmqxSetHostInfo(ezmqxConfigHandle_t handle, const char *hostName, const char *hostAddr)
-{
-    VERIFY_NON_NULL(handle)
-    VERIFY_NON_NULL(hostName)
-    VERIFY_NON_NULL(hostAddr)
     EZMQX::Config* configObj = static_cast<EZMQX::Config *>(handle);
     try
     {
-        configObj->setHostInfo(hostName, hostAddr);
+        configObj->startDockerMode();
     }
     catch(EZMQX::Exception& e)
     {
@@ -64,14 +53,14 @@ CEZMQXErrorCode ezmqxSetHostInfo(ezmqxConfigHandle_t handle, const char *hostNam
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxSetTnsInfo(ezmqxConfigHandle_t handle, const char *remoteAddr)
+CEZMQXErrorCode ezmqxStartStandAloneMode(ezmqxConfigHandle_t handle, int useTns, const char *tnsAddr)
 {
     VERIFY_NON_NULL(handle)
-    VERIFY_NON_NULL(remoteAddr)
+    VERIFY_NON_NULL(tnsAddr)
     EZMQX::Config* configObj = static_cast<EZMQX::Config *>(handle);
     try
     {
-        configObj->setTnsInfo(remoteAddr);
+        configObj->startStandAloneMode(useTns, tnsAddr);
     }
     catch(EZMQX::Exception& e)
     {
@@ -88,7 +77,7 @@ CEZMQXErrorCode ezmqxAddAmlModel(ezmqxConfigHandle_t handle, const char **amlFil
     VERIFY_NON_NULL(idList)
     VERIFY_NON_NULL(listSize)
 
-     //change char ** to cpp list
+    //change char ** to cpp list
     std::list<std::string> filePathList;
     for (size_t i = 0; i< size; i++)
     {
@@ -111,13 +100,13 @@ CEZMQXErrorCode ezmqxAddAmlModel(ezmqxConfigHandle_t handle, const char **amlFil
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxReset(ezmqxConfigHandle_t handle, CModeOption mode)
+CEZMQXErrorCode ezmqxReset(ezmqxConfigHandle_t handle)
 {
     VERIFY_NON_NULL(handle)
     EZMQX::Config* configObj = static_cast<EZMQX::Config *>(handle);
     try
     {
-        configObj->reset(EZMQX::ModeOption(mode));
+        configObj->reset();
     }
     catch(EZMQX::Exception& e)
     {

@@ -35,7 +35,7 @@ typedef void * ezmqxEPHandle_t;
 /**
  *  Create end point.
  *
- * @param handle -Handle will be filled as return value.
+ * @param handle - [out] Handle will be filled as return value.
  *
  * @note EndPoint instance will be allocated, so it should be deleted after use.
  *              To destroy an instance, use ezmqxDestroyEndPoint().
@@ -47,8 +47,8 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateEndPoint(ezmqxEPHandle_t *handle);
 /**
  *  Create end point with given address.
  *
- * @param address -IP Address.
- * @param handle -Handle will be filled as return value.
+ * @param address - [in] IP Address.
+ * @param handle - [out] Handle will be filled as return value.
  *
  * @note EndPoint instance will be allocated, so it should be deleted after use.
  *              To destroy an instance, use ezmqxDestroyEndPoint().
@@ -60,9 +60,9 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateEndPoint1(const char *address, ezmqxEPHa
 /**
  *  Create end point with given address and port.
  *
- * @param address -IP Address.
- * @param port -port.
- * @param handle -Handle will be filled as return value.
+ * @param address - [in] IP Address.
+ * @param port - [in] port.
+ * @param handle - [out] Handle will be filled as return value.
  *
  * @note EndPoint instance will be allocated, so it should be deleted after use.
  *              To destroy an instance, use ezmqxDestroyEndPoint().
@@ -74,7 +74,7 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateEndPoint2(const char *address, int port,
 /**
  *  Destroy an instance of end point.
  *
- * @param handle -EndPoint Handle that will be destroyed.
+ * @param handle - [in] EndPoint Handle that will be destroyed.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
@@ -83,8 +83,8 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxDestroyEndPoint(ezmqxEPHandle_t handle);
 /**
  *  Get address for given end point.
  *
- * @param handle -EndPoint handle.
- * @param address - Address will be filled as return value.
+ * @param handle - [in] EndPoint handle.
+ * @param address - [out] Address will be filled as return value.
  *
  * @note Address will be allocated, so it should be deleted after use.
  *              To destroy address : free(address);
@@ -96,8 +96,8 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxGetAddr(ezmqxEPHandle_t handle, char **address
 /**
  *  Get port for given end point.
  *
- * @param handle -EndPoint handle.
- * @param port - Port will be filled as return value.
+ * @param handle - [in] EndPoint handle.
+ * @param port - [out] Port will be filled as return value.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
@@ -106,8 +106,8 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxGetPort(ezmqxEPHandle_t handle, int *port);
 /**
  *  Get string representation for given end point.
  *
- * @param handle -EndPoint handle.
- * @param stringValue - stringValue will be filled as return value.
+ * @param handle - [in] EndPoint handle.
+ * @param stringValue - [out] stringValue will be filled as return value.
  *
  * @note stringValue will be allocated, so it should be deleted after use.
  *              To destroy stringValue : free(stringValue);

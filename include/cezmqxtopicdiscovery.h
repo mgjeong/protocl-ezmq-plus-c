@@ -35,7 +35,7 @@ typedef void * ezmqxTDiscoveryHandle_t;
 /**
  *  Create topic discovery instance.
  *
- * @param handle  -Handle will be filled as return value.
+ * @param handle - [out] Handle will be filled as return value.
  *
  * @note Topic discovery instance will be allocated, so it should be deleted after use.
  *              To destroy an instance, use ezmqxDestroyTopicDiscovery().
@@ -47,26 +47,42 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateTopicDiscovery(ezmqxTDiscoveryHandle_t *
 /**
  *  Destroy an instance of topic discovery.
  *
- * @param handle -Topic discovery handle that will be destroyed.
+ * @param handle - [in] Topic discovery handle that will be destroyed.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxDestroyTopicDiscovery(ezmqxTDiscoveryHandle_t handle);
 
 /**
- *  Create a topic query.
+ *  Create a topic query. It will query TNS server for given topic.
  *
- * @param handle -Topic discovery handle.
- * @param topic -Topic for which discovery need to be done.
- * @param topics - List of topics handle will be filled.
- * @param listSize - List Size.
+ * @param handle - [in] Topic discovery handle.
+ * @param topic - [in] Topic for which discovery need to be done.
+ * @param topicHandle - [in] Topic handle will be filled.
+ *
+ * @note Topic handle will be allocated, so it should be deleted after use.
+ *              To destroy topic handle, use ezmqxDestroyTopic().
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
+EZMQX_EXPORT CEZMQXErrorCode ezmqxQuery(ezmqxTDiscoveryHandle_t handle, const char *topic,
+        ezmqxTopicHandle_t *topicHandle);
+
+/**
+ *  Create a topic query. It will query TNS server for given topic.
+ *  It will send query request to TNS with hierarchical option.
+ *
+ * @param handle - [in] Topic discovery handle.
+ * @param topic - [in] Topic for which discovery need to be done.
+ * @param topics - [out] List of topics handle will be filled.
+ * @param listSize - [out] List Size.
  *
  * @note Topic handle list will be allocated, so it should be deleted after use.
  *              To destroy an instance of topic handle, use ezmqxDestroyTopic().
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxQuery(ezmqxTDiscoveryHandle_t handle, const char *topic,
+EZMQX_EXPORT CEZMQXErrorCode ezmqxHierarchicalQuery(ezmqxTDiscoveryHandle_t handle, const char *topic,
         ezmqxTopicHandle_t **topics, size_t* listSize);
 
 #ifdef __cplusplus

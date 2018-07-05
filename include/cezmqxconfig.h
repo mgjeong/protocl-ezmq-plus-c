@@ -33,67 +33,45 @@ extern "C"
 typedef void * ezmqxConfigHandle_t;
 
 /**
-* @enum CModeOption
-* CEZMQX mode types.
-*/
-typedef enum
-{
-    StandAlone = 0,
-    Docker
-}CModeOption;
-
-/**
- *  Create ezmqx configuration with given mode.
+ *  Create ezmqx configuration instance.
  *
- * @param mode - Config mode [StandAlone/Docker].
- * @param handle - Handle will be filled as return value.
- *
- * @note Config instance will be allocated, so it should be deleted after use.
- *              To destroy an instance, use ezmqxDestroyConfig().
+ * @param handle - [out] Handle will be filled as return value.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateConfig(CModeOption mode, ezmqxConfigHandle_t *handle);
+EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateConfig(ezmqxConfigHandle_t *handle);
 
 /**
- *  Destroy an instance of config.
+ * Start as DockerMode that working with Pharos system.
+ * In DockerMode, stack automatically using Tns service.
  *
- * @param handle - Config Handle that will be destroyed.
+ * @param handle - [in] Config Handle.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxDestroyConfig(ezmqxConfigHandle_t handle);
+EZMQX_EXPORT CEZMQXErrorCode ezmqxStartDockerMode(ezmqxConfigHandle_t handle);
 
 /**
- *  Set host info [name and address].
+ *  Start as StandAloneMode that working without pharos system.
  *
- * @param handle  -Config handle.
- * @param hostName - Host name.
- * @param hostAddr - Host address.
+ * @param handle - [in] Config Handle.
+ * @param useTns - [in] Whether to use tns. [1: Use TNS, otherwise 0]
+ * @param tnsAddr - [in] TNS address, if useTns is false this value will be ignored.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxSetHostInfo(ezmqxConfigHandle_t handle, const char *hostName,
-        const char *hostAddr);
+EZMQX_EXPORT CEZMQXErrorCode ezmqxStartStandAloneMode(ezmqxConfigHandle_t handle, int useTns,
+        const char *tnsAddr);
+
 
 /**
- *  Set TNS info [server address].
+ *  Add aml model file for publish or subscribe AML data.
  *
- * @param handle  -Config handle.
- * @param remoteAddr - TNS server address.
- *
- * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
- */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxSetTnsInfo(ezmqxConfigHandle_t handle, const char * remoteAddr);
-
-/**
- *  Add model information to configuration.
- *
- * @param handle -Config handle.
- * @param amlFilePath - List of AML file paths.
- * @param size - List Size.
- * @param amlFilePath - List of AML ID will be filled..
- * @param listSize - ID List Size.
+ * @param handle - [in] Config handle.
+ * @param amlFilePath - [in] List of AML file paths.
+ * @param size -  [in] List Size.
+ * @param amlFilePath - [out] List of AML ID will be filled..
+ * @param listSize - [out] ID List Size.
  *
  * @note ID list and IDs will be allocated, so it should be deleted after use.
  *
@@ -103,14 +81,13 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxAddAmlModel(ezmqxConfigHandle_t handle, const 
         const size_t size, char*** idList, size_t* listSize);
 
 /**
- *  Reset the ezmqx configuration.
+ *  Reset whole EZMQX stack.
  *
- * @param handle  -Config handle.
- * @param mode - Config mode [StandAlone/Docker].
+ * @param handle - [in] Config handle.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxReset(ezmqxConfigHandle_t handle, CModeOption mode);
+EZMQX_EXPORT CEZMQXErrorCode ezmqxReset(ezmqxConfigHandle_t handle);
 
 #ifdef __cplusplus
 }

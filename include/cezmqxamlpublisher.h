@@ -21,6 +21,7 @@
 #include "camlinterface.h"
 
 #include "cezmqxerrorcodes.h"
+#include "cezmqxtopic.h"
 
 #define EZMQX_EXPORT __attribute__ ((visibility("default")))
 
@@ -47,38 +48,69 @@ typedef void * ezmqxAMLPubHandle_t;
 /**
  *  Get/Create publisher with given details.
  *
- * @param topic - Topic on which publisher will be publishing.
- * @param infoType - CAmlModelInfo.
- * @param amlModeld - AML Model Id.
- * @param optionalPort - Port to be bound to publisher .
- * @param handle -Handle will be filled as return value.
+ * @param topic - [in] Topic on which publisher will be publishing.
+ * @param infoType - [in] CAmlModelInfo.
+ * @param amlModeld - [in] AML Model Id.
+ * @param optionalPort - [in] Port to be bound to publisher .
+ * @param handle - [out] Handle will be filled as return value.
  *
  * @note Publisher instance will be allocated, so it should be deleted after use.
- *              To destroy an instance, use ezmqxDestroyPublisher().
+ *              To destroy an instance, use ezmqxDestroyAMLPublisher().
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxGetPublisher(const char *topic, CAmlModelInfo infoType,
+EZMQX_EXPORT CEZMQXErrorCode ezmqxGetAMLPublisher(const char *topic, CAmlModelInfo infoType,
         const char *amlModeld,  int optionalPort, ezmqxAMLPubHandle_t *handle);
 
 /**
  *  Destroy an instance of publisher.
  *
- * @param handle -Handle of Publisher that will be destroyed.
+ * @param handle - [in] Handle of Publisher that will be destroyed.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxDestroyPublisher(ezmqxAMLPubHandle_t handle);
+EZMQX_EXPORT CEZMQXErrorCode ezmqxDestroyAMLPublisher(ezmqxAMLPubHandle_t handle);
 
 /**
  *  Publish event [AML object] on socket for subscribers.
  *
- * @param handle -Publisher handle.
- * @param object - AML object to be published .
+ * @param handle - [in] Publisher handle.
+ * @param object - [in] AML object to be published.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxPublish(ezmqxAMLPubHandle_t handle, amlObjectHandle_t object);
+EZMQX_EXPORT CEZMQXErrorCode ezmqxAMLPublish(ezmqxAMLPubHandle_t handle, amlObjectHandle_t object);
+
+/**
+ *  Get topic on which publisher is publishing.
+ *
+ * @param handle - [in] AML publisher handle.
+ * @param topicHandle - [out] Topic handle will be filled.
+ *
+ * @note Topic handle will be allocated, so it should be deleted after use.
+ *              To destroy topic handle, use ezmqxDestroyTopic().
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
+EZMQX_EXPORT CEZMQXErrorCode ezmqxAMLPubGetTopic(ezmqxAMLPubHandle_t handle, ezmqxTopicHandle_t *topicHandle);
+
+/**
+ * Terminate AmlPublisher instance.
+ *
+ * @param handle  - [in] Publisher handle.
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
+EZMQX_EXPORT CEZMQXErrorCode ezmqxAMLPubTerminate(ezmqxAMLPubHandle_t handle);
+
+/**
+ * Check whether publisher  instance is terminated or not.
+ *
+ * @param handle - [in] AML publisher handle.
+ *
+ * @return 1 if terminated and 0 otherwise.
+ */
+EZMQX_EXPORT int ezmqxAMLPubIsTerminated(ezmqxAMLPubHandle_t handle);
 
 #ifdef __cplusplus
 }
