@@ -17,13 +17,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <signal.h>
 #include <stdint.h>
+#include <string.h>
 #include <pthread.h>
 
+#include "camlinterface.h"
+#include "camlrepresentation.h"
+
 #include "cezmqxconfig.h"
-#include "cezmqxamlpublisher.h"
 #include "cezmqxendpoint.h"
 #include "cezmqxtopic.h"
 #include "cezmqxxmlsubscriber.h"
@@ -34,22 +36,6 @@ int g_isStarted = 0;
 pthread_cond_t g_cv;
 pthread_mutex_t g_mutex;
 pthread_condattr_t g_cattr;
-
-void sigint(int signal)
-{
-    printf("\nInterupt signal:  %d\n", signal);
-    if (g_isStarted)
-    {
-        //signal all condition variables
-        pthread_mutex_lock(&g_mutex);
-        pthread_cond_broadcast(&g_cv);
-        pthread_mutex_unlock(&g_mutex);
-    }
-    else
-    {
-        exit(0);
-    }
-}
 
 void xmlSubCB(const char * topic, const char * payload)
 {
@@ -69,43 +55,145 @@ void xmlSubErrCB(const char * topic, CEZMQXErrorCode errCode)
     printf("\nError code: %d", errCode);
 }
 
-int main()
+void sigint(int signal)
 {
-    printf("\nEnter topic ex) /test ");
-    char topic[50];
-    char *fget = fgets(topic, 50, stdin);
-    UNUSED(fget);
-    char *newline = strchr(topic, '\n'); // search for newline character
-    if ( newline != NULL )
+    printf("\nInterupt signal:  %d\n", signal);
+    if (g_isStarted)
     {
-        *newline = '\0'; // overwrite trailing newline
+        //signal all condition variables
+        pthread_mutex_lock(&g_mutex);
+        pthread_cond_broadcast(&g_cv);
+        pthread_mutex_unlock(&g_mutex);
+    }
+    else
+    {
+        exit(0);
+    }
+}
+
+void printError()
+{
+    printf("\nRe-run the application as shown in below example: \n");
+    printf("\n  (1) For running in standalone mode: ");
+    printf("\n     ./xmlsubscriber -ip 192.168.1.1 -port 5562 -t /topic\n");
+    printf("\n  (2)  For running in docker mode: ");
+    printf("\n     ./xmlsubscriber -t /topic -h 0\n");
+    printf("\n Note: -h stands for hierarchical search for topic from TNS server [0: true 1:false]\n");
+}
+
+int main(int argc, char* argv[])
+{
+    CEZMQXErrorCode result;
+    char *ip = NULL;
+    int port = 0;
+    char *topic = NULL;
+    int isStandAlone = 0;
+    int isHierarchical = 0;
+
+    // get ip, port and topic from command line arguments
+    if(argc != 5 && argc != 7)
+    {
+        printError();
+        return -1;
+    }
+    int n = 1;
+    while (n < argc)
+    {
+         if (0 == strcmp(argv[n],"-ip"))
+        {
+            ip = argv[n + 1];
+            printf("\nGiven IP is : %s", ip);
+            n = n + 2;
+            isStandAlone = 1;
+        }
+        else if (0 == strcmp(argv[n],"-t"))
+        {
+            topic = argv[n + 1];
+            printf("\nGiven Topic is : %s", topic);
+            n = n + 2;
+        }
+        else if (0 == strcmp(argv[n],"-port"))
+        {
+            port = atoi(argv[n + 1]);
+            printf("\nGiven Port: %d", port);
+            n = n + 2;
+        }
+        else if (0 == strcmp(argv[n],"-h"))
+        {
+            isHierarchical = atoi(argv[n + 1]);
+            printf("\nIs hierarchical : %d", isHierarchical);
+            n = n + 2;
+        }
+        else
+        {
+            printError();
+        }
     }
 
-    ezmqxConfigHandle_t config;
-    ezmqxCreateConfig(StandAlone, &config);
-    printf("\nCreate config done..");
-    //ezmqxSetHostInfo(config, "Lolcahost", "hostAddr");
-    //ezmqxSetTnsInfo(config, "remoteAddr");
+    //this handler is added for ctrl+c signal
+    signal(SIGINT, sigint);
+
+    ezmqxConfigHandle_t configHandle;
+    result = ezmqxCreateConfig(&configHandle);
+    if (result != CEZMQX_OK)
+    {
+        printf("\nCreate config failed [Result] : %d\n", result);
+        return -1;
+    }
+    if (1 == isStandAlone)
+    {
+        result = ezmqxStartStandAloneMode(configHandle, 0, "");
+        if(result != CEZMQX_OK)
+        {
+            printf("\nStart stand alone mode failed [Result]: %d\n", result);
+            return -1;
+        }
+    }
+    else
+    {
+        result = ezmqxStartDockerMode(configHandle);
+        if(result != CEZMQX_OK)
+        {
+            printf("\nStart docker mode failed [Result]: %d\n", result);
+            return -1;
+        }
+    }
 
     const char* amlPath[1] = {"sample_data_model.aml"};
     char** idArr;
     size_t arrsize;
-    ezmqxAddAmlModel(config, amlPath, 1, &idArr, &arrsize);
+    result = ezmqxAddAmlModel(configHandle, amlPath, 1, &idArr, &arrsize);
+    if(result != CEZMQX_OK)
+    {
+        printf("\nAdd AmlModel failed [Result]: %d\n", result);
+        return -1;
+    }
     for (size_t i = 0; i< arrsize; i++)
     {
         printf("\nid is %s\n", idArr[i]);
     }
 
     ezmqxXMLSubHandle_t subHandle;
-    ezmqxEPHandle_t endpoint;
-    ezmqxCreateEndPoint2("localhost", 4000, &endpoint);
-    ezmqxTopicHandle_t topicHandle;
-    ezmqxCreateTopic1(topic, idArr[0], endpoint, &topicHandle);
-    ezmqxGetXMLSubscriber1(topicHandle, xmlSubCB, xmlSubErrCB, &subHandle);
+    if (1 == isStandAlone)
+    {
+        ezmqxEPHandle_t endpoint;
+        ezmqxCreateEndPoint2(ip, port, &endpoint);
+        ezmqxTopicHandle_t topicHandle;
+        ezmqxCreateTopic1(topic, idArr[0], endpoint, &topicHandle);
+        result = ezmqxGetXMLSubscriber1(topicHandle, xmlSubCB, xmlSubErrCB, &subHandle);
+    }
+    else
+    {
+        result = ezmqxGetXMLSubscriber(topic, isHierarchical, xmlSubCB, xmlSubErrCB, &subHandle);
+    }
+    if(result != CEZMQX_OK)
+    {
+        printf("\nGet AML Subscriber failed [Result]: %d\n", result);
+        return -1;
+    }
     printf("\nSuscribed to publisher.. -- Waiting for Events --\n");
 
     g_isStarted = 1;
-
     // initialize a condition variable to its default value
     pthread_cond_init(&g_cv, NULL);
     //initialize a condition variable
@@ -119,7 +207,18 @@ int main()
     pthread_mutex_unlock(&g_mutex);
 
     //Terminate subscriber
-    ezmqxXMLTerminate(subHandle);
-    printf("\nClosing application..\n");
+    result = ezmqxXMLSubTerminate(subHandle);
+    if(result != CEZMQX_OK)
+    {
+        printf("\nTerminate Subscriber failed [Result]: %d\n", result);
+        return -1;
+    }
+    //Reset config
+    result = ezmqxReset(configHandle);
+    if(result != CEZMQX_OK)
+    {
+        printf("\nReset config failed [Result]: %d\n", result);
+        return -1;
+    }
 }
 

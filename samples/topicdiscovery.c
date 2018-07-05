@@ -17,60 +17,135 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "cezmqxconfig.h"
 #include "cezmqxtopicdiscovery.h"
 
 #define UNUSED(x) (void)(x)
 
-int main()
+void printError()
 {
-    printf("\nEnter topic ex) /test ");
-    char topic[50];
-    char *fget = fgets(topic, 50, stdin);
-    UNUSED(fget);
-    char *newline = strchr(topic, '\n'); // search for newline character
-    if ( newline != NULL )
-    {
-        *newline = '\0'; // overwrite trailing newline
-    }
+    printf("\nRe-run the application as shown in below example: \n");
+    printf("\n  (1) For running in standalone mode: ");
+    printf("\n      ./topicdiscovery -t /topic -tns 192.168.1.1\n");
+    printf("\n  (2)  For running in docker mode: ");
+    printf("\n      ./topicdiscovery -t /topic \n");
+}
 
-    ezmqxConfigHandle_t config;
-    //CEZMQXErrorCode result = ezmqxCreateConfig(Docker, &config);
-    CEZMQXErrorCode result = ezmqxCreateConfig(StandAlone, &config);
-    printf("\nCreate config [Result] : %d ", result);
-    ezmqxSetTnsInfo(config, "10.113.66.234");
-
-    ezmqxTDiscoveryHandle_t tdHandle;
-    ezmqxCreateTopicDiscovery(&tdHandle);
-
-    ezmqxTopicHandle_t* topicList;
-    size_t listSize = 0;
-    result = ezmqxQuery(tdHandle, topic, &topicList, &listSize);
-    if(CEZMQX_OK != result)
-    {
-        printf("\nTopic discovery Query [Result]: %d", result);
-        return -1;
-    }
+void printTopicList(ezmqxTopicHandle_t *topicList, size_t listSize)
+{
     for (size_t i = 0; i< listSize; i++)
     {
+        printf("\n=================================================");
         ezmqxTopicHandle_t topicHandle = topicList[i];
 
         char *topic;
-        ezmqxGetTopic(topicHandle, &topic);
+        ezmqxGetName(topicHandle, &topic);
         fflush(stdout);
-        printf("\nTopic is : %s\n", topic);
-        char *schema;
-        ezmqxGetSchema(topicHandle, &schema);
-         fflush(stdout);
-        printf("\nSchema is : %s\n", schema);
+        printf("\nTopic: %s", topic);
+        char *dataModel;
+        ezmqxGetDatamodel(topicHandle, &dataModel);
+        fflush(stdout);
+        printf("\nData Model: %s", dataModel);
 
         ezmqxEPHandle_t epHandle;
         ezmqxGetEndpoint(topicHandle, &epHandle);
         char *toStr;
         ezmqxToString(epHandle, &toStr);
-         fflush(stdout);
-        printf("\nEndpoint is : %s\n", toStr);
+        fflush(stdout);
+        printf("\nEndpoint: %s", toStr);
+        printf("\n=================================================\n");
     }
+}
+
+int main(int argc, char* argv[])
+{
+    CEZMQXErrorCode result;
+    char *tnsAddress= NULL;
+    char *topic= NULL;
+    int isStandAlone = 0;
+
+    // get TNS address and topic from command line arguments
+    if(argc != 3 && argc != 5)
+    {
+        printError();
+        return -1;
+    }
+    int n = 1;
+    while (n < argc)
+    {
+         if (0 == strcmp(argv[n],"-t"))
+        {
+            topic = argv[n + 1];
+            printf("\nGiven Topic is : %s", topic);
+            n = n + 2;
+        }
+        else if (0 == strcmp(argv[n],"-tns"))
+        {
+            tnsAddress = argv[n + 1];
+            printf("\nGiven TNS address is : %s\n", tnsAddress);
+            n = n + 2;
+            isStandAlone = 1;
+        }
+        else
+        {
+            printError();
+        }
+    }
+
+    ezmqxConfigHandle_t configHandle;
+    result = ezmqxCreateConfig(&configHandle);
+    if (result != CEZMQX_OK)
+    {
+        printf("\nCreate config failed [Result] : %d ", result);
+        return -1;
+    }
+    if (1 == isStandAlone)
+    {
+        result = ezmqxStartStandAloneMode(configHandle, 1, tnsAddress);
+        if(result != CEZMQX_OK)
+        {
+            printf("\nStart stand alone mode failed [Result]: %d", result);
+            return -1;
+        }
+    }
+    else
+    {
+        result = ezmqxStartDockerMode(configHandle);
+        if(result != CEZMQX_OK)
+        {
+            printf("\nStart docker mode failed [Result]: %d", result);
+            return -1;
+        }
+    }
+
+    ezmqxTDiscoveryHandle_t tdHandle;
+    result = ezmqxCreateTopicDiscovery(&tdHandle);
+    if(result != CEZMQX_OK)
+    {
+        printf("\nCreate Topic Discovery failed [Result]: %d", result);
+        return -1;
+    }
+
+    ezmqxTopicHandle_t* topicList;
+    size_t listSize = 0;
+    result = ezmqxHierarchicalQuery(tdHandle, topic, &topicList, &listSize);
+    if(result != CEZMQX_OK)
+    {
+        printf("\nTopic discovery Query failed [Result]: %d", result);
+        return -1;
+    }
+    printTopicList(topicList, listSize);
+
+    // Wait for 5 minutes before exit [For docker mode].
+    if (0 == isStandAlone )
+    {
+        printf("Waiting for 5 minutes before program exit for docker mode... [press ctrl+c to exit]");
+        sleep(300);
+    }
+    result = ezmqxReset(configHandle);
+    printf("\nReset Config done: [Result]: %d", result);
+    return 0;
 }
 

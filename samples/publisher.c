@@ -22,6 +22,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <sys/timeb.h>
+#include <signal.h>
 
 #include "camlinterface.h"
 #include "camlrepresentation.h"
@@ -34,122 +35,26 @@
 
 #define UNUSED(x) (void)(x)
 
-void freeCharArr(char** str, size_t size)
-{
-    for (size_t i = 0; i < size; i++)
-    {
-        free(str[i]);
-    }
-    free(str);
-}
+ezmqxConfigHandle_t g_configHandle;
+ezmqxAMLPubHandle_t g_pubHandle;
+int g_isStarted = 0;
 
 char* getCurrentTime()
 {
     char* timeStr = (char*)malloc(sizeof(char) * 10);
+    if (NULL == timeStr) return NULL;
+
     struct timeb tp;
     ftime(&tp);
-    strftime(timeStr, sizeof(timeStr), "%H%M%S", localtime(&tp.time));
+    strftime(timeStr, 7, "%H%M%S", localtime(&tp.time));
 
     char milliSec[4];
-    sprintf(milliSec, "%d", tp.millitm);
+    snprintf(milliSec, 4, "%d", tp.millitm);
 
     strncpy(timeStr + 6, milliSec, 3);
     timeStr[9] = '\0';
+
     return timeStr;
-}
-
-void printAMLData(amlDataHandle_t amlData, int depth)
-{
-    char* indent = (char*)malloc(sizeof(char)*100);
-    strncpy(indent, "", 1);
-    for (int i = 0; i < depth; i++) strcat(indent, "    ");
-
-    printf("%s{\n", indent);
-
-    char** keys = NULL;
-    size_t size = 0;
-    AMLData_GetKeys(amlData, &keys, &size);
-
-    for (size_t i = 0; i < size; i++)
-    {
-        printf("%s    \"%s\" : ", indent, keys[i]);
-
-        CAMLValueType valType = AMLVALTYPE_STRING;
-        AMLData_GetValueType(amlData, keys[i], &valType);
-        if (AMLVALTYPE_STRING == valType)
-        {
-            char* valStr;
-            AMLData_GetValueStr(amlData, keys[i], &valStr);
-            printf("%s", valStr);
-
-            free(valStr);
-        }
-        else if (AMLVALTYPE_STRINGARRAY == valType)
-        {
-            char** valStrArr;
-            size_t arrsize;
-            AMLData_GetValueStrArr(amlData, keys[i], &valStrArr, &arrsize);
-            printf("[");
-            for (size_t j = 0; j < arrsize; j++)
-            {
-                printf("%s", valStrArr[j]);
-                if (j != arrsize - 1) printf(", ");
-            }
-            printf("]");
-
-            freeCharArr(valStrArr, arrsize);
-        }
-        else if (AMLVALTYPE_AMLDATA == valType)
-        {
-            amlDataHandle_t valAMLData;
-            AMLData_GetValueAMLData(amlData, keys[i], &valAMLData);
-            printf("\n");
-            printAMLData(valAMLData, depth + 1);
-        }
-
-        if (i != size - 1)  printf(",");
-        printf("\n");
-    }
-    printf("%s}", indent);
-
-    free(indent);
-    freeCharArr(keys, size);
-}
-
-void printAMLObject(amlObjectHandle_t amlObj)
-{
-    char* deviceId, *timeStamp, *id;
-    AMLObject_GetDeviceId(amlObj, &deviceId);
-    AMLObject_GetTimeStamp(amlObj, &timeStamp);
-    AMLObject_GetId(amlObj, &id);
-
-    printf("{\n");
-    printf("    \"device\" : %s,\n", deviceId);
-    printf("    \"timeStamp\" : %s,\n", timeStamp);
-    printf("    \"id\" : %s,\n", id);
-
-    free(deviceId);
-    free(timeStamp);
-    free(id);
-
-    char** dataNames;
-    size_t size;
-    AMLObject_GetDataNames(amlObj, &dataNames, &size);
-
-    for (size_t i = 0; i < size; i++)
-    {
-        amlDataHandle_t data;
-        AMLObject_GetData(amlObj, dataNames[i], &data);
-
-        printf("    \"%s\" : \n", dataNames[i]);
-        printAMLData(data, 1);
-
-        if (i != size - 1) printf(",\n");
-    }
-
-    printf("\n}\n");
-
-    freeCharArr(dataNames, size);
 }
 
 amlObjectHandle_t getAMLObject()
@@ -189,47 +94,154 @@ amlObjectHandle_t getAMLObject()
     return object;
 }
 
-int main()
+void printError()
 {
-    printf("\nEnter topic ex) /test ");
-    char topic[50];
-    char *fget = fgets(topic, 50, stdin);
-    UNUSED(fget);
-    char *newline = strchr(topic, '\n'); // search for newline character
-    if ( newline != NULL )
+    printf("\nRe-run the application as shown in below example: \n");
+    printf("\n  (1) For running in standalone mode: ");
+    printf("\n      ./publisher -t /topic -port 5562\n");
+    printf("\n  (2)  For running in docker mode: ");
+    printf("\n      ./publisher -t /topic \n");
+}
+
+void publishData(int numberOfEvents)
+{
+    amlObjectHandle_t amlObject = getAMLObject();
+    printf("\nWill publish %d events at a interval of 1 seconds!!!\n", numberOfEvents);
+    for (int i=1; i <= numberOfEvents; i++)
     {
-        *newline = '\0'; // overwrite trailing newline
+        printf("\nPublished data: %d\n", i);
+        CEZMQXErrorCode result = ezmqxAMLPublish(g_pubHandle, amlObject);
+        if(result != CEZMQX_OK)
+        {
+            printf("\nPublish failed [Result]: %d\n", result);
+        }
+        sleep(1);
+    }
+}
+
+void sigint(int signal)
+{
+    printf("\nInterupt signal:  %d\n", signal);
+    if (g_isStarted)
+    {
+        CEZMQXErrorCode result = ezmqxAMLPubTerminate(g_pubHandle);
+        if(result != CEZMQX_OK)
+        {
+            printf("\nPublihser terminate failed [Result]: %d\n", result);
+        }
+        result = ezmqxReset(g_configHandle);
+        if(result != CEZMQX_OK)
+        {
+            printf("\nReset config failed [Result]: %d\n", result);
+        }
+        printf("\nReset config done: [Result]: %d\n", result);
+
+    }
+    exit(0);
+}
+
+int main(int argc, char* argv[])
+{
+    CEZMQXErrorCode result;
+    char *topic = NULL;
+    int port = 0;
+    int isStandAlone = 0;
+
+    // get port and topic from command line arguments
+    if(argc != 3 && argc != 5)
+    {
+        printError();
+        return -1;
+    }
+    int n = 1;
+    while (n < argc)
+    {
+         if (0 == strcmp(argv[n],"-t"))
+        {
+            topic = argv[n + 1];
+            printf("\nGiven Topic is : %s", topic);
+            n = n + 2;
+        }
+        else if (0 == strcmp(argv[n],"-port"))
+        {
+            port = atoi(argv[n + 1]);
+            printf("\nGiven Port: %d\n", port);
+            n = n + 2;
+            isStandAlone = 1;
+        }
+        else
+        {
+            printError();
+        }
     }
 
-    ezmqxConfigHandle_t config;
-    ezmqxCreateConfig(StandAlone, &config);
-    printf("\nCreate config done..");
-    //ezmqxSetHostInfo(config, "Lolcahost", "hostAddr");
-    //ezmqxSetTnsInfo(config, "remoteAddr");
+    //this handler is added for ctrl+c signal
+    signal(SIGINT, sigint);
+
+    result = ezmqxCreateConfig(&g_configHandle);
+    if (result != CEZMQX_OK)
+    {
+        printf("\nCreate config failed [Result] : %d\n", result);
+        return -1;
+    }
+    if (1 == isStandAlone)
+    {
+        result = ezmqxStartStandAloneMode(g_configHandle, 0, "");
+        if(result != CEZMQX_OK)
+        {
+            printf("\nStart stand alone mode failed [Result]: %d\n", result);
+            return -1;
+        }
+    }
+    else
+    {
+        result = ezmqxStartDockerMode(g_configHandle);
+        if(result != CEZMQX_OK)
+        {
+            printf("\nStart docker mode failed [Result]: %d\n", result);
+            return -1;
+        }
+    }
 
     const char* amlPath[1] = {"sample_data_model.aml"};
     char** idArr;
     size_t arrsize;
-
-    ezmqxAddAmlModel(config, amlPath, 1, &idArr, &arrsize);
+    result = ezmqxAddAmlModel(g_configHandle, amlPath, 1, &idArr, &arrsize);
+    if(result != CEZMQX_OK)
+    {
+        printf("\nAdd AmlModel failed [Result]: %d\n", result);
+        return -1;
+    }
     for (size_t i = 0; i< arrsize; i++)
     {
         printf("\nId is %s\n", idArr[i]);
     }
 
-    ezmqxAMLPubHandle_t pubHandle;
-    ezmqxGetPublisher(topic, AmlModelId, idArr[0], 4000, &pubHandle);
-    amlObjectHandle_t amlObject = getAMLObject();
+    ezmqxGetAMLPublisher(topic, AmlModelId, idArr[0], port, &g_pubHandle);
+    g_isStarted = 1;
 
-    printf("\nWill publish 15 events at a interval of 2 seconds!!!\n");
-    int i = 0;
-    while(i<=15)
+    if (1 == isStandAlone)
     {
-        printf("\nPublish!!!\n");
-        ezmqxPublish(pubHandle, amlObject);
-        printAMLObject(amlObject);
-        sleep(2);
-        i++;
+        publishData(15);
     }
+    else
+    {
+        publishData(100000);
+    }
+
+    result = ezmqxAMLPubTerminate(g_pubHandle);
+    if(result != CEZMQX_OK)
+    {
+        printf("\nPublihser terminate failed [Result]: %d\n", result);
+        return -1;
+    }
+    result = ezmqxReset(g_configHandle);
+    if(result != CEZMQX_OK)
+    {
+        printf("\nReset config failed [Result]: %d\n", result);
+        return -1;
+    }
+    printf("\nReset config done: [Result]: %d\n", result);
+    return 0;
 }
 
