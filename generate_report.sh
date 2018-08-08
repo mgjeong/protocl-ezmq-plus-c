@@ -177,7 +177,10 @@ generate_report_EZMQX()
 {
     # copy .aml file
     cp ${EZMQX}/unittests/sample_data_model.aml ${EZMQX}
-
+	
+    # copy tns config file
+    cp ${EZMQX}/unittests/tnsConf.json ${EZMQX}
+	
     # Setting Parameters
     if [ "yes" = ${USE_TIMESTAMP} ]; then
         report_dir="${module_name}_${time_stamp}"

@@ -19,6 +19,7 @@
 #include <gmock.h>
 
 #include "cezmqxconfig.h"
+#include "unittesthelper.h"
 
 class CEZMQXConfigTest : public testing::Test
 {
@@ -41,13 +42,13 @@ TEST_F(CEZMQXConfigTest, createConfig)
 
 TEST_F(CEZMQXConfigTest, startStandAloneMode)
 {
-    ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
+    ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, localhost, 0, ""));
     ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
 }
 
 TEST_F(CEZMQXConfigTest, startDockerMode)
 {
-    ASSERT_EQ(CEZMQX_SERVICE_UNAVAILABLE, ezmqxStartDockerMode(configHandle));
+    ASSERT_EQ(CEZMQX_SERVICE_UNAVAILABLE, ezmqxStartDockerMode(configHandle, tnsConfPath));
     ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
 }
 
@@ -57,7 +58,7 @@ TEST_F(CEZMQXConfigTest, addAmlModel)
     const char* amlPath[1] = {"sample_data_model.aml"};
     char** idArr;
     size_t arrsize;
-    ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
+    ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, localhost, 0, ""));
     ASSERT_EQ(CEZMQX_OK, ezmqxAddAmlModel(configHandle, amlPath, 1, &idArr, &arrsize));
     ASSERT_EQ(CEZMQX_INVALID_PARAM, ezmqxAddAmlModel(configHandle, NULL, 1, &idArr, &arrsize));
     ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
@@ -65,7 +66,7 @@ TEST_F(CEZMQXConfigTest, addAmlModel)
 
 TEST_F(CEZMQXConfigTest, reset)
 {
-    ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
+    ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, localhost, 0, ""));
     ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
     ASSERT_EQ(CEZMQX_INVALID_PARAM, ezmqxReset(NULL));
 }

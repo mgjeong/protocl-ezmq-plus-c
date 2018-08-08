@@ -46,6 +46,8 @@ if not cezmqx_env.get('RELEASE'):
     build_mode = 'debug'
 
 cezmqx_env.PrependUnique(LIBS=['ezmq_plus'], LIBPATH=[os.path.join('./dependencies/protocol-ezmq-plus-cpp/out/linux/', target_arch, build_mode)])
+cezmqx_env.PrependUnique(LIBS=['aml'], LIBPATH=[os.path.join('./dependencies/datamodel-aml-c/dependencies/datamodel-aml-cpp/out/linux/', target_arch, build_mode)])
+cezmqx_env.PrependUnique(LIBS=['caml'], LIBPATH=[os.path.join('./dependencies/datamodel-aml-c/out/linux/', target_arch, build_mode)])
 
 if target_os not in ['windows']:
     cezmqx_env.AppendUnique(

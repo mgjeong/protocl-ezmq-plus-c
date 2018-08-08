@@ -57,9 +57,10 @@ cezmqxXMLSubscriber = cezmq_plus_sample_env.Program('xmlsubscriber', 'xmlsubscri
 cezmqxAMLSubscriber = cezmq_plus_sample_env.Program('amlsubscriber', 'amlsubscriber.c')
 cezmqxTopicDiscovery = cezmq_plus_sample_env.Program('topicdiscovery', 'topicdiscovery.c')
 
-# copy .aml file to executable folder
+# copy .aml and tns config file to executable folder
 src_dir = cezmq_plus_sample_env.get('SRC_DIR')
 cezmq_samples_src_dir = src_dir + '/samples/'
 cezmq_samples_build_dir = cezmq_plus_sample_env.get('BUILD_DIR') + '/samples'
 cezmq_plus_sample_env.Alias("install", cezmq_plus_sample_env.Install(cezmq_samples_build_dir, cezmq_samples_src_dir + 'sample_data_model.aml'))
+cezmq_plus_sample_env.Alias("install", cezmq_plus_sample_env.Install(cezmq_samples_build_dir, cezmq_samples_src_dir + 'tnsConf.json'))
 

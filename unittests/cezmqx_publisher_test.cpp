@@ -32,7 +32,7 @@ class CEZMQXAMLPubTest : public testing::Test
         virtual void SetUp()
         {
             ASSERT_EQ(CEZMQX_OK, ezmqxCreateConfig(&configHandle));
-            ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
+            ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, localhost, 0, ""));
         }
 
         virtual void TearDown()

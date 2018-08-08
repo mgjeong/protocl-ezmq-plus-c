@@ -20,6 +20,7 @@
 
 #include "cezmqxconfig.h"
 #include "cezmqxamlsubscriber.h"
+#include "unittesthelper.h"
 
 void amlSubCB(const char * /*topic*/, amlObjectHandle_t /*amlObject*/)
 {
@@ -41,7 +42,7 @@ class CEZMQXAMLSubTest : public testing::Test
         virtual void SetUp()
         {
             ASSERT_EQ(CEZMQX_OK, ezmqxCreateConfig(&configHandle));
-            ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
+            ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, localhost, 0, ""));
             const char* amlPath[1] = {"sample_data_model.aml"};
             char** idArr;
             size_t arrsize;

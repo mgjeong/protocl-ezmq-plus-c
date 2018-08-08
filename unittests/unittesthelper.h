@@ -21,6 +21,9 @@
 
 #include "camlinterface.h"
 
+const char *tnsConfPath = "tnsConf.json";
+const char *localhost = "localhost";
+
 char* getCurrentTime()
 {
     char* timeStr = (char*)malloc(sizeof(char) * 10);
