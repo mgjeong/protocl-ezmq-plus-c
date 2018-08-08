@@ -57,8 +57,9 @@ char* getCurrentTime()
     return timeStr;
 }
 
-amlObjectHandle_t getAMLObject()
+amlObjectHandle_t createAMLObject()
 {
+    // create "Model" data
     amlDataHandle_t model;
     CreateAMLData(&model);
 
@@ -91,6 +92,11 @@ amlObjectHandle_t getAMLObject()
     AMLObject_AddData(object, "Model", model);
     AMLObject_AddData(object, "Sample", sample);
 
+    DestroyAMLData(model);
+    DestroyAMLData(axis);
+    DestroyAMLData(info);
+    DestroyAMLData(sample);
+
     return object;
 }
 
@@ -105,16 +111,19 @@ void printError()
 
 void publishData(int numberOfEvents)
 {
-    amlObjectHandle_t amlObject = getAMLObject();
     printf("\nWill publish %d events at a interval of 1 seconds!!!\n", numberOfEvents);
     for (int i=1; i <= numberOfEvents; i++)
     {
         printf("\nPublished data: %d\n", i);
+
+        amlObjectHandle_t amlObject = createAMLObject();
         CEZMQXErrorCode result = ezmqxAMLPublish(g_pubHandle, amlObject);
         if(result != CEZMQX_OK)
         {
             printf("\nPublish failed [Result]: %d\n", result);
         }
+        DestroyAMLObject(amlObject);
+
         sleep(1);
     }
 }
