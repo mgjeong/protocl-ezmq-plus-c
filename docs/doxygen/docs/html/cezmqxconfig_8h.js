@@ -5,6 +5,6 @@ var cezmqxconfig_8h =
     [ "ezmqxAddAmlModel", "cezmqxconfig_8h.html#af4d9e460cd6ba94bef0a936ee210617e", null ],
     [ "ezmqxCreateConfig", "cezmqxconfig_8h.html#a05a52589b773322e21dbe263c36d3c2b", null ],
     [ "ezmqxReset", "cezmqxconfig_8h.html#a9184dc135027a5ba9aa252c11e1b2824", null ],
-    [ "ezmqxStartDockerMode", "cezmqxconfig_8h.html#abe2aa6c6902279af96e0d90609560b43", null ],
-    [ "ezmqxStartStandAloneMode", "cezmqxconfig_8h.html#a0807760ce180e44c34f769ac82ca1533", null ]
+    [ "ezmqxStartDockerMode", "cezmqxconfig_8h.html#ad6db3396560c7ad77b87c2d81b5f1cf6", null ],
+    [ "ezmqxStartStandAloneMode", "cezmqxconfig_8h.html#a8beec39aeffdb8b43828fbe8a7ce4ad5", null ]
 ];

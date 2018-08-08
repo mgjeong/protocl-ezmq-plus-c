@@ -45,8 +45,8 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateConfig(ezmqxConfigHandle_t *handle);
  * Start as DockerMode that working with Pharos system.
  * In DockerMode, stack automatically using Tns service.
  *
- * @param tnsConfPath - [in] path to tns configuration file.
  * @param handle - [in] Config Handle.
+ * @param tnsConfPath - [in] path to tns configuration file.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
