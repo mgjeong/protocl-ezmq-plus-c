@@ -46,23 +46,25 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateConfig(ezmqxConfigHandle_t *handle);
  * In DockerMode, stack automatically using Tns service.
  *
  * @param handle - [in] Config Handle.
+ * @param tnsConfPath - [in] path to tns configuration file.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxStartDockerMode(ezmqxConfigHandle_t handle);
+EZMQX_EXPORT CEZMQXErrorCode ezmqxStartDockerMode(ezmqxConfigHandle_t handle,
+    const char *tnsConfPath);
 
 /**
  *  Start as StandAloneMode that working without pharos system.
  *
  * @param handle - [in] Config Handle.
+ * @param hostAddr - [in] Ip address of host.
  * @param useTns - [in] Whether to use tns. [1: Use TNS, otherwise 0]
  * @param tnsAddr - [in] TNS address, if useTns is false this value will be ignored.
  *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
-EZMQX_EXPORT CEZMQXErrorCode ezmqxStartStandAloneMode(ezmqxConfigHandle_t handle, int useTns,
-        const char *tnsAddr);
-
+EZMQX_EXPORT CEZMQXErrorCode ezmqxStartStandAloneMode(ezmqxConfigHandle_t handle,
+    const char *hostAddr, int useTns, const char *tnsAddr);
 
 /**
  *  Add aml model file for publish or subscribe AML data.

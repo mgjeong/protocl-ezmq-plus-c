@@ -71,4 +71,5 @@ src_dir = cezmq_plus_unittest_env.get('SRC_DIR')
 cezmq_ut_src_dir = src_dir + '/unittests/'
 cezmq_ut_build_dir = cezmq_plus_unittest_env.get('BUILD_DIR') + '/unittests'
 cezmq_plus_unittest_env.Alias("install", cezmq_plus_unittest_env.Install(cezmq_ut_build_dir, cezmq_ut_src_dir + 'sample_data_model.aml'))
+cezmq_plus_unittest_env.Alias("install", cezmq_plus_unittest_env.Install(cezmq_ut_build_dir, cezmq_ut_src_dir + 'tnsConf.json'))
 

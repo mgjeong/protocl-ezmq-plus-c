@@ -27,6 +27,67 @@
 using namespace std;
 using namespace EZMQX;
 
+static amlDataHandle_t convertToAmlDataHandle(const AML::AMLData* amlData)
+{
+    amlDataHandle_t amlDataHandle = NULL;
+    CreateAMLData(&amlDataHandle);
+
+    vector<string> keys = amlData->getKeys();
+    for (string key : keys)
+    {
+        AML::AMLValueType type = amlData->getValueType(key);
+        if (AML::AMLValueType::String == type)
+        {
+            string valStr = amlData->getValueToStr(key);
+            AMLData_SetValueStr(amlDataHandle, key.c_str(), valStr.c_str());
+        }
+        else if (AML::AMLValueType::StringArray == type)
+        {
+            vector<string> valStrArr = amlData->getValueToStrArr(key);
+
+            vector<const char*> charVec(valStrArr.size());
+            for (unsigned i = 0; i < valStrArr.size(); ++i)
+            {
+                charVec[i] = valStrArr[i].data();
+            }
+
+            AMLData_SetValueStrArr(amlDataHandle, key.c_str(), charVec.data(), charVec.size());
+        }
+        else if (AML::AMLValueType::AMLData == type)
+        {
+            AML::AMLData valAMLData = amlData->getValueToAMLData(key);
+            amlDataHandle_t valAmlDataHandle = convertToAmlDataHandle(&valAMLData);
+
+            AMLData_SetValueAMLData(amlDataHandle, key.c_str(), valAmlDataHandle);
+
+            DestroyAMLData(valAmlDataHandle);
+        }
+    }
+
+    return amlDataHandle;
+}
+
+static amlObjectHandle_t convertToAmlObjHandle(const AML::AMLObject* amlObject)
+{
+    amlObjectHandle_t amlObjHandle = NULL;
+    CreateAMLObjectWithID(amlObject->getDeviceId().c_str(), amlObject->getTimeStamp().c_str(),
+                        amlObject->getId().c_str(), &amlObjHandle);
+
+    vector<string> dataNames = amlObject->getDataNames();
+    for (string name : dataNames)
+    {
+        AML::AMLData amlData = amlObject->getData(name);
+
+        amlDataHandle_t amlDataHandle = convertToAmlDataHandle(&amlData);
+
+        AMLObject_AddData(amlObjHandle, name.c_str(), amlDataHandle);
+
+        DestroyAMLData(amlDataHandle);
+    }
+
+    return amlObjHandle;
+}
+
 CEZMQXErrorCode ezmqxGetAMLSubscriber(const char *topic, int isHierarchical, cAmlSubCB amlSubCb,
         cSubErrCB subErrCb, ezmqxAMLSubHandle_t *handle)
 {
@@ -35,7 +96,11 @@ CEZMQXErrorCode ezmqxGetAMLSubscriber(const char *topic, int isHierarchical, cAm
     EZMQX::AmlSubCb subCb = [amlSubCb](std::string topic, const AML::AMLObject& payload)
     {
         const AML::AMLObject *amlObject = dynamic_cast<const AML::AMLObject*>(&payload);
-        amlSubCb(topic.c_str(), (void *)amlObject);
+        amlObjectHandle_t amlObjHandle = convertToAmlObjHandle(amlObject);
+
+        amlSubCb(topic.c_str(), amlObjHandle);
+
+        DestroyAMLObject(amlObjHandle);
     };
     EZMQX::SubErrCb errCb = [subErrCb](std::string topic, EZMQX::ErrorCode errCode)
     {
@@ -61,7 +126,11 @@ CEZMQXErrorCode ezmqxGetAMLSubscriber1(ezmqxTopicHandle_t topicHandle, cAmlSubCB
     EZMQX::AmlSubCb subCb = [amlSubCb](std::string topic, const AML::AMLObject& payload)
     {
         const AML::AMLObject *amlObject = dynamic_cast<const AML::AMLObject*>(&payload);
-        amlSubCb(topic.c_str(), (void *)amlObject);
+        amlObjectHandle_t amlObjHandle = convertToAmlObjHandle(amlObject);
+
+        amlSubCb(topic.c_str(), amlObjHandle);
+
+        DestroyAMLObject(amlObjHandle);
     };
     EZMQX::SubErrCb errCb = [subErrCb](std::string topic, EZMQX::ErrorCode errCode)
     {
@@ -88,7 +157,11 @@ CEZMQXErrorCode ezmqxGetAMLSubscriber2(ezmqxTopicHandle_t *topicHandle, const si
     EZMQX::AmlSubCb subCb = [amlSubCb](std::string topic, const AML::AMLObject& payload)
     {
         const AML::AMLObject *amlObject = dynamic_cast<const AML::AMLObject*>(&payload);
-        amlSubCb(topic.c_str(), (void *)amlObject);
+        amlObjectHandle_t amlObjHandle = convertToAmlObjHandle(amlObject);
+
+        amlSubCb(topic.c_str(), amlObjHandle);
+
+        DestroyAMLObject(amlObjHandle);
     };
     EZMQX::SubErrCb errCb = [subErrCb](std::string topic, EZMQX::ErrorCode errCode)
     {

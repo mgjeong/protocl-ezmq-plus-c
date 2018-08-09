@@ -33,6 +33,8 @@ cp ./../../xmlsubscriber .
 cp ./../../topicdiscovery .
 #copy .aml file
 cp ./../../sample_data_model.aml .
+#copy tns config file
+cp ./../../tnsConf.json .
 
 cd $DOCKER_ROOT
 if [ -d "./ezmqx_cextlibs" ] ; then

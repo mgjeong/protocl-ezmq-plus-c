@@ -38,13 +38,14 @@ CEZMQXErrorCode ezmqxCreateConfig(ezmqxConfigHandle_t *handle)
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxStartDockerMode(ezmqxConfigHandle_t handle)
+CEZMQXErrorCode ezmqxStartDockerMode(ezmqxConfigHandle_t handle, const char *tnsConfPath)
 {
     VERIFY_NON_NULL(handle)
+    VERIFY_NON_NULL(tnsConfPath)
     EZMQX::Config* configObj = static_cast<EZMQX::Config *>(handle);
     try
     {
-        configObj->startDockerMode();
+        configObj->startDockerMode(tnsConfPath);
     }
     catch(EZMQX::Exception& e)
     {
@@ -53,14 +54,16 @@ CEZMQXErrorCode ezmqxStartDockerMode(ezmqxConfigHandle_t handle)
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxStartStandAloneMode(ezmqxConfigHandle_t handle, int useTns, const char *tnsAddr)
+CEZMQXErrorCode ezmqxStartStandAloneMode(ezmqxConfigHandle_t handle, const char *hostAddr,
+    int useTns, const char *tnsAddr)
 {
     VERIFY_NON_NULL(handle)
+    VERIFY_NON_NULL(hostAddr)
     VERIFY_NON_NULL(tnsAddr)
     EZMQX::Config* configObj = static_cast<EZMQX::Config *>(handle);
     try
     {
-        configObj->startStandAloneMode(useTns, tnsAddr);
+        configObj->startStandAloneMode(hostAddr, useTns, tnsAddr);
     }
     catch(EZMQX::Exception& e)
     {

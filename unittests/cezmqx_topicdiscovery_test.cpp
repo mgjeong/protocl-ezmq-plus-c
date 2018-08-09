@@ -20,6 +20,7 @@
 
 #include "cezmqxconfig.h"
 #include "cezmqxtopicdiscovery.h"
+#include "unittesthelper.h"
 
 class CEZMQXTDiscoveryTest : public testing::Test
 {
@@ -29,7 +30,7 @@ class CEZMQXTDiscoveryTest : public testing::Test
         virtual void SetUp()
         {
             ASSERT_EQ(CEZMQX_OK, ezmqxCreateConfig(&configHandle));
-            ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, 0, ""));
+            ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, localhost, 0, ""));
             ASSERT_EQ(CEZMQX_OK, ezmqxCreateTopicDiscovery(&discoveryHandle));
         }
 

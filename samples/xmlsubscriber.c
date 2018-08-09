@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
     }
     if (1 == isStandAlone)
     {
-        result = ezmqxStartStandAloneMode(configHandle, 0, "");
+        result = ezmqxStartStandAloneMode(configHandle, "localhost", 0, "");
         if(result != CEZMQX_OK)
         {
             printf("\nStart stand alone mode failed [Result]: %d\n", result);
@@ -151,7 +151,8 @@ int main(int argc, char* argv[])
     }
     else
     {
-        result = ezmqxStartDockerMode(configHandle);
+        const char *tnsConfPath = "tnsConf.json";
+        result = ezmqxStartDockerMode(configHandle, tnsConfPath);
         if(result != CEZMQX_OK)
         {
             printf("\nStart docker mode failed [Result]: %d\n", result);
