@@ -62,6 +62,8 @@ TEST_F(CEZMQXTopicTest, getEndpoint)
     {
         EXPECT_EQ(CEZMQX_OK, CEZMQX_INVALID_PARAM);
     }
+    //Free the end point
+    ezmqxDestroyEndPoint(epHandle);
 }
 
 TEST_F(CEZMQXTopicTest, getTopic)

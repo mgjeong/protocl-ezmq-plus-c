@@ -56,6 +56,9 @@ void printTopicList(ezmqxTopicHandle_t *topicList, size_t listSize)
         fflush(stdout);
         printf("\nEndpoint: %s", toStr);
         printf("\n=================================================\n");
+
+        //Free the end point
+        ezmqxDestroyEndPoint(epHandle);
     }
 }
 

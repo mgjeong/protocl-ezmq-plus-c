@@ -57,6 +57,8 @@ class CEZMQXXMLSubTest : public testing::Test
             {
                 ASSERT_EQ(CEZMQX_OK, ezmqxDestroyXMLSubscriber(subHandle));
             }
+            ASSERT_EQ(CEZMQX_OK, ezmqxDestroyEndPoint(endpointHandle));
+            ASSERT_EQ(CEZMQX_OK, ezmqxDestroyTopic(topicHandle));
             ASSERT_EQ(CEZMQX_OK, ezmqxReset(configHandle));
         }
 };
@@ -74,10 +76,15 @@ TEST_F(CEZMQXXMLSubTest, getXMLSubscriber1)
 
 TEST_F(CEZMQXXMLSubTest, getXMLSubscriber2)
 {
-    void **topicHandleList = (void **)malloc(sizeof(void *));
+    void **topicHandleList = (void **)malloc(sizeof(void *)* 2);
+    if(NULL == topicHandleList)
+    {
+        return;
+    }
     topicHandleList[0] = topicHandle;
     topicHandleList[1] = topicHandle;
     ASSERT_EQ(CEZMQX_OK, ezmqxGetXMLSubscriber2(topicHandleList, 2, xmlSubCB, xmlSubErrCB, &subHandle));
+    free(topicHandleList);
 }
 
 TEST_F(CEZMQXXMLSubTest, destroyXMLSubscriber)

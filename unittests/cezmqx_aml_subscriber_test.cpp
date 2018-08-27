@@ -74,10 +74,15 @@ TEST_F(CEZMQXAMLSubTest, getAMLSubscriber1)
 
 TEST_F(CEZMQXAMLSubTest, getAMLSubscriber2)
 {
-    void **topicHandleList = (void **)malloc(sizeof(void *));
+    void **topicHandleList = (void **)malloc(sizeof(void *) * 2);
+    if(NULL == topicHandleList)
+    {
+        return;
+    }
     topicHandleList[0] = topicHandle;
     topicHandleList[1] = topicHandle;
     ASSERT_EQ(CEZMQX_OK, ezmqxGetAMLSubscriber2(topicHandleList, 2, amlSubCB, amlSubErrCB, &subHandle));
+    free(topicHandleList);
 }
 
 TEST_F(CEZMQXAMLSubTest, destroyAMLSubscriber)

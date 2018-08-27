@@ -28,7 +28,14 @@ using namespace EZMQX;
 CEZMQXErrorCode ezmqxCreateTopicDiscovery(ezmqxTDiscoveryHandle_t *handle)
 {
     VERIFY_NON_NULL(handle)
-    *handle  =  new(std::nothrow) TopicDiscovery();
+    try
+    {
+        *handle  =  new(std::nothrow) TopicDiscovery();
+    }
+    catch(EZMQX::Exception& e)
+    {
+        return CEZMQXErrorCode(e.getErrCode());
+    }
     return CEZMQX_OK;
 }
 
@@ -59,6 +66,7 @@ CEZMQXErrorCode ezmqxQuery(ezmqxTDiscoveryHandle_t handle, const char *topic, ez
     EZMQX::Endpoint nativeEndPoint = nativeTopic.getEndpoint();
     Endpoint *endPoint = new Endpoint(nativeEndPoint.getAddr(), nativeEndPoint.getPort());
     *topicHandle = new(std::nothrow) Topic(nativeTopic.getName(), nativeTopic.getDatamodel(), *endPoint);
+    delete endPoint;
     return CEZMQX_OK;
 }
 
