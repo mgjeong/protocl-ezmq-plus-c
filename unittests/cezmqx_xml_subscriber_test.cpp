@@ -83,8 +83,9 @@ TEST_F(CEZMQXXMLSubTest, getXMLSubscriber2)
     }
     topicHandleList[0] = topicHandle;
     topicHandleList[1] = topicHandle;
-    ASSERT_EQ(CEZMQX_OK, ezmqxGetXMLSubscriber2(topicHandleList, 2, xmlSubCB, xmlSubErrCB, &subHandle));
+    CEZMQXErrorCode result = ezmqxGetXMLSubscriber2(topicHandleList, 2, xmlSubCB, xmlSubErrCB, &subHandle);
     free(topicHandleList);
+    ASSERT_EQ(CEZMQX_OK, result);
 }
 
 TEST_F(CEZMQXXMLSubTest, destroyXMLSubscriber)

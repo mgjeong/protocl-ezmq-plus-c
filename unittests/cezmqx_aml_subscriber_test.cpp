@@ -81,8 +81,9 @@ TEST_F(CEZMQXAMLSubTest, getAMLSubscriber2)
     }
     topicHandleList[0] = topicHandle;
     topicHandleList[1] = topicHandle;
-    ASSERT_EQ(CEZMQX_OK, ezmqxGetAMLSubscriber2(topicHandleList, 2, amlSubCB, amlSubErrCB, &subHandle));
+    CEZMQXErrorCode result = ezmqxGetAMLSubscriber2(topicHandleList, 2, amlSubCB, amlSubErrCB, &subHandle);
     free(topicHandleList);
+    ASSERT_EQ(CEZMQX_OK, result);
 }
 
 TEST_F(CEZMQXAMLSubTest, destroyAMLSubscriber)

@@ -55,15 +55,17 @@ TEST_F(CEZMQXTopicTest, getEndpoint)
     ASSERT_EQ(CEZMQX_OK, ezmqxCreateEndPoint2("address", 5562, &endPointHandle));
     ASSERT_EQ(CEZMQX_OK, ezmqxCreateTopic1("topic", "schema", endPointHandle, &topicHandle));
     ezmqxEPHandle_t epHandle;
-    ASSERT_EQ(CEZMQX_OK, ezmqxGetEndpoint(topicHandle, &epHandle));
+    CEZMQXErrorCode getEPResult = ezmqxGetEndpoint(topicHandle, &epHandle);
     char *address;
-    ASSERT_EQ(CEZMQX_OK, ezmqxGetAddr(epHandle, &address));
+    CEZMQXErrorCode getAddrResult = ezmqxGetAddr(epHandle, &address);
+    //Free the end point
+    ezmqxDestroyEndPoint(epHandle);
+    ASSERT_EQ(CEZMQX_OK, getEPResult);
+    ASSERT_EQ(CEZMQX_OK, getAddrResult);
     if(0 != strcmp("address", address))
     {
         EXPECT_EQ(CEZMQX_OK, CEZMQX_INVALID_PARAM);
     }
-    //Free the end point
-    ezmqxDestroyEndPoint(epHandle);
 }
 
 TEST_F(CEZMQXTopicTest, getTopic)

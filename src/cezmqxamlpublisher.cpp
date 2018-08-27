@@ -22,6 +22,7 @@
 
 #include "camlinterface.h"
 #include "AMLInterface.h"
+#include "AMLException.h"
 
 #include "cezmqxamlpublisher.h"
 
@@ -166,7 +167,7 @@ CEZMQXErrorCode ezmqxAMLPublish(ezmqxAMLPubHandle_t handle, amlObjectHandle_t am
         return CEZMQXErrorCode(e.getErrCode());
     }
     // This is added temporarily to fix static analyzer issue, this should be handled in ezmq-plus-cpp publish API.
-    catch(std::exception& e)
+    catch(AML::AMLException& e)
     {
         delete amlObj;
         return CEZMQXErrorCode(InvalidAmlModel);
