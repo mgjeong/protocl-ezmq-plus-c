@@ -156,9 +156,10 @@ CEZMQXErrorCode ezmqxAMLPublish(ezmqxAMLPubHandle_t handle, amlObjectHandle_t am
     VERIFY_NON_NULL(handle)
     VERIFY_NON_NULL(amlObjHandle)
     AmlPublisher *publisher = static_cast<AmlPublisher *>(handle);
-    AML::AMLObject *amlObj = convertToCppAmlObject(amlObjHandle);
+    AML::AMLObject *amlObj = nullptr;
     try
     {
+        amlObj = convertToCppAmlObject(amlObjHandle);
         publisher->publish(*amlObj);
     }
     catch(EZMQX::Exception& e)
