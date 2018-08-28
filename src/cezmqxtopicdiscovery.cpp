@@ -28,15 +28,7 @@ using namespace EZMQX;
 CEZMQXErrorCode ezmqxCreateTopicDiscovery(ezmqxTDiscoveryHandle_t *handle)
 {
     VERIFY_NON_NULL(handle)
-    try
-    {
-        *handle  =  new(std::nothrow) TopicDiscovery();
-    }
-    catch(EZMQX::Exception& e)
-    {
-        ezmqxDestroyTopicDiscovery(handle);
-        return CEZMQXErrorCode(e.getErrCode());
-    }
+    *handle  =  new(std::nothrow) TopicDiscovery();
     return CEZMQX_OK;
 }
 
