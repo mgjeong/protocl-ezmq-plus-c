@@ -34,7 +34,7 @@ CEZMQXErrorCode ezmqxCreateTopicDiscovery(ezmqxTDiscoveryHandle_t *handle)
     }
     catch(EZMQX::Exception& e)
     {
-        free(*handle);
+        ezmqxDestroyTopicDiscovery(handle);
         return CEZMQXErrorCode(e.getErrCode());
     }
     return CEZMQX_OK;
