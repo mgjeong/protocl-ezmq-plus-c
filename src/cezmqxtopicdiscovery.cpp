@@ -59,6 +59,7 @@ CEZMQXErrorCode ezmqxQuery(ezmqxTDiscoveryHandle_t handle, const char *topic, ez
     EZMQX::Endpoint nativeEndPoint = nativeTopic.getEndpoint();
     Endpoint *endPoint = new Endpoint(nativeEndPoint.getAddr(), nativeEndPoint.getPort());
     *topicHandle = new(std::nothrow) Topic(nativeTopic.getName(), nativeTopic.getDatamodel(), *endPoint);
+    delete endPoint;
     return CEZMQX_OK;
 }
 

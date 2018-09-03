@@ -22,6 +22,7 @@
 
 #include "camlinterface.h"
 #include "AMLInterface.h"
+#include "AMLException.h"
 
 #include "cezmqxamlpublisher.h"
 
@@ -155,15 +156,22 @@ CEZMQXErrorCode ezmqxAMLPublish(ezmqxAMLPubHandle_t handle, amlObjectHandle_t am
     VERIFY_NON_NULL(handle)
     VERIFY_NON_NULL(amlObjHandle)
     AmlPublisher *publisher = static_cast<AmlPublisher *>(handle);
-    AML::AMLObject *amlObj = convertToCppAmlObject(amlObjHandle);
+    AML::AMLObject *amlObj = nullptr;
     try
     {
+        amlObj = convertToCppAmlObject(amlObjHandle);
         publisher->publish(*amlObj);
     }
     catch(EZMQX::Exception& e)
     {
         delete amlObj;
         return CEZMQXErrorCode(e.getErrCode());
+    }
+    // This is added temporarily to fix static analyzer issue, this should be handled in ezmq-plus-cpp publish API.
+    catch(AML::AMLException& e)
+    {
+        delete amlObj;
+        return CEZMQXErrorCode(InvalidAmlModel);
     }
 
     delete amlObj;
@@ -187,6 +195,7 @@ CEZMQXErrorCode ezmqxAMLPubGetTopic(ezmqxAMLPubHandle_t handle, ezmqxTopicHandle
     EZMQX::Endpoint nativeEndPoint = nativeTopic.getEndpoint();
     Endpoint *endPoint = new Endpoint(nativeEndPoint.getAddr(), nativeEndPoint.getPort());
     *topicHandle = new(std::nothrow) Topic(nativeTopic.getName(), nativeTopic.getDatamodel(), *endPoint);
+    delete endPoint;
     return CEZMQX_OK;
 }
 
