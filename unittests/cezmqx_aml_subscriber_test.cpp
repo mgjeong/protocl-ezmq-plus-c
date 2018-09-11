@@ -39,16 +39,16 @@ class CEZMQXAMLSubTest : public testing::Test
         ezmqxEPHandle_t endpointHandle;
         ezmqxTopicHandle_t topicHandle;
         ezmqxAMLSubHandle_t subHandle;
+        char** idArr;
+        size_t arrsize;
         virtual void SetUp()
         {
             ASSERT_EQ(CEZMQX_OK, ezmqxCreateConfig(&configHandle));
             ASSERT_EQ(CEZMQX_OK, ezmqxStartStandAloneMode(configHandle, localhost, 0, ""));
             const char* amlPath[1] = {"sample_data_model.aml"};
-            char** idArr;
-            size_t arrsize;
             ASSERT_EQ(CEZMQX_OK,ezmqxAddAmlModel(configHandle, amlPath, 1, &idArr, &arrsize));
             ezmqxCreateEndPoint2("localhost", 4000, &endpointHandle);
-            ezmqxCreateTopic1("/topic", idArr[0], endpointHandle, &topicHandle);
+            ezmqxCreateTopic1("/topic", idArr[0], 0, endpointHandle, &topicHandle);
         }
 
         virtual void TearDown()
@@ -70,6 +70,7 @@ TEST_F(CEZMQXAMLSubTest, getAMLSubscriber)
 TEST_F(CEZMQXAMLSubTest, getAMLSubscriber1)
 {
     ASSERT_EQ(CEZMQX_OK, ezmqxGetAMLSubscriber1(topicHandle, amlSubCB, amlSubErrCB, &subHandle));
+    ASSERT_EQ(0, ezmqxAMLSubIsSecured(subHandle));
 }
 
 TEST_F(CEZMQXAMLSubTest, getAMLSubscriber2)
@@ -85,6 +86,51 @@ TEST_F(CEZMQXAMLSubTest, getAMLSubscriber2)
     free(topicHandleList);
     ASSERT_EQ(CEZMQX_OK, result);
 }
+
+TEST_F(CEZMQXAMLSubTest, getSecuredAMLSubscriber)
+{
+    ezmqxEPHandle_t endpoint1;
+    ezmqxCreateEndPoint2("192.167.7.6", 5565, &endpoint1);
+    ezmqxTopicHandle_t topicHandle1;
+    ezmqxCreateTopic1("topic1", idArr[0], 1, endpoint1, &topicHandle1);
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetSecuredAMLSubscriber(topicHandle1, serverPublicKey, clientPublicKey,
+                                                                                                clientSecretKey, amlSubCB, amlSubErrCB, &subHandle));
+    ASSERT_EQ(0, ezmqxAMLSubIsSecured(subHandle)); //Need to be fixed in CPP sdk.
+}
+
+TEST_F(CEZMQXAMLSubTest, getSecuredAMLSubscriber2)
+{
+    ezmqxTopicKeyMap **list = (ezmqxTopicKeyMap **)malloc(sizeof(ezmqxTopicKeyMap)*2);
+
+    ezmqxEPHandle_t endpoint1;
+    ezmqxCreateEndPoint2("192.167.7.6", 5565, &endpoint1);
+    ezmqxTopicHandle_t topicHandle1;
+    ezmqxCreateTopic1("topic1", idArr[0], 1, endpoint1, &topicHandle1);
+    ezmqxTopicKeyMap *first = (ezmqxTopicKeyMap *)malloc(sizeof(ezmqxTopicKeyMap));
+    first->serverPublicKey = serverPublicKey;
+    first->topicHandle = topicHandle1;
+    list[0] = first;
+
+    ezmqxEPHandle_t endpoint2;
+    ezmqxCreateEndPoint2("192.167.7.7", 5566, &endpoint2);
+    ezmqxTopicHandle_t topicHandle2;
+    ezmqxCreateTopic1("topic2", idArr[0], 1, endpoint2, &topicHandle2);
+    ezmqxTopicKeyMap *second = (ezmqxTopicKeyMap *)malloc(sizeof(ezmqxTopicKeyMap));
+    second->serverPublicKey = "tXJx&1^QE2g7WCXbF.$$TVP.wCtxwNhR8?iLiEDE";
+    second->topicHandle = topicHandle2;
+    list[1] = second;
+
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetSecuredAMLSubscriber2(list, 2, clientPublicKey, clientSecretKey,
+                                                                                            amlSubCB, amlSubErrCB, &subHandle));
+    ASSERT_EQ(0, ezmqxAMLSubIsSecured(subHandle)); //Need to be fixed in CPP sdk.
+
+    ezmqxDestroyEndPoint(endpoint1);
+    ezmqxDestroyEndPoint(endpoint2);
+    ezmqxDestroyTopic(topicHandle1);
+    ezmqxDestroyTopic(topicHandle2);
+    free(list);
+}
+
 
 TEST_F(CEZMQXAMLSubTest, destroyAMLSubscriber)
 {

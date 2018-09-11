@@ -31,4 +31,5 @@ export LD_LIBRARY_PATH=../extlibs
 ./cezmqx_aml_subscriber_test
 ./cezmqx_topic_test
 ./cezmqx_xml_subscriber_test
+./cezmqx_utils_test
 

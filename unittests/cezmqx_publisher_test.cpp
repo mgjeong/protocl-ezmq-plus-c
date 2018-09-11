@@ -49,6 +49,18 @@ TEST_F(CEZMQXAMLPubTest, getAMLPublisher)
     size_t arrsize;
     ASSERT_EQ(CEZMQX_OK,ezmqxAddAmlModel(configHandle, amlPath, 1, &idArr, &arrsize));
     ASSERT_EQ(CEZMQX_OK, ezmqxGetAMLPublisher("/topic", AmlModelId, idArr[0], 4000, &publisherHandle));
+    ASSERT_EQ(0, ezmqxAMLPubIsSecured(publisherHandle));
+}
+
+TEST_F(CEZMQXAMLPubTest, getSecuredAMLPublisher)
+{
+    const char *serverSecretKey = "[:X%Q3UfY+kv2A^.wv:(qy2E=bk0L][cm=mS3Hcx";
+    const char* amlPath[1] = {"sample_data_model.aml"};
+    char** idArr;
+    size_t arrsize;
+    ASSERT_EQ(CEZMQX_OK,ezmqxAddAmlModel(configHandle, amlPath, 1, &idArr, &arrsize));
+    ASSERT_EQ(CEZMQX_OK, ezmqxGetSecuredAMLPublisher("/topic", serverSecretKey, AmlModelId, idArr[0], 4001, &publisherHandle));
+    ASSERT_EQ(1, ezmqxAMLPubIsSecured(publisherHandle));
 }
 
 TEST_F(CEZMQXAMLPubTest, publish)

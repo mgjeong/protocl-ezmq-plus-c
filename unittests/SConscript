@@ -35,7 +35,8 @@ cezmq_plus_unittest_env.AppendUnique(CPPPATH=[
     '../dependencies/datamodel-aml-c/dependencies/datamodel-aml-cpp/include',
     '../extlibs/gtest/googletest-release-1.8.0/googletest/include/gtest',
     '../extlibs/gtest/googletest-release-1.8.0/googlemock/include/gmock',
-    '../include'
+    '../include',
+    '../include/internal' #added to test internal util functions
 ])
 
 cezmq_plus_unittest_env.AppendUnique(
@@ -65,6 +66,7 @@ cezmqx_topicdiscovery_test = cezmq_plus_unittest_env.Program('cezmqx_topicdiscov
 cezmqx_publisher_test = cezmq_plus_unittest_env.Program('cezmqx_publisher_test', 'cezmqx_publisher_test.cpp')
 cezmqx_aml_subscriber_test = cezmq_plus_unittest_env.Program('cezmqx_aml_subscriber_test', 'cezmqx_aml_subscriber_test.cpp')
 cezmqx_xml_subscriber_test = cezmq_plus_unittest_env.Program('cezmqx_xml_subscriber_test', 'cezmqx_xml_subscriber_test.cpp')
+cezmqx_utils_test = cezmq_plus_unittest_env.Program('cezmqx_utils_test', 'cezmqx_utils_test.cpp')
 
 # copy .aml file to executable folder
 src_dir = cezmq_plus_unittest_env.get('SRC_DIR')
