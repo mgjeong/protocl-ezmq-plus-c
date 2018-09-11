@@ -58,7 +58,7 @@ CEZMQXErrorCode ezmqxQuery(ezmqxTDiscoveryHandle_t handle, const char *topic, ez
     }
     EZMQX::Endpoint nativeEndPoint = nativeTopic.getEndpoint();
     Endpoint *endPoint = new Endpoint(nativeEndPoint.getAddr(), nativeEndPoint.getPort());
-    *topicHandle = new(std::nothrow) Topic(nativeTopic.getName(), nativeTopic.getDatamodel(), *endPoint);
+    *topicHandle = new(std::nothrow) Topic(nativeTopic.getName(), nativeTopic.getDatamodel(), nativeTopic.isSecured(), *endPoint);
     delete endPoint;
     return CEZMQX_OK;
 }
@@ -91,7 +91,7 @@ CEZMQXErrorCode ezmqxHierarchicalQuery(ezmqxTDiscoveryHandle_t handle, const cha
         EZMQX::Endpoint nativeEndPoint = nativeTopic.getEndpoint();
         Endpoint *endPoint = new Endpoint(nativeEndPoint.getAddr(), nativeEndPoint.getPort());
         ezmqxTopicHandle_t topicHandle = new(std::nothrow) Topic(nativeTopic.getName(), nativeTopic.getDatamodel(),
-                                                                                                                       *endPoint);
+                                                                   nativeTopic.isSecured(), *endPoint);
         (*topics)[i++] = topicHandle;
     }
     return CEZMQX_OK;

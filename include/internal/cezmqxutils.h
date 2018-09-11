@@ -20,10 +20,15 @@
 
 #include <list>
 
+#include "AMLInterface.h"
+#include "camlinterface.h"
+
 #include "cezmqxerrorcodes.h"
 
 char* ConvertStringToCharStr(std::string str);
 char** ConvertListToCharStrArr(std::list<std::string>& list);
+AML::AMLObject* convertToCppAmlObject(amlObjectHandle_t amlObjHandle);
+amlObjectHandle_t convertToAmlObjHandle(const AML::AMLObject* amlObject);
 
 #endif // __C_EZMQ_X_UTILS_H__
 

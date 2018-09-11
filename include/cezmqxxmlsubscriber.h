@@ -48,7 +48,7 @@ typedef void (*cXmlSubErrCB)(const char * topic, CEZMQXErrorCode errCode);
  *
  * @param topic - [in] Topic to be subscribed.
  * @param isHierarchical - [in] Whether to use Hierarchical query option when query to tns. [0 : false, 1: true]
- * @param amlSubCb - [in] Calback to get event on given topic.
+ * @param xmlSubCb - [in] Calback to get event on given topic.
  * @param subErrCb - [in] Error callback to get errorcodes on subscribed topic.
  * @param handle  - [out] Handle will be filled as return value.
  *
@@ -64,7 +64,7 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxGetXMLSubscriber(const char *topic, int isHier
  *  Get/Create XML subscriber with given topic object [handle] and callbacks.
  *
  * @param topicHandle - [in] Topic Handle.
- * @param amlSubCb - [in] Calback to get event on given topic.
+ * @param xmlSubCb - [in] Calback to get event on given topic.
  * @param subErrCb -[in] Error callback to get errorcodes on subscribed topic.
  * @param handle  -[out] Handle will be filled as return value.
  *
@@ -81,7 +81,7 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxGetXMLSubscriber1(ezmqxTopicHandle_t topicHand
  *
  * @param topicHandle - [in] Topic handle list.
  * @param listSize - [in] Size of  list.
- * @param amlSubCb - [in] Calback to get event on given topic.
+ * @param xmlSubCb - [in] Calback to get event on given topic.
  * @param subErrCb - [in] Error callback to get errorcodes on subscribed topic.
  * @param handle  - [out] Subscriber Handle will be filled as return value.
  *
@@ -92,6 +92,46 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxGetXMLSubscriber1(ezmqxTopicHandle_t topicHand
  */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxGetXMLSubscriber2(ezmqxTopicHandle_t *topicHandle,
         const size_t listSize, cXmlSubCB xmlSubCb, cXmlSubErrCB subErrCb, ezmqxXMLSubHandle_t *handle);
+
+/**
+ *  Get/Create secured subscriber with given topic object [handle] and callbacks.
+ *
+ * @param topicHandle - [in] Topic Handle.
+ * @param serverPublicKey - [in] Public key for server(publisher) that related with given topic.
+ * @param clientPublicKey - [in]  Public key for client(subscriber) that shared with given topic's owner.
+ * @param clientSecretKey - [in] Secret key for client(subscriber) that pair of given clientPublickey
+ * @param xmlSubCb - [in] Callback to get event on given topic.
+ * @param subErrCb - [in] Error callback to get errorcodes on subscribed topic.
+ * @param handle  - [out] Handle will be filled as return value.
+ *
+ * @note Subscriber instance will be allocated, so it should be deleted after use.
+ *              To destroy an instance, use ezmqxDestroyXMLSubscriber().
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
+EZMQX_EXPORT CEZMQXErrorCode ezmqxGetSecuredXMLSubscriber(ezmqxTopicHandle_t topicHandle,
+        const char *serverPublicKey, const char *clientPublicKey, const char *clientSecretKey, cXmlSubCB xmlSubCb,
+        cXmlSubErrCB subErrCb, ezmqxXMLSubHandle_t *handle);
+
+/**
+ *  Get/Create secured subscriber with given topic-public key list and callbacks.
+ *
+ * @param topicKeyList - [in] topicKey list.
+ * @param listSize - [in] Size of  list.
+ * @param clientPublicKey - [in]  Public key for client(subscriber) that shared with given topic's owner.
+ * @param clientSecretKey - [in] Secret key for client(subscriber) that pair of given clientPublickey
+ * @param xmlSubCb - [in] Callback to get event on given topic.
+ * @param subErrCb - [in] Error callback to get errorcodes on subscribed topic.
+ * @param handle  - [out] Handle will be filled as return value.
+ *
+ * @note Subscriber instance will be allocated, so it should be deleted after use.
+ *              To destroy an instance, use ezmqxDestroyXMLSubscriber().
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
+EZMQX_EXPORT CEZMQXErrorCode ezmqxGetSecuredXMLSubscriber2(ezmqxTopicKeyMap **topicKeyList,
+        const size_t listSize, const char *clientPublicKey, const char *clientSecretKey, cXmlSubCB xmlSubCb,
+        cXmlSubErrCB subErrCb, ezmqxXMLSubHandle_t *handle);
 
 /**
  *  Destroy an instance of subscriber.
@@ -134,6 +174,15 @@ EZMQX_EXPORT int ezmqxXMLSubIsTerminated(ezmqxXMLSubHandle_t handle);
  */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxXMLSubGetTopics(ezmqxXMLSubHandle_t handle,
         ezmqxTopicHandle_t **topics, size_t* listSize);
+
+ /**
+ * Check whether subscriber is secured or not.
+ *
+ * @param handle - [in] AML subscriber handle.
+ *
+ * @return 1 if Secured and 0 otherwise.
+ */
+EZMQX_EXPORT int ezmqxXMLSubIsSecured(ezmqxXMLSubHandle_t handle);
 
 #ifdef __cplusplus
 }

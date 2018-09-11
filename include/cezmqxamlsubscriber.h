@@ -95,6 +95,46 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxGetAMLSubscriber2(ezmqxTopicHandle_t *topicHan
         cAmlSubCB amlSubCb, cSubErrCB subErrCb, ezmqxAMLSubHandle_t *handle);
 
 /**
+ *  Get/Create secured subscriber with given topic object [handle] and callbacks.
+ *
+ * @param topicHandle - [in] Topic Handle.
+ * @param serverPublicKey - [in] Public key for server(publisher) that related with given topic.
+ * @param clientPublicKey - [in]  Public key for client(subscriber) that shared with given topic's owner.
+ * @param clientSecretKey - [in] Secret key for client(subscriber) that pair of given clientPublickey
+ * @param amlSubCb - [in] Callback to get eventa on given topic.
+ * @param subErrCb - [in] Error callback to get errorcodes on subscribed topic.
+ * @param handle  - [out] Handle will be filled as return value.
+ *
+ * @note Subscriber instance will be allocated, so it should be deleted after use.
+ *              To destroy an instance, use ezmqxDestroyAMLSubscriber().
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
+EZMQX_EXPORT CEZMQXErrorCode ezmqxGetSecuredAMLSubscriber(ezmqxTopicHandle_t topicHandle,
+        const char *serverPublicKey, const char *clientPublicKey, const char *clientSecretKey, cAmlSubCB amlSubCb,
+        cSubErrCB subErrCb, ezmqxAMLSubHandle_t *handle);
+
+/**
+ *  Get/Create secured subscriber with given topic-public key list and callbacks.
+ *
+ * @param topicKeyList - [in] topicKey list.
+ * @param listSize - [in] Size of  list.
+ * @param clientPublicKey - [in]  Public key for client(subscriber) that shared with given topic's owner.
+ * @param clientSecretKey - [in] Secret key for client(subscriber) that pair of given clientPublickey
+ * @param amlSubCb - [in] Callback to get eventa on given topic.
+ * @param subErrCb - [in] Error callback to get errorcodes on subscribed topic.
+ * @param handle  - [out] Handle will be filled as return value.
+ *
+ * @note Subscriber instance will be allocated, so it should be deleted after use.
+ *              To destroy an instance, use ezmqxDestroyAMLSubscriber().
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
+EZMQX_EXPORT CEZMQXErrorCode ezmqxGetSecuredAMLSubscriber2(ezmqxTopicKeyMap **topicKeyList,
+        const size_t listSize, const char *clientPublicKey, const char *clientSecretKey, cAmlSubCB amlSubCb,
+        cSubErrCB subErrCb, ezmqxAMLSubHandle_t *handle);
+
+/**
  *  Destroy an instance of subscriber.
  *
  * @param handle - [in] AML Subscriber Handle that will be destroyed.
@@ -135,6 +175,15 @@ EZMQX_EXPORT int ezmqxAMLSubIsTerminated(ezmqxAMLSubHandle_t handle);
  */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxAMLSubGetTopics(ezmqxAMLSubHandle_t handle, ezmqxTopicHandle_t **topics,
         size_t* listSize);
+
+/**
+ * Check whether subscriber is secured or not.
+ *
+ * @param handle - [in] AML subscriber handle.
+ *
+ * @return 1 if Secured and 0 otherwise.
+ */
+EZMQX_EXPORT int ezmqxAMLSubIsSecured(ezmqxAMLSubHandle_t handle);
 
 #ifdef __cplusplus
 }

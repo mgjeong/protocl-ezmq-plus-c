@@ -109,6 +109,75 @@ CEZMQXErrorCode ezmqxGetXMLSubscriber2(ezmqxTopicHandle_t *topicHandle, const si
     return CEZMQX_OK;
 }
 
+CEZMQXErrorCode ezmqxGetSecuredXMLSubscriber(ezmqxTopicHandle_t topicHandle,
+        const char *serverPublicKey, const char *clientPublicKey, const char *clientSecretKey, cXmlSubCB xmlSubCb,
+        cXmlSubErrCB subErrCb, ezmqxXMLSubHandle_t *handle)
+{
+    VERIFY_NON_NULL(topicHandle)
+    VERIFY_NON_NULL(serverPublicKey)
+    VERIFY_NON_NULL(clientPublicKey)
+    VERIFY_NON_NULL(clientSecretKey)
+    VERIFY_NON_NULL(handle)
+    EZMQX::XmlSubCb subCb = [xmlSubCb](std::string topic, const std::string& payload)
+    {
+        xmlSubCb(topic.c_str(), payload.c_str());
+    };
+    EZMQX::SubErrCb errCb = [subErrCb](std::string topic, EZMQX::ErrorCode errCode)
+    {
+        subErrCb(topic.c_str(), CEZMQXErrorCode(errCode));
+    };
+    Topic *topicObj = static_cast<Topic *>(topicHandle);
+
+    try
+    {
+        *handle = XmlSubscriber::getSecuredSubscriber(*topicObj,  serverPublicKey, clientPublicKey, clientSecretKey,
+                                                                                            subCb,errCb);
+    }
+    catch(EZMQX::Exception& e)
+    {
+        return CEZMQXErrorCode(e.getErrCode());
+    }
+    return CEZMQX_OK;
+}
+
+CEZMQXErrorCode ezmqxGetSecuredXMLSubscriber2(ezmqxTopicKeyMap **topicKeyList,
+        const size_t listSize, const char *clientPublicKey, const char *clientSecretKey, cXmlSubCB xmlSubCb,
+        cXmlSubErrCB subErrCb, ezmqxXMLSubHandle_t *handle)
+{
+    VERIFY_NON_NULL(topicKeyList)
+    VERIFY_NON_NULL(clientPublicKey)
+    VERIFY_NON_NULL(clientSecretKey)
+    VERIFY_NON_NULL(handle)
+    EZMQX::XmlSubCb subCb = [xmlSubCb](std::string topic, const std::string& payload)
+    {
+        xmlSubCb(topic.c_str(), payload.c_str());
+    };
+    EZMQX::SubErrCb errCb = [subErrCb](std::string topic, EZMQX::ErrorCode errCode)
+    {
+        subErrCb(topic.c_str(), CEZMQXErrorCode(errCode));
+    };
+
+    std::map<EZMQX::Topic, std::string> nativeMap;
+    for (size_t i = 0; i< listSize; i++)
+    {
+        ezmqxTopicKeyMap *item = topicKeyList[i];
+        Topic *topicObj = static_cast<Topic *>(item->topicHandle);
+        const char *serverKey = item->serverPublicKey;
+        nativeMap.insert(std::pair<EZMQX::Topic, std::string>(*topicObj, serverKey));
+    }
+
+    try
+    {
+        *handle = XmlSubscriber::getSecuredSubscriber(nativeMap, clientPublicKey, clientSecretKey, subCb,errCb);
+    }
+    catch(EZMQX::Exception& e)
+    {
+    return CEZMQXErrorCode(e.getErrCode());
+    }
+    return CEZMQX_OK;
+
+}
+
 CEZMQXErrorCode ezmqxDestroyXMLSubscriber(ezmqxXMLSubHandle_t handle)
 {
     VERIFY_NON_NULL(handle);
@@ -152,5 +221,12 @@ CEZMQXErrorCode ezmqxXMLSubGetTopics(ezmqxXMLSubHandle_t handle, ezmqxTopicHandl
         (*topics)[i] = topicHandle;
     }
     return CEZMQX_OK;
+}
+
+int ezmqxXMLSubIsSecured(ezmqxXMLSubHandle_t handle)
+{
+    VERIFY_NON_NULL(handle)
+    XmlSubscriber *subscriber = static_cast<XmlSubscriber *>(handle);
+    return ((subscriber->isSecured()) ? 1:0);
 }
 

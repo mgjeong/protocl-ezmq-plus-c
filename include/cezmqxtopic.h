@@ -33,6 +33,15 @@ extern "C"
 typedef void * ezmqxTopicHandle_t;
 
 /**
+ * Represents mapping between topic and server public key.
+ */
+typedef struct
+{
+    ezmqxTopicHandle_t topicHandle;
+    const char *serverPublicKey;
+} ezmqxTopicKeyMap;
+
+/**
  *  Create topic.
  *
  * @param handle - [out] Handle will be filled as return value.
@@ -48,7 +57,8 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateTopic(ezmqxTopicHandle_t *handle);
  *  Create topic instance with given topic, schema and endpoint handle.
  *
  * @param topicName - [in ]Topic name.
- * @param dataModel - [in] String formatted ID of data model..
+ * @param dataModel - [in] String formatted ID of data model.
+ * @param isSecured - [in] Topic to be secured or not [0: unsecured / 1: secured].
  * @param epHandle - [in] EndPoint handle.
  * @param handle - [out] Handle will be filled as return value.
  *
@@ -58,7 +68,7 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateTopic(ezmqxTopicHandle_t *handle);
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxCreateTopic1(const char *topicName, const char *dataModel,
-        ezmqxEPHandle_t epHandle, ezmqxTopicHandle_t *handle);
+        const int isSecured, ezmqxEPHandle_t epHandle, ezmqxTopicHandle_t *handle);
 
 /**
  *  Destroy an instance of topic.
@@ -107,6 +117,15 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxGetDatamodel(ezmqxTopicHandle_t handle, char *
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxGetName(ezmqxTopicHandle_t handle, char **topicName);
+
+/**
+ *  Check whether topic is secured or not.
+ *
+ * @param handle - [in] Topic handle.
+ *
+ * @return int - 0 : unsecured / 1 : secured
+ */
+EZMQX_EXPORT int ezmqxIsTopicSecured(ezmqxTopicHandle_t handle);
 
 #ifdef __cplusplus
 }

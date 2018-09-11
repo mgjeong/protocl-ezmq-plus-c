@@ -72,7 +72,7 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxStartStandAloneMode(ezmqxConfigHandle_t handle
  * @param handle - [in] Config handle.
  * @param amlFilePath - [in] List of AML file paths.
  * @param size -  [in] List Size.
- * @param amlFilePath - [out] List of AML ID will be filled..
+ * @param idList - [out] List of AML ID will be filled..
  * @param listSize - [out] ID List Size.
  *
  * @note ID list and IDs will be allocated, so it should be deleted after use.
