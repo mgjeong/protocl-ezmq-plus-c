@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include "cezmqxconfig.h"
 #include "cezmqxtopicdiscovery.h"
@@ -27,10 +28,24 @@
 void printError()
 {
     printf("\nRe-run the application as shown in below example: \n");
-    printf("\n  (1) For running in standalone mode: ");
+    printf("\n  (1) For running in standalone mode [TNS]: ");
     printf("\n      ./topicdiscovery -t /topic -tns 192.168.1.1\n");
     printf("\n  (2)  For running in docker mode: ");
     printf("\n      ./topicdiscovery -t /topic \n");
+    printf("\n Note:  Docker mode will work only when sample is running in docker container\n");
+}
+
+char * getTNSAddress(const char * address)
+{
+    char *prefix = "http://";
+    char * firstPart = (char *) malloc(1 + strlen(prefix)+ strlen(address));
+    strcpy(firstPart, prefix);
+    strcat(firstPart, address);
+    char *postfix = ":80/tns-server";
+    char * tnsAddress = (char *) malloc(1 + strlen(firstPart)+ strlen(postfix));
+    strcpy(tnsAddress, firstPart);
+    strcat(tnsAddress, postfix);
+    return tnsAddress;
 }
 
 void printTopicList(ezmqxTopicHandle_t *topicList, size_t listSize)
@@ -55,6 +70,9 @@ void printTopicList(ezmqxTopicHandle_t *topicList, size_t listSize)
         ezmqxToString(epHandle, &toStr);
         fflush(stdout);
         printf("\nEndpoint: %s", toStr);
+        int isSecured = ezmqxIsTopicSecured(topicHandle);
+        printf("\nIs secured: %d", isSecured);
+        fflush(stdout);
         printf("\n=================================================\n");
 
         //Free the end point
@@ -106,7 +124,9 @@ int main(int argc, char* argv[])
     }
     if (1 == isStandAlone)
     {
-        result = ezmqxStartStandAloneMode(configHandle, "localhost", 1, tnsAddress);
+        char *tnsAddr = getTNSAddress(tnsAddress);
+        printf("\nComplete TNS address: %s\n", tnsAddress);
+        result = ezmqxStartStandAloneMode(configHandle, "localhost", 1, tnsAddr);
         if(result != CEZMQX_OK)
         {
             printf("\nStart stand alone mode failed [Result]: %d", result);
