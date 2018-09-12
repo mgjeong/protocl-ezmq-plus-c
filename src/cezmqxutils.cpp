@@ -39,7 +39,6 @@ char** ConvertListToCharStrArr(list<string>& list)
     unsigned long size = list.size();
     char ** cstr = new char*[size];
 
-    std::list<std::string>::iterator iter = list.begin();
     for (unsigned long i = 0; i < size; i++)
     {
         auto it = std::next(list.begin(), i);
