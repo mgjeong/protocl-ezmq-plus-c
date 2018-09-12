@@ -95,7 +95,7 @@ TEST_F(CEZMQXAMLSubTest, getSecuredAMLSubscriber)
     ezmqxCreateTopic1("topic1", idArr[0], 1, endpoint1, &topicHandle1);
     ASSERT_EQ(CEZMQX_OK, ezmqxGetSecuredAMLSubscriber(topicHandle1, serverPublicKey, clientPublicKey,
                                                                                                 clientSecretKey, amlSubCB, amlSubErrCB, &subHandle));
-    ASSERT_EQ(0, ezmqxAMLSubIsSecured(subHandle)); //Need to be fixed in CPP sdk.
+    ASSERT_EQ(1, ezmqxAMLSubIsSecured(subHandle));
 }
 
 TEST_F(CEZMQXAMLSubTest, getSecuredAMLSubscriber2)
@@ -122,7 +122,7 @@ TEST_F(CEZMQXAMLSubTest, getSecuredAMLSubscriber2)
 
     ASSERT_EQ(CEZMQX_OK, ezmqxGetSecuredAMLSubscriber2(list, 2, clientPublicKey, clientSecretKey,
                                                                                             amlSubCB, amlSubErrCB, &subHandle));
-    ASSERT_EQ(0, ezmqxAMLSubIsSecured(subHandle)); //Need to be fixed in CPP sdk.
+    ASSERT_EQ(1, ezmqxAMLSubIsSecured(subHandle));
 
     ezmqxDestroyEndPoint(endpoint1);
     ezmqxDestroyEndPoint(endpoint2);

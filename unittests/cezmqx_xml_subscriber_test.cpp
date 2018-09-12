@@ -97,7 +97,7 @@ TEST_F(CEZMQXXMLSubTest, getSecuredXMLSubscriber)
     ezmqxCreateTopic1("topic1", idArr[0], 1, endpoint1, &topicHandle1);
     ASSERT_EQ(CEZMQX_OK, ezmqxGetSecuredXMLSubscriber(topicHandle1, serverPublicKey, clientPublicKey,
                                                                                                 clientSecretKey, xmlSubCB, xmlSubErrCB, &subHandle));
-    ASSERT_EQ(0, ezmqxXMLSubIsSecured(subHandle)); //Need to be fixed in CPP sdk.
+    ASSERT_EQ(1, ezmqxXMLSubIsSecured(subHandle));
 }
 
 TEST_F(CEZMQXXMLSubTest, getSecuredXMLSubscriber2)
@@ -124,8 +124,7 @@ TEST_F(CEZMQXXMLSubTest, getSecuredXMLSubscriber2)
 
     ASSERT_EQ(CEZMQX_OK, ezmqxGetSecuredXMLSubscriber2(list, 2, clientPublicKey, clientSecretKey,
                                                                                             xmlSubCB, xmlSubErrCB, &subHandle));
-    ASSERT_EQ(0, ezmqxXMLSubIsSecured(subHandle)); //Need to be fixed in CPP sdk.
-
+    ASSERT_EQ(1, ezmqxXMLSubIsSecured(subHandle));
     ezmqxDestroyEndPoint(endpoint1);
     ezmqxDestroyEndPoint(endpoint2);
     ezmqxDestroyTopic(topicHandle1);
