@@ -50,7 +50,7 @@ typedef void * ezmqxAMLPubHandle_t;
  *
  * @param topic - [in] Topic on which publisher will be publishing.
  * @param infoType - [in] CAmlModelInfo.
- * @param amlModeld - [in] AML Model Id.
+ * @param amlModelId - [in] AML Model Id.
  * @param optionalPort - [in] Port to be bound to publisher .
  * @param handle - [out] Handle will be filled as return value.
  *
@@ -60,7 +60,26 @@ typedef void * ezmqxAMLPubHandle_t;
  * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
  */
 EZMQX_EXPORT CEZMQXErrorCode ezmqxGetAMLPublisher(const char *topic, CAmlModelInfo infoType,
-        const char *amlModeld,  int optionalPort, ezmqxAMLPubHandle_t *handle);
+        const char *amlModelId,  int optionalPort, ezmqxAMLPubHandle_t *handle);
+
+/**
+ *  Get/Create secured publisher with given details.
+ *
+ * @param topic - [in] Topic on which publisher will be publishing.
+ * @param serverSecretKey - [in] Private key to enable data encryption.
+ * @param infoType - [in] CAmlModelInfo.
+ * @param amlModeld - [in] AML Model Id.
+ * @param optionalPort - [in] Port to be bound to publisher .
+ * @param handle - [out] Handle will be filled as return value.
+ const std::string &serverSecretKey
+ *
+ * @note Publisher instance will be allocated, so it should be deleted after use.
+ *              To destroy an instance, use ezmqxDestroyAMLPublisher().
+ *
+ * @return CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code.
+ */
+EZMQX_EXPORT CEZMQXErrorCode ezmqxGetSecuredAMLPublisher(const char *topic, const char *serverSecretKey,
+        CAmlModelInfo infoType, const char *amlModeld,  int optionalPort, ezmqxAMLPubHandle_t *handle);
 
 /**
  *  Destroy an instance of publisher.
@@ -104,13 +123,22 @@ EZMQX_EXPORT CEZMQXErrorCode ezmqxAMLPubGetTopic(ezmqxAMLPubHandle_t handle, ezm
 EZMQX_EXPORT CEZMQXErrorCode ezmqxAMLPubTerminate(ezmqxAMLPubHandle_t handle);
 
 /**
- * Check whether publisher  instance is terminated or not.
+ * Check whether publisher instance is terminated or not.
  *
  * @param handle - [in] AML publisher handle.
  *
  * @return 1 if terminated and 0 otherwise.
  */
 EZMQX_EXPORT int ezmqxAMLPubIsTerminated(ezmqxAMLPubHandle_t handle);
+
+/**
+ * Check whether publisher is secured or not.
+ *
+ * @param handle - [in] AML publisher handle.
+ *
+ * @return 1 if Secured and 0 otherwise.
+ */
+EZMQX_EXPORT int ezmqxAMLPubIsSecured(ezmqxAMLPubHandle_t handle);
 
 #ifdef __cplusplus
 }

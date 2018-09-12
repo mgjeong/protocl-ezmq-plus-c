@@ -23,70 +23,10 @@
 #include "EZMQXAMLSubscriber.h"
 
 #include "cezmqxamlsubscriber.h"
+#include "cezmqxutils.h"
 
 using namespace std;
 using namespace EZMQX;
-
-static amlDataHandle_t convertToAmlDataHandle(const AML::AMLData* amlData)
-{
-    amlDataHandle_t amlDataHandle = NULL;
-    CreateAMLData(&amlDataHandle);
-
-    vector<string> keys = amlData->getKeys();
-    for (string key : keys)
-    {
-        AML::AMLValueType type = amlData->getValueType(key);
-        if (AML::AMLValueType::String == type)
-        {
-            string valStr = amlData->getValueToStr(key);
-            AMLData_SetValueStr(amlDataHandle, key.c_str(), valStr.c_str());
-        }
-        else if (AML::AMLValueType::StringArray == type)
-        {
-            vector<string> valStrArr = amlData->getValueToStrArr(key);
-
-            vector<const char*> charVec(valStrArr.size());
-            for (unsigned i = 0; i < valStrArr.size(); ++i)
-            {
-                charVec[i] = valStrArr[i].data();
-            }
-
-            AMLData_SetValueStrArr(amlDataHandle, key.c_str(), charVec.data(), charVec.size());
-        }
-        else if (AML::AMLValueType::AMLData == type)
-        {
-            AML::AMLData valAMLData = amlData->getValueToAMLData(key);
-            amlDataHandle_t valAmlDataHandle = convertToAmlDataHandle(&valAMLData);
-
-            AMLData_SetValueAMLData(amlDataHandle, key.c_str(), valAmlDataHandle);
-
-            DestroyAMLData(valAmlDataHandle);
-        }
-    }
-
-    return amlDataHandle;
-}
-
-static amlObjectHandle_t convertToAmlObjHandle(const AML::AMLObject* amlObject)
-{
-    amlObjectHandle_t amlObjHandle = NULL;
-    CreateAMLObjectWithID(amlObject->getDeviceId().c_str(), amlObject->getTimeStamp().c_str(),
-                        amlObject->getId().c_str(), &amlObjHandle);
-
-    vector<string> dataNames = amlObject->getDataNames();
-    for (string name : dataNames)
-    {
-        AML::AMLData amlData = amlObject->getData(name);
-
-        amlDataHandle_t amlDataHandle = convertToAmlDataHandle(&amlData);
-
-        AMLObject_AddData(amlObjHandle, name.c_str(), amlDataHandle);
-
-        DestroyAMLData(amlDataHandle);
-    }
-
-    return amlObjHandle;
-}
 
 CEZMQXErrorCode ezmqxGetAMLSubscriber(const char *topic, int isHierarchical, cAmlSubCB amlSubCb,
         cSubErrCB subErrCb, ezmqxAMLSubHandle_t *handle)
@@ -187,6 +127,85 @@ CEZMQXErrorCode ezmqxGetAMLSubscriber2(ezmqxTopicHandle_t *topicHandle, const si
     return CEZMQX_OK;
 }
 
+CEZMQXErrorCode ezmqxGetSecuredAMLSubscriber(ezmqxTopicHandle_t topicHandle,
+        const char *serverPublicKey, const char *clientPublicKey, const char *clientSecretKey, cAmlSubCB amlSubCb,
+        cSubErrCB subErrCb, ezmqxAMLSubHandle_t *handle)
+{
+    VERIFY_NON_NULL(topicHandle)
+    VERIFY_NON_NULL(serverPublicKey)
+    VERIFY_NON_NULL(clientPublicKey)
+    VERIFY_NON_NULL(clientSecretKey)
+    VERIFY_NON_NULL(handle)
+    EZMQX::AmlSubCb subCb = [amlSubCb](std::string topic, const AML::AMLObject& payload)
+    {
+        const AML::AMLObject *amlObject = dynamic_cast<const AML::AMLObject*>(&payload);
+        amlObjectHandle_t amlObjHandle = convertToAmlObjHandle(amlObject);
+
+        amlSubCb(topic.c_str(), amlObjHandle);
+
+        DestroyAMLObject(amlObjHandle);
+    };
+    EZMQX::SubErrCb errCb = [subErrCb](std::string topic, EZMQX::ErrorCode errCode)
+    {
+        subErrCb(topic.c_str(), CEZMQXErrorCode(errCode));
+    };
+    Topic *topicObj = static_cast<Topic *>(topicHandle);
+
+    try
+    {
+        *handle = AmlSubscriber::getSecuredSubscriber(*topicObj,  serverPublicKey, clientPublicKey, clientSecretKey,
+                                                                                            subCb,errCb);
+    }
+    catch(EZMQX::Exception& e)
+    {
+        return CEZMQXErrorCode(e.getErrCode());
+    }
+    return CEZMQX_OK;
+}
+
+CEZMQXErrorCode ezmqxGetSecuredAMLSubscriber2(ezmqxTopicKeyMap **topicKeyList,
+        const size_t listSize, const char *clientPublicKey, const char *clientSecretKey, cAmlSubCB amlSubCb,
+        cSubErrCB subErrCb, ezmqxAMLSubHandle_t *handle)
+{
+    VERIFY_NON_NULL(topicKeyList)
+    VERIFY_NON_NULL(clientPublicKey)
+    VERIFY_NON_NULL(clientSecretKey)
+    VERIFY_NON_NULL(handle)
+    EZMQX::AmlSubCb subCb = [amlSubCb](std::string topic, const AML::AMLObject& payload)
+    {
+        const AML::AMLObject *amlObject = dynamic_cast<const AML::AMLObject*>(&payload);
+        amlObjectHandle_t amlObjHandle = convertToAmlObjHandle(amlObject);
+
+        amlSubCb(topic.c_str(), amlObjHandle);
+
+        DestroyAMLObject(amlObjHandle);
+    };
+    EZMQX::SubErrCb errCb = [subErrCb](std::string topic, EZMQX::ErrorCode errCode)
+    {
+        subErrCb(topic.c_str(), CEZMQXErrorCode(errCode));
+    };
+
+    std::map<EZMQX::Topic, std::string> nativeMap;
+    for (size_t i = 0; i< listSize; i++)
+    {
+        ezmqxTopicKeyMap *item = topicKeyList[i];
+        Topic *topicObj = static_cast<Topic *>(item->topicHandle);
+        const char *serverKey = item->serverPublicKey;
+        nativeMap.insert(std::pair<EZMQX::Topic, std::string>(*topicObj, serverKey));
+    }
+
+    try
+    {
+        *handle = AmlSubscriber::getSecuredSubscriber(nativeMap, clientPublicKey, clientSecretKey, subCb,errCb);
+    }
+    catch(EZMQX::Exception& e)
+    {
+    return CEZMQXErrorCode(e.getErrCode());
+    }
+    return CEZMQX_OK;
+
+}
+
 CEZMQXErrorCode ezmqxDestroyAMLSubscriber(ezmqxAMLSubHandle_t handle)
 {
     VERIFY_NON_NULL(handle);
@@ -229,5 +248,12 @@ CEZMQXErrorCode ezmqxAMLSubGetTopics(ezmqxAMLSubHandle_t handle, ezmqxTopicHandl
         (*topics)[i] = topicHandle;
     }
     return CEZMQX_OK;
+}
+
+int ezmqxAMLSubIsSecured(ezmqxAMLSubHandle_t handle)
+{
+    VERIFY_NON_NULL(handle)
+    AmlSubscriber *subscriber = static_cast<AmlSubscriber *>(handle);
+    return ((subscriber->isSecured()) ? 1:0);
 }
 

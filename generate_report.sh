@@ -212,6 +212,7 @@ generate_report_EZMQX()
                 "${EZMQX}/out/${EZMQX_TARGET_OS}/${EZMQX_TARGET_ARCH}/debug/unittests/cezmqx_aml_subscriber_test"
                 "${EZMQX}/out/${EZMQX_TARGET_OS}/${EZMQX_TARGET_ARCH}/debug/unittests/cezmqx_topic_test"
                 "${EZMQX}/out/${EZMQX_TARGET_OS}/${EZMQX_TARGET_ARCH}/debug/unittests/cezmqx_xml_subscriber_test"
+                "${EZMQX}/out/${EZMQX_TARGET_OS}/${EZMQX_TARGET_ARCH}/debug/unittests/cezmqx_utils_test"
                );
 
     for exe in ${tests_list[@]}; do

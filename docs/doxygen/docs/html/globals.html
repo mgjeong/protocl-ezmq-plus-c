@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Home</span></a></li>
+      <li><a href="annotated.html"><span>API&#160;Reference</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -107,7 +108,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -233,6 +234,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>ezmqxAMLPubHandle_t
 : <a class="el" href="cezmqxamlpublisher_8h.html#a5dc624058462b3232d29ff5b7a727011">cezmqxamlpublisher.h</a>
 </li>
+<li>ezmqxAMLPubIsSecured()
+: <a class="el" href="cezmqxamlpublisher_8h.html#a5185e55fb774d0271be57e61122ca6f4">cezmqxamlpublisher.h</a>
+</li>
 <li>ezmqxAMLPubIsTerminated()
 : <a class="el" href="cezmqxamlpublisher_8h.html#a15acf3644b8be62160195789c9526128">cezmqxamlpublisher.h</a>
 </li>
@@ -247,6 +251,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>ezmqxAMLSubHandle_t
 : <a class="el" href="cezmqxamlsubscriber_8h.html#a78754b86600d68e8dbbe45f36fd80058">cezmqxamlsubscriber.h</a>
+</li>
+<li>ezmqxAMLSubIsSecured()
+: <a class="el" href="cezmqxamlsubscriber_8h.html#af36b0b7637d0dedd8f943f72ad9d640d">cezmqxamlsubscriber.h</a>
 </li>
 <li>ezmqxAMLSubIsTerminated()
 : <a class="el" href="cezmqxamlsubscriber_8h.html#aeaee341ef42af5339a52a985a0e6b606">cezmqxamlsubscriber.h</a>
@@ -273,7 +280,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 : <a class="el" href="cezmqxtopic_8h.html#ac3d07e7480702b2467fb025ebf8443fe">cezmqxtopic.h</a>
 </li>
 <li>ezmqxCreateTopic1()
-: <a class="el" href="cezmqxtopic_8h.html#afa7b3898df4b9dd670c5d98fb52d3b9c">cezmqxtopic.h</a>
+: <a class="el" href="cezmqxtopic_8h.html#a1f95cc00365dfa00be6351172e26a10b">cezmqxtopic.h</a>
 </li>
 <li>ezmqxCreateTopicDiscovery()
 : <a class="el" href="cezmqxtopicdiscovery_8h.html#a4fa1e7e5ba2aed47a4b2fc54a61723ad">cezmqxtopicdiscovery.h</a>
@@ -303,7 +310,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 : <a class="el" href="cezmqxendpoint_8h.html#a35a1c0b2c69dfdd3babdee2446132c34">cezmqxendpoint.h</a>
 </li>
 <li>ezmqxGetAMLPublisher()
-: <a class="el" href="cezmqxamlpublisher_8h.html#a2d92cc184969442d224810b048e22877">cezmqxamlpublisher.h</a>
+: <a class="el" href="cezmqxamlpublisher_8h.html#a2794a0e5b2f8e2581b986c1aaea044a6">cezmqxamlpublisher.h</a>
 </li>
 <li>ezmqxGetAMLSubscriber()
 : <a class="el" href="cezmqxamlsubscriber_8h.html#a5b873a446efc764644e933c3c4ea47bd">cezmqxamlsubscriber.h</a>
@@ -326,6 +333,21 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>ezmqxGetPort()
 : <a class="el" href="cezmqxendpoint_8h.html#ab85ee00f56ced1373e6c0892818e0aab">cezmqxendpoint.h</a>
 </li>
+<li>ezmqxGetSecuredAMLPublisher()
+: <a class="el" href="cezmqxamlpublisher_8h.html#aa8119fe14fd3be1a951388908230cb12">cezmqxamlpublisher.h</a>
+</li>
+<li>ezmqxGetSecuredAMLSubscriber()
+: <a class="el" href="cezmqxamlsubscriber_8h.html#a595e465e403cda26043d86a33bed7a4a">cezmqxamlsubscriber.h</a>
+</li>
+<li>ezmqxGetSecuredAMLSubscriber2()
+: <a class="el" href="cezmqxamlsubscriber_8h.html#a459452da8209fdb6c2903573a1ec7e6a">cezmqxamlsubscriber.h</a>
+</li>
+<li>ezmqxGetSecuredXMLSubscriber()
+: <a class="el" href="cezmqxxmlsubscriber_8h.html#a45b4e4637a79d313db9d5c88718a7723">cezmqxxmlsubscriber.h</a>
+</li>
+<li>ezmqxGetSecuredXMLSubscriber2()
+: <a class="el" href="cezmqxxmlsubscriber_8h.html#a036430c7d6ea4c99a2014b05dbc5ce85">cezmqxxmlsubscriber.h</a>
+</li>
 <li>ezmqxGetXMLSubscriber()
 : <a class="el" href="cezmqxxmlsubscriber_8h.html#a141bbc4f64160c46b89f45371734e8e8">cezmqxxmlsubscriber.h</a>
 </li>
@@ -337,6 +359,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>ezmqxHierarchicalQuery()
 : <a class="el" href="cezmqxtopicdiscovery_8h.html#ae7af6a9a461879f2e67d705e808d0025">cezmqxtopicdiscovery.h</a>
+</li>
+<li>ezmqxIsTopicSecured()
+: <a class="el" href="cezmqxtopic_8h.html#a4bb91940a2cc8e0a066ae931deb08046">cezmqxtopic.h</a>
 </li>
 <li>ezmqxQuery()
 : <a class="el" href="cezmqxtopicdiscovery_8h.html#a8e274287d7c693e7185568d1f79fe79d">cezmqxtopicdiscovery.h</a>
@@ -365,6 +390,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>ezmqxXMLSubHandle_t
 : <a class="el" href="cezmqxxmlsubscriber_8h.html#a87806fd289a45d9089470fab0a0db5ff">cezmqxxmlsubscriber.h</a>
 </li>
+<li>ezmqxXMLSubIsSecured()
+: <a class="el" href="cezmqxxmlsubscriber_8h.html#a00c416249c626c82e766db9219a6e2a4">cezmqxxmlsubscriber.h</a>
+</li>
 <li>ezmqxXMLSubIsTerminated()
 : <a class="el" href="cezmqxxmlsubscriber_8h.html#ac7793b89c4a9af6d86a7b586e181dae6">cezmqxxmlsubscriber.h</a>
 </li>
@@ -383,7 +411,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </div><!-- doc-content -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
     <ul>
-        <li class="footer">Generated on Wed Aug 8 2018 18:27:19</li>
+        <li class="footer">Generated on Tue Sep 11 2018 17:09:56</li>
     </ul>
 </div>
 </body>

@@ -105,8 +105,17 @@ void printError()
     printf("\nRe-run the application as shown in below example: \n");
     printf("\n  (1) For running in standalone mode: ");
     printf("\n      ./publisher -t /topic -port 5562\n");
-    printf("\n  (2)  For running in docker mode: ");
+    printf("\n  (2) For running in standalone mode [Secured]:");
+    printf("\n      ./publisher -t /topic -port 5562 -secured 1\n");
+    printf("\n  (3) For running in standalone mode [With TNS]: ");
+    printf("\n      ./publisher -t /topic -host 192.168.1.1 -port 5562 -tns 192.183.3.2\n");
+    printf("\n  (4) For running in standalone mode [With TNS + Secured]:");
+    printf("\n      ./publisher -t /topic -host 192.168.1.1 -port 5562 -tns 192.183.3.2 -secured 1\n");
+    printf("\n  (5)  For running in docker mode: ");
     printf("\n      ./publisher -t /topic \n");
+    printf("\n  (6)  For running in docker mode [Secured]:");
+    printf("\n      ./publisher -t /topic -secured 1\n");
+    printf("\n Note: docker mode will work only when sample is running in docker container\n");
 }
 
 void publishData(int numberOfEvents)
@@ -149,15 +158,31 @@ void sigint(int signal)
     exit(0);
 }
 
+char * getTNSAddress(const char * address)
+{
+    char *prefix = "http://";
+    char * firstPart = (char *) malloc(1 + strlen(prefix)+ strlen(address));
+    strcpy(firstPart, prefix);
+    strcat(firstPart, address);
+    char *postfix = ":80/tns-server";
+    char * tnsAddress = (char *) malloc(1 + strlen(firstPart)+ strlen(postfix));
+    strcpy(tnsAddress, firstPart);
+    strcat(tnsAddress, postfix);
+    return tnsAddress;
+}
+
 int main(int argc, char* argv[])
 {
     CEZMQXErrorCode result;
     char *topic = NULL;
+    char *host = NULL;
+    char *tnsAddr = NULL;
     int port = 0;
     int isStandAlone = 0;
+    int isSecured = 0;
 
     // get port and topic from command line arguments
-    if(argc != 3 && argc != 5)
+    if(argc != 3 && argc != 5 && argc != 7 && argc != 9 && argc != 11)
     {
         printError();
         return -1;
@@ -171,12 +196,30 @@ int main(int argc, char* argv[])
             printf("\nGiven Topic is : %s", topic);
             n = n + 2;
         }
+        else if (0 == strcmp(argv[n],"-host"))
+        {
+            host = argv[n + 1];
+            printf("\nHost: %s\n", host);
+            n = n + 2;
+        }
         else if (0 == strcmp(argv[n],"-port"))
         {
             port = atoi(argv[n + 1]);
             printf("\nGiven Port: %d\n", port);
             n = n + 2;
             isStandAlone = 1;
+        }
+        else if (0 == strcmp(argv[n],"-tns"))
+        {
+            tnsAddr = argv[n + 1];
+            printf("\nTNS address: %s\n", tnsAddr);
+            n = n + 2;
+        }
+        else if (0 == strcmp(argv[n],"-secured"))
+        {
+            isSecured = atoi(argv[n + 1]);
+            printf("\nIs secured: %d\n", isSecured);
+            n = n + 2;
         }
         else
         {
@@ -195,7 +238,16 @@ int main(int argc, char* argv[])
     }
     if (1 == isStandAlone)
     {
-        result = ezmqxStartStandAloneMode(g_configHandle, "localhost", 0, "");
+        if(NULL == tnsAddr)
+        {
+            result = ezmqxStartStandAloneMode(g_configHandle, "localhost", 0, "");
+        }
+        else
+        {
+            char *tnsAddress = getTNSAddress(tnsAddr);
+            printf("\nComplete TNS address: %s\n", tnsAddress);
+            result = ezmqxStartStandAloneMode(g_configHandle, host, 1, tnsAddress);
+        }
         if(result != CEZMQX_OK)
         {
             printf("\nStart stand alone mode failed [Result]: %d\n", result);
@@ -227,12 +279,19 @@ int main(int argc, char* argv[])
         printf("\nId is %s\n", idArr[i]);
     }
 
-    ezmqxGetAMLPublisher(topic, AmlModelId, idArr[0], port, &g_pubHandle);
+    if(0 == isSecured)
+    {
+        ezmqxGetAMLPublisher(topic, AmlModelId, idArr[0], port, &g_pubHandle);
+    }
+    else
+    {
+        char *serverSecretKey = "[:X%Q3UfY+kv2A^.wv:(qy2E=bk0L][cm=mS3Hcx";
+        ezmqxGetSecuredAMLPublisher(topic, serverSecretKey, AmlModelId, idArr[0], port, &g_pubHandle);
+    }
     g_isStarted = 1;
-
     if (1 == isStandAlone)
     {
-        publishData(15);
+        publishData(100000);
     }
     else
     {

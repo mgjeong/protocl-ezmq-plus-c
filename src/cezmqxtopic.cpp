@@ -32,15 +32,15 @@ CEZMQXErrorCode ezmqxCreateTopic(ezmqxTopicHandle_t *handle)
     return CEZMQX_OK;
 }
 
-CEZMQXErrorCode ezmqxCreateTopic1(const char *topicName, const char *dataModel, ezmqxEPHandle_t epHandle,
-        ezmqxTopicHandle_t *handle)
+CEZMQXErrorCode ezmqxCreateTopic1(const char *topicName, const char *dataModel, const int isSecured,
+        ezmqxEPHandle_t epHandle, ezmqxTopicHandle_t *handle)
 {
     VERIFY_NON_NULL(topicName)
     VERIFY_NON_NULL(dataModel)
     VERIFY_NON_NULL(epHandle)
     VERIFY_NON_NULL(handle)
     Endpoint *endPoint = static_cast<Endpoint *>(epHandle);
-    *handle = new(std::nothrow) Topic(topicName, dataModel, *endPoint);
+    *handle = new(std::nothrow) Topic(topicName, dataModel, isSecured, *endPoint);
     return CEZMQX_OK;
 }
 
@@ -80,5 +80,12 @@ CEZMQXErrorCode ezmqxGetName(ezmqxTopicHandle_t handle, char **topicName)
     Topic *topicObj = static_cast<Topic *>(handle);
     *topicName = ConvertStringToCharStr(topicObj->getName());
     return CEZMQX_OK;
+}
+
+int ezmqxIsTopicSecured(ezmqxTopicHandle_t handle)
+{
+    VERIFY_NON_NULL(handle)
+    Topic *topicObj = static_cast<Topic *>(handle);
+    return ((topicObj->isSecured()) ? 1:0);
 }
 

@@ -15,20 +15,38 @@
  *
  *******************************************************************************/
 
-#ifndef __C_EZMQ_X_UTILS_H__
-#define __C_EZMQ_X_UTILS_H__
+#include <gtest.h>
+#include <gmock.h>
 
-#include <list>
+#include "cezmqxutils.h"
 
-#include "AMLInterface.h"
-#include "camlinterface.h"
+#include "unittesthelper.h"
 
-#include "cezmqxerrorcodes.h"
+class CEZMQXUtilsTest : public testing::Test
+{
+    protected:
+        virtual void SetUp()
+        {
+        }
+        virtual void TearDown()
+        {
+        }
+};
 
-char* ConvertStringToCharStr(std::string str);
-char** ConvertListToCharStrArr(std::list<std::string>& list);
-AML::AMLObject* convertToCppAmlObject(amlObjectHandle_t amlObjHandle);
-amlObjectHandle_t convertToAmlObjHandle(const AML::AMLObject* amlObject);
+TEST_F(CEZMQXUtilsTest, ToCppAmlObject)
+{
+    amlObjectHandle_t handle = getAMLObject();
+    AML::AMLObject* almObject = nullptr;
+    almObject = convertToCppAmlObject(handle);
+    ASSERT_NE(nullptr, almObject);
+}
 
-#endif // __C_EZMQ_X_UTILS_H__
+TEST_F(CEZMQXUtilsTest, ToAmlObjHandle)
+{
+    amlObjectHandle_t handle = getAMLObject();
+    AML::AMLObject* almObject = convertToCppAmlObject(handle);
+    handle = nullptr;
+    handle = convertToAmlObjHandle(almObject);
+    ASSERT_NE(nullptr, handle);
+}
 

@@ -2,6 +2,13 @@ var NAVTREE =
 [
   [ "EZMQX C Library", "index.html", [
     [ "Welcome", "index.html", null ],
+    [ "API Reference", null, [
+      [ "Class List", "annotated.html", "annotated" ],
+      [ "Class Members", "functions.html", [
+        [ "All", "functions.html", null ],
+        [ "Variables", "functions_vars.html", null ]
+      ] ]
+    ] ],
     [ "Files", null, [
       [ "File List", "files.html", "files" ],
       [ "File Members", "globals.html", [
@@ -18,7 +25,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"cezmqxamlpublisher_8h.html"
+"annotated.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

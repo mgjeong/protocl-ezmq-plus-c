@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Home</span></a></li>
+      <li><a href="annotated.html"><span>API&#160;Reference</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -89,7 +90,7 @@ $(document).ready(function(){initNavTree('cezmqxxmlsubscriber_8h.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -138,6 +139,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a9d6c665c415f8dc1a961f26fd26a3a63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxxmlsubscriber_8h.html#a9d6c665c415f8dc1a961f26fd26a3a63">ezmqxGetXMLSubscriber2</a> (<a class="el" href="cezmqxtopic_8h.html#a89db2011897f4b49558adf04dfcae8a5">ezmqxTopicHandle_t</a> *topicHandle, const size_t listSize, <a class="el" href="cezmqxxmlsubscriber_8h.html#a87c409fd2e4388adeb71de13adadf90d">cXmlSubCB</a> xmlSubCb, <a class="el" href="cezmqxxmlsubscriber_8h.html#a574f8fe531368f0040dab5ac78e0b9ce">cXmlSubErrCB</a> subErrCb, <a class="el" href="cezmqxxmlsubscriber_8h.html#a87806fd289a45d9089470fab0a0db5ff">ezmqxXMLSubHandle_t</a> *handle)</td></tr>
 <tr class="memdesc:a9d6c665c415f8dc1a961f26fd26a3a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get/Create XML subscriber with given topic object [handle] list and callbacks.  <a href="#a9d6c665c415f8dc1a961f26fd26a3a63">More...</a><br /></td></tr>
 <tr class="separator:a9d6c665c415f8dc1a961f26fd26a3a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45b4e4637a79d313db9d5c88718a7723"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxxmlsubscriber_8h.html#a45b4e4637a79d313db9d5c88718a7723">ezmqxGetSecuredXMLSubscriber</a> (<a class="el" href="cezmqxtopic_8h.html#a89db2011897f4b49558adf04dfcae8a5">ezmqxTopicHandle_t</a> topicHandle, const char *serverPublicKey, const char *clientPublicKey, const char *clientSecretKey, <a class="el" href="cezmqxxmlsubscriber_8h.html#a87c409fd2e4388adeb71de13adadf90d">cXmlSubCB</a> xmlSubCb, <a class="el" href="cezmqxxmlsubscriber_8h.html#a574f8fe531368f0040dab5ac78e0b9ce">cXmlSubErrCB</a> subErrCb, <a class="el" href="cezmqxxmlsubscriber_8h.html#a87806fd289a45d9089470fab0a0db5ff">ezmqxXMLSubHandle_t</a> *handle)</td></tr>
+<tr class="memdesc:a45b4e4637a79d313db9d5c88718a7723"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get/Create secured subscriber with given topic object [handle] and callbacks.  <a href="#a45b4e4637a79d313db9d5c88718a7723">More...</a><br /></td></tr>
+<tr class="separator:a45b4e4637a79d313db9d5c88718a7723"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a036430c7d6ea4c99a2014b05dbc5ce85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxxmlsubscriber_8h.html#a036430c7d6ea4c99a2014b05dbc5ce85">ezmqxGetSecuredXMLSubscriber2</a> (<a class="el" href="structezmqx_topic_key_map.html">ezmqxTopicKeyMap</a> **topicKeyList, const size_t listSize, const char *clientPublicKey, const char *clientSecretKey, <a class="el" href="cezmqxxmlsubscriber_8h.html#a87c409fd2e4388adeb71de13adadf90d">cXmlSubCB</a> xmlSubCb, <a class="el" href="cezmqxxmlsubscriber_8h.html#a574f8fe531368f0040dab5ac78e0b9ce">cXmlSubErrCB</a> subErrCb, <a class="el" href="cezmqxxmlsubscriber_8h.html#a87806fd289a45d9089470fab0a0db5ff">ezmqxXMLSubHandle_t</a> *handle)</td></tr>
+<tr class="memdesc:a036430c7d6ea4c99a2014b05dbc5ce85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get/Create secured subscriber with given topic-public key list and callbacks.  <a href="#a036430c7d6ea4c99a2014b05dbc5ce85">More...</a><br /></td></tr>
+<tr class="separator:a036430c7d6ea4c99a2014b05dbc5ce85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c943d73b07c012fde60a6e29477fe5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxxmlsubscriber_8h.html#a0c943d73b07c012fde60a6e29477fe5e">ezmqxDestroyXMLSubscriber</a> (<a class="el" href="cezmqxxmlsubscriber_8h.html#a87806fd289a45d9089470fab0a0db5ff">ezmqxXMLSubHandle_t</a> handle)</td></tr>
 <tr class="memdesc:a0c943d73b07c012fde60a6e29477fe5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy an instance of subscriber.  <a href="#a0c943d73b07c012fde60a6e29477fe5e">More...</a><br /></td></tr>
 <tr class="separator:a0c943d73b07c012fde60a6e29477fe5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,6 +157,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a35a632be8e5e2ee3cbe8b8740300157e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxxmlsubscriber_8h.html#a35a632be8e5e2ee3cbe8b8740300157e">ezmqxXMLSubGetTopics</a> (<a class="el" href="cezmqxxmlsubscriber_8h.html#a87806fd289a45d9089470fab0a0db5ff">ezmqxXMLSubHandle_t</a> handle, <a class="el" href="cezmqxtopic_8h.html#a89db2011897f4b49558adf04dfcae8a5">ezmqxTopicHandle_t</a> **topics, size_t *listSize)</td></tr>
 <tr class="memdesc:a35a632be8e5e2ee3cbe8b8740300157e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get list of subscribed topics.  <a href="#a35a632be8e5e2ee3cbe8b8740300157e">More...</a><br /></td></tr>
 <tr class="separator:a35a632be8e5e2ee3cbe8b8740300157e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00c416249c626c82e766db9219a6e2a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cezmqxxmlsubscriber_8h.html#a00c416249c626c82e766db9219a6e2a4">ezmqxXMLSubIsSecured</a> (<a class="el" href="cezmqxxmlsubscriber_8h.html#a87806fd289a45d9089470fab0a0db5ff">ezmqxXMLSubHandle_t</a> handle)</td></tr>
+<tr class="memdesc:a00c416249c626c82e766db9219a6e2a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether subscriber is secured or not.  <a href="#a00c416249c626c82e766db9219a6e2a4">More...</a><br /></td></tr>
+<tr class="separator:a00c416249c626c82e766db9219a6e2a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="aa3b7fe3f59c274080e25e780e582358d"></a>
@@ -233,6 +243,150 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a45b4e4637a79d313db9d5c88718a7723"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a> ezmqxGetSecuredXMLSubscriber </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="cezmqxtopic_8h.html#a89db2011897f4b49558adf04dfcae8a5">ezmqxTopicHandle_t</a>&#160;</td>
+          <td class="paramname"><em>topicHandle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>serverPublicKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>clientPublicKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>clientSecretKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="cezmqxxmlsubscriber_8h.html#a87c409fd2e4388adeb71de13adadf90d">cXmlSubCB</a>&#160;</td>
+          <td class="paramname"><em>xmlSubCb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="cezmqxxmlsubscriber_8h.html#a574f8fe531368f0040dab5ac78e0b9ce">cXmlSubErrCB</a>&#160;</td>
+          <td class="paramname"><em>subErrCb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="cezmqxxmlsubscriber_8h.html#a87806fd289a45d9089470fab0a0db5ff">ezmqxXMLSubHandle_t</a> *&#160;</td>
+          <td class="paramname"><em>handle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get/Create secured subscriber with given topic object [handle] and callbacks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topicHandle</td><td>- [in] Topic Handle. </td></tr>
+    <tr><td class="paramname">serverPublicKey</td><td>- [in] Public key for server(publisher) that related with given topic. </td></tr>
+    <tr><td class="paramname">clientPublicKey</td><td>- [in] Public key for client(subscriber) that shared with given topic's owner. </td></tr>
+    <tr><td class="paramname">clientSecretKey</td><td>- [in] Secret key for client(subscriber) that pair of given clientPublickey </td></tr>
+    <tr><td class="paramname">xmlSubCb</td><td>- [in] Callback to get event on given topic. </td></tr>
+    <tr><td class="paramname">subErrCb</td><td>- [in] Error callback to get errorcodes on subscribed topic. </td></tr>
+    <tr><td class="paramname">handle</td><td>- [out] Handle will be filled as return value.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Subscriber instance will be allocated, so it should be deleted after use. To destroy an instance, use <a class="el" href="cezmqxxmlsubscriber_8h.html#a0c943d73b07c012fde60a6e29477fe5e" title="Destroy an instance of subscriber. ">ezmqxDestroyXMLSubscriber()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a036430c7d6ea4c99a2014b05dbc5ce85"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> <a class="el" href="cezmqxerrorcodes_8h.html#a45bb910b01b0ee33a4ef60025dcd7dd0">CEZMQXErrorCode</a> ezmqxGetSecuredXMLSubscriber2 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structezmqx_topic_key_map.html">ezmqxTopicKeyMap</a> **&#160;</td>
+          <td class="paramname"><em>topicKeyList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>listSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>clientPublicKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>clientSecretKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="cezmqxxmlsubscriber_8h.html#a87c409fd2e4388adeb71de13adadf90d">cXmlSubCB</a>&#160;</td>
+          <td class="paramname"><em>xmlSubCb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="cezmqxxmlsubscriber_8h.html#a574f8fe531368f0040dab5ac78e0b9ce">cXmlSubErrCB</a>&#160;</td>
+          <td class="paramname"><em>subErrCb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="cezmqxxmlsubscriber_8h.html#a87806fd289a45d9089470fab0a0db5ff">ezmqxXMLSubHandle_t</a> *&#160;</td>
+          <td class="paramname"><em>handle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get/Create secured subscriber with given topic-public key list and callbacks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topicKeyList</td><td>- [in] topicKey list. </td></tr>
+    <tr><td class="paramname">listSize</td><td>- [in] Size of list. </td></tr>
+    <tr><td class="paramname">clientPublicKey</td><td>- [in] Public key for client(subscriber) that shared with given topic's owner. </td></tr>
+    <tr><td class="paramname">clientSecretKey</td><td>- [in] Secret key for client(subscriber) that pair of given clientPublickey </td></tr>
+    <tr><td class="paramname">xmlSubCb</td><td>- [in] Callback to get event on given topic. </td></tr>
+    <tr><td class="paramname">subErrCb</td><td>- [in] Error callback to get errorcodes on subscribed topic. </td></tr>
+    <tr><td class="paramname">handle</td><td>- [out] Handle will be filled as return value.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Subscriber instance will be allocated, so it should be deleted after use. To destroy an instance, use <a class="el" href="cezmqxxmlsubscriber_8h.html#a0c943d73b07c012fde60a6e29477fe5e" title="Destroy an instance of subscriber. ">ezmqxDestroyXMLSubscriber()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a141bbc4f64160c46b89f45371734e8e8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -280,7 +434,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">topic</td><td>- [in] Topic to be subscribed. </td></tr>
     <tr><td class="paramname">isHierarchical</td><td>- [in] Whether to use Hierarchical query option when query to tns. [0 : false, 1: true] </td></tr>
-    <tr><td class="paramname">amlSubCb</td><td>- [in] Calback to get event on given topic. </td></tr>
+    <tr><td class="paramname">xmlSubCb</td><td>- [in] Calback to get event on given topic. </td></tr>
     <tr><td class="paramname">subErrCb</td><td>- [in] Error callback to get errorcodes on subscribed topic. </td></tr>
     <tr><td class="paramname">handle</td><td>- [out] Handle will be filled as return value.</td></tr>
   </table>
@@ -331,7 +485,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">topicHandle</td><td>- [in] Topic Handle. </td></tr>
-    <tr><td class="paramname">amlSubCb</td><td>- [in] Calback to get event on given topic. </td></tr>
+    <tr><td class="paramname">xmlSubCb</td><td>- [in] Calback to get event on given topic. </td></tr>
     <tr><td class="paramname">subErrCb</td><td>-[in] Error callback to get errorcodes on subscribed topic. </td></tr>
     <tr><td class="paramname">handle</td><td>-[out] Handle will be filled as return value.</td></tr>
   </table>
@@ -389,7 +543,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">topicHandle</td><td>- [in] Topic handle list. </td></tr>
     <tr><td class="paramname">listSize</td><td>- [in] Size of list. </td></tr>
-    <tr><td class="paramname">amlSubCb</td><td>- [in] Calback to get event on given topic. </td></tr>
+    <tr><td class="paramname">xmlSubCb</td><td>- [in] Calback to get event on given topic. </td></tr>
     <tr><td class="paramname">subErrCb</td><td>- [in] Error callback to get errorcodes on subscribed topic. </td></tr>
     <tr><td class="paramname">handle</td><td>- [out] Subscriber Handle will be filled as return value.</td></tr>
   </table>
@@ -441,6 +595,31 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Topic handle list will be allocated, so it should be deleted after use. To destroy an instance of topic handle, use <a class="el" href="cezmqxtopic_8h.html#aaff21d2c73588d04669136f5372e765d" title="Destroy an instance of topic. ">ezmqxDestroyTopic()</a>.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>CEZMQXErrorCode - CEZMQX_OK on success, otherwise appropriate error code. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a00c416249c626c82e766db9219a6e2a4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="cezmqxxmlsubscriber_8h.html#aa3b7fe3f59c274080e25e780e582358d">EZMQX_EXPORT</a> int ezmqxXMLSubIsSecured </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="cezmqxxmlsubscriber_8h.html#a87806fd289a45d9089470fab0a0db5ff">ezmqxXMLSubHandle_t</a>&#160;</td>
+          <td class="paramname"><em>handle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check whether subscriber is secured or not. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>- [in] AML subscriber handle.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if Secured and 0 otherwise. </dd></dl>
 
 </div>
 </div>
@@ -498,7 +677,7 @@ Functions</h2></td></tr>
 </div><!-- doc-content -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
     <ul>
-        <li class="footer">Generated on Wed Aug 8 2018 18:27:19</li>
+        <li class="footer">Generated on Tue Sep 11 2018 17:09:56</li>
     </ul>
 </div>
 </body>
