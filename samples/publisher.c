@@ -289,14 +289,8 @@ int main(int argc, char* argv[])
         ezmqxGetSecuredAMLPublisher(topic, serverSecretKey, AmlModelId, idArr[0], port, &g_pubHandle);
     }
     g_isStarted = 1;
-    if (1 == isStandAlone)
-    {
-        publishData(100000);
-    }
-    else
-    {
-        publishData(100000);
-    }
+
+    publishData(100000);
 
     result = ezmqxAMLPubTerminate(g_pubHandle);
     if(result != CEZMQX_OK)
