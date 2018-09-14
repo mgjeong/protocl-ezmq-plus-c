@@ -52,10 +52,10 @@ install_dependencies() {
     else
         git clone git@github.sec.samsung.net:RS7-EdgeComputing/protocol-ezmq-plus-cpp.git
     fi
-    git checkout ${PROTOCOL_EZMQ_CPP_VERSION}
-
+    
     # build protocol-ezmq-plus-cpp
     cd $DEP_ROOT/protocol-ezmq-plus-cpp
+    git checkout ${PROTOCOL_EZMQ_CPP_VERSION}
     echo -e "${GREEN}Building ezmq-plus library and its dependencies${NO_COLOUR}"
     if [ "x86_64" = ${EZMQX_TARGET_ARCH} ]; then
          ./build.sh --with_dependencies=${EZMQX_WITH_DEP} --build_mode=${EZMQX_BUILD_MODE}
@@ -74,14 +74,14 @@ install_dependencies() {
     else
         git clone git@github.sec.samsung.net:RS7-EdgeComputing/datamodel-aml-c.git
     fi
-    git checkout ${DATAMODEL_AML_C_VERSION}
-
+    
     TARGET_ARCH=${EZMQX_TARGET_ARCH}
     if [ "armhf" = ${TARGET_ARCH} ]; then
         TARGET_ARCH="armhf-native";
     fi  
     # build datamodel-aml-c
     cd $DEP_ROOT/datamodel-aml-c
+    git checkout ${DATAMODEL_AML_C_VERSION}
     echo -e "${GREEN}Building datamodel-aml-c library and its dependencies${NO_COLOUR}"
     ./build_common.sh --target_arch=${TARGET_ARCH} --build_mode=${EZMQX_BUILD_MODE} --logging=${EZMQX_LOGGING} --disable_protobuf=${EZMQX_DISABLE_PROTOBUF}
     echo -e "${GREEN}Installation of datamodel-aml-c library and its dependencies done${NO_COLOUR}"
