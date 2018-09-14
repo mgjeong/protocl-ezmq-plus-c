@@ -32,6 +32,9 @@ EZMQX_LOGGING="off"
 EZMQX_DISABLE_PROTOBUF=false
 TARGET_ARCH="x86_64"
 
+PROTOCOL_EZMQ_CPP_VERSION=v1.0_rc1
+DATAMODEL_AML_C_VERSION=v1.0_rc1
+
 RELEASE="1"
 LOGGING="0"
 
@@ -49,6 +52,7 @@ install_dependencies() {
     else
         git clone git@github.sec.samsung.net:RS7-EdgeComputing/protocol-ezmq-plus-cpp.git
     fi
+    git checkout ${PROTOCOL_EZMQ_CPP_VERSION}
 
     # build protocol-ezmq-plus-cpp
     cd $DEP_ROOT/protocol-ezmq-plus-cpp
@@ -70,6 +74,7 @@ install_dependencies() {
     else
         git clone git@github.sec.samsung.net:RS7-EdgeComputing/datamodel-aml-c.git
     fi
+    git checkout ${DATAMODEL_AML_C_VERSION}
 
     TARGET_ARCH=${EZMQX_TARGET_ARCH}
     if [ "armhf" = ${TARGET_ARCH} ]; then
