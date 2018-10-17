@@ -364,8 +364,13 @@ int main(int argc, char* argv[])
                     printf("\nCreate Topic Discovery failed [Result]: %d", result);
                     return -1;
                 }
-                ezmqxTopicHandle_t topicHandle;
+                ezmqxTopicHandle_t topicHandle = NULL;
                 ezmqxQuery(tdHandle, topic, &topicHandle);
+                if(NULL == topicHandle)
+                {
+                    printf("\nCouldn't find the topic");
+                    return -1;
+                }
                 result = ezmqxGetSecuredAMLSubscriber(topicHandle, serverPublicKey, clientPublicKey,
                                                                         clientSecretKey, amlSubCB, amlSubErrCB, &subHandle);
             }
@@ -386,8 +391,13 @@ int main(int argc, char* argv[])
                 printf("\nCreate Topic Discovery failed [Result]: %d", result);
                 return -1;
             }
-            ezmqxTopicHandle_t topicHandle;
+            ezmqxTopicHandle_t topicHandle = NULL;
             ezmqxQuery(tdHandle, topic, &topicHandle);
+            if(NULL == topicHandle)
+            {
+                printf("\nCouldn't find the topic");
+                return -1;
+            }
             result = ezmqxGetSecuredAMLSubscriber(topicHandle, serverPublicKey, clientPublicKey,
                                                                     clientSecretKey, amlSubCB, amlSubErrCB, &subHandle);
         }
