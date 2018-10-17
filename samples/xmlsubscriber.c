@@ -93,16 +93,18 @@ void printError()
     printf("\n  (2) For running in standalone mode [Secured]: ");
     printf("\n     ./xmlsubscriber -ip 192.168.1.1 -port 5562 -t /topic -secured 1\n");
     printf("\n  (3) For running in standalone mode [With TNS]: ");
-    printf("\n     ./xmlsubscriber -t /topic -tns 192.168.10.1\n");
+    printf("\n     ./xmlsubscriber -t /topic -tns 192.168.10.1 -h 0\n");
     printf("\n  (4) For running in standalone mode [With TNS + Secured]: ");
     printf("\n     ./xmlsubscriber -t /topic -tns 192.168.10.1 -secured 1\n");
     printf("\n  (5)  For running in docker mode: ");
     printf("\n     ./xmlsubscriber -t /topic -h 0\n");
     printf("\n  (6)  For running in docker mode [Secured]: ");
-    printf("\n     ./xmlsubscriber -t /topic -h 0 -secured 1\n");
+    printf("\n     ./xmlsubscriber -t /topic -secured 1\n");
     printf("\n Note:");
-    printf("\n (1) -h stands for hierarchical search for topic from TNS server [0: true 1:false]");
-    printf("\n (2) docker mode will work only when sample is running in docker container\n");
+    printf("\n (1) -h [hierarchical] option will work only with TNS/docker mode + unsecured mode");
+    printf("\n (2) While testing standalone mode without TNS, Make sure to give same topic on both publisher and subscriber");
+    printf("\n (3) While testing TNS/docker mode  + secured mode , Make sure to give same topic on both publisher and subscriber");
+    printf("\n (4) docker mode will work only when sample is running in docker container\n");
 }
 
 int main(int argc, char* argv[])
