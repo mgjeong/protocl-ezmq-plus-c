@@ -345,7 +345,7 @@ int main(int argc, char* argv[])
             }
             else
             {
-                result = ezmqxGetAMLSubscriber(topic, 1, amlSubCB, amlSubErrCB, &subHandle);
+                result = ezmqxGetAMLSubscriber(topic, isHierarchical, amlSubCB, amlSubErrCB, &subHandle);
             }
         }
         else

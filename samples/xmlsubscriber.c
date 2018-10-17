@@ -242,7 +242,7 @@ int main(int argc, char* argv[])
             }
             else
             {
-                result = ezmqxGetXMLSubscriber(topic, 1, xmlSubCB, xmlSubErrCB, &subHandle);
+                result = ezmqxGetXMLSubscriber(topic, isHierarchical, xmlSubCB, xmlSubErrCB, &subHandle);
             }
         }
         else
