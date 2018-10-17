@@ -205,7 +205,8 @@ void printError()
     printf("\n     ./amlsubscriber -t /topic -h 0 -secured 1\n");
     printf("\n Note:");
     printf("\n (1) -h stands for hierarchical search for topic from TNS server [0: true 1:false]");
-    printf("\n (2) docker mode will work only when sample is running in docker container\n");
+    printf("\n (2) -h option will work only with TNS + unsecured mode");
+    printf("\n (3) docker mode will work only when sample is running in docker container\n");
 }
 
 int main(int argc, char* argv[])
@@ -343,7 +344,7 @@ int main(int argc, char* argv[])
             }
             else
             {
-                result = ezmqxGetAMLSubscriber(topic, 1, amlSubCB, amlSubErrCB, &subHandle);
+                result = ezmqxGetAMLSubscriber(topic, isHierarchical, amlSubCB, amlSubErrCB, &subHandle);
             }
         }
         else
