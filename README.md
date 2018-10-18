@@ -99,4 +99,4 @@ For getting help about script options: **$ ./generate_report.sh --help** </br>
         - aml.so</br>
         - caml.so </br>
 2. Reference cezmqX library APIs : [Documentation](docs/doxygen/docs/html/index.html)
-3. Topic naming convention guide : [Naming Guide](https://github.sec.samsung.net/RS7-EdgeComputing/protocol-ezmq-plus-cpp/blob/master/TOPIC_NAMING_CONVENTION.md)
+3. Topic naming convention guide : [Naming Guide](https://github.sec.samsung.net/RS7-EdgeComputing/protocol-ezmq-plus-cpp/blob/1.0_rel/TOPIC_NAMING_CONVENTION.md)
