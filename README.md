@@ -1,10 +1,10 @@
 # ezmq plus library (c)
 
-protocol-ezmq-plus-c is wrapper library which is written on the top of [protocol-ezmq-plus-cpp](https://github.sec.samsung.net/RS7-EdgeComputing/protocol-ezmq-plus-cpp), that provides a standard messaging interface over various data streaming and serialization / deserialization middlewares along with some added functionalities.</br>
-  - Currently supports streaming using 0mq and serialization / deserialization using protobuf.
-  - Publisher -> Multiple Subscribers broadcasting.
-  - High speed serialization and deserialization.
-  - Topic name discovery [TNS]. 
+protocol-ezmq-plus-c is wrapper library which is written on the top of [protocol-ezmq-plus-cpp](https://github.sec.samsung.net/RS7-EdgeComputing/protocol-ezmq-plus-cpp), that provides a standard messaging interface over various data streaming and serialization / deserialization middlewares along with some added functionalities</br>
+  - Currently supports streaming using 0mq and serialization / deserialization using protobuf
+  - Publisher -> Multiple Subscribers broadcasting
+  - High speed serialization and deserialization
+  - Topic name discovery [TNS]
   - Automation Markup language [AML]
 
 
@@ -99,3 +99,4 @@ For getting help about script options: **$ ./generate_report.sh --help** </br>
         - aml.so</br>
         - caml.so </br>
 2. Reference cezmqX library APIs : [Documentation](docs/doxygen/docs/html/index.html)
+3. Topic naming convention guide : [Naming Guide](../protocol-ezmq-plus-cpp/TOPIC_NAMING_CONVENTION.md)
