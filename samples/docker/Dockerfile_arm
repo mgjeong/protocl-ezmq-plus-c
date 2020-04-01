@@ -1,5 +1,4 @@
 FROM arm32v7/ubuntu:16.04
-MAINTAINER jay.sharma@samsung.com
 
 COPY  ezmqx_csamples /ezmqx_csamples
 COPY  ezmqx_cextlibs /ezmqx_cextlibs
