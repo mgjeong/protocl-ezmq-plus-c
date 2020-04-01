@@ -47,7 +47,7 @@ install_dependencies() {
     if [ -d "protocol-ezmq-plus-cpp" ] ; then
         echo "protocol-ezmq-plus-cpp folder exist"
     else
-        git clone git@github.sec.samsung.net:RS7-EdgeComputing/protocol-ezmq-plus-cpp.git
+        git clone git@github.com:mgjeong/protocol-ezmq-plus-cpp.git
     fi
 
     # build protocol-ezmq-plus-cpp
@@ -68,7 +68,7 @@ install_dependencies() {
     if [ -d "datamodel-aml-c" ] ; then
         echo "datamodel-aml-c folder exist"
     else
-        git clone git@github.sec.samsung.net:RS7-EdgeComputing/datamodel-aml-c.git
+        git clone git@github.com:edgexfoundry-holding/datamodel-aml-c.git
     fi
 
     TARGET_ARCH=${EZMQX_TARGET_ARCH}

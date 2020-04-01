@@ -1,6 +1,6 @@
 # ezmq plus library (c)
 
-protocol-ezmq-plus-c is wrapper library which is written on the top of [protocol-ezmq-plus-cpp](https://github.sec.samsung.net/RS7-EdgeComputing/protocol-ezmq-plus-cpp), that provides a standard messaging interface over various data streaming and serialization / deserialization middlewares along with some added functionalities</br>
+protocol-ezmq-plus-c is wrapper library which is written on the top of [protocol-ezmq-plus-cpp](https://github.com/mgjeong/protocol-ezmq-plus-cpp), that provides a standard messaging interface over various data streaming and serialization / deserialization middlewares along with some added functionalities</br>
   - Currently supports streaming using 0mq and serialization / deserialization using protobuf
   - Publisher -> Multiple Subscribers broadcasting
   - High speed serialization and deserialization
@@ -13,9 +13,9 @@ protocol-ezmq-plus-c is wrapper library which is written on the top of [protocol
   - Version : 2.3.0 or above
   - [How to install](http://scons.org/doc/2.3.0/HTML/scons-user/c95.html)
 - protocol-ezmq-plus-cpp
-  - Since [protocol-ezmq-plus-cpp](https://github.sec.samsung.net/RS7-EdgeComputing/protocol-ezmq-plus-cpp) will be downloaded and built when protocol-ezmq-plus-c is built, check the prerequisites of it. It can be installed via build option (See 'How to build')  
+  - Since [protocol-ezmq-plus-cpp](https://github.com/mgjeong/protocol-ezmq-plus-cpp) will be downloaded and built when protocol-ezmq-plus-c is built, check the prerequisites of it. It can be installed via build option (See 'How to build')  
 - datamodel-aml-c
-  - Since [datamodel-aml-c](https://github.sec.samsung.net/RS7-EdgeComputing/datamodel-aml-c) will be downloaded and built when protocol-ezmq-plus-c is built, check the prerequisites of it. It can be installed via build option (See 'How to build')  
+  - Since [datamodel-aml-c](https://github.com/edgexfoundry-holding/datamodel-aml-c) will be downloaded and built when protocol-ezmq-plus-c is built, check the prerequisites of it. It can be installed via build option (See 'How to build')  
 
 ## How to build ##
 1. Goto: ~/protocol-ezmq-plus-c/
@@ -99,4 +99,4 @@ For getting help about script options: **$ ./generate_report.sh --help** </br>
         - aml.so</br>
         - caml.so </br>
 2. Reference cezmqX library APIs : [Documentation](docs/doxygen/docs/html/index.html)
-3. Topic naming convention guide : [Naming Guide](https://github.sec.samsung.net/RS7-EdgeComputing/protocol-ezmq-plus-cpp/blob/master/TOPIC_NAMING_CONVENTION.md)
+3. Topic naming convention guide : [Naming Guide](see TOPIC_NAMING_CONVENTION.md)

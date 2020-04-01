@@ -61,6 +61,7 @@ cp /usr/lib/arm-linux-gnueabihf/libstdc++.so.6 .
 cd $DOCKER_ROOT
 
 # build the ezmq-plus-java sample image
-sudo docker build -t docker.sec.samsung.net:5000/protocol-ezmq-plus-c-sample -f Dockerfile_arm .
+# TODO insert REPO_PATH
+sudo docker build -t ${REPO_PATH}/protocol-ezmq-plus-c-sample -f Dockerfile_arm .
 
 
